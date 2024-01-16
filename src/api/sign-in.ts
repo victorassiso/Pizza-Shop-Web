@@ -1,5 +1,9 @@
 import { api } from '@/lib/axios'
 
-export async function SignIn() {
-  await api.post('sessions')
+export interface SignInBody {
+  email: string
+}
+
+export async function signIn({ email }: SignInBody) {
+  await api.post('/authenticate', { email })
 }
