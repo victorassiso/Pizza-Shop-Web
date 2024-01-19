@@ -72,7 +72,6 @@ export function Orders() {
               <TableBody>
                 {response &&
                   response.orders.map((order) => {
-                    console.log(order)
                     return <OrderTableRow key={order.orderId} {...order} />
                   })}
               </TableBody>
