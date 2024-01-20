@@ -2,11 +2,10 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-import { getManagedRestaurant } from '@/api/get-managed-restaurant'
 import { getProfile } from '@/api/get-profile'
+import { getWorkspace } from '@/api/get-workspace'
 import { signOut } from '@/api/sign-out'
 
-import { StoreProfileDialog } from './store-profile-dialog'
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
 import {
@@ -18,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Skeleton } from './ui/skeleton'
+import { WorkspaceProfileDialog } from './workspace-profile-dialog'
 
 export function AccountMenu() {
   const navigate = useNavigate()
@@ -27,11 +27,13 @@ export function AccountMenu() {
     staleTime: Infinity,
   })
 
-  const { data: managedRestaurant, isLoading: isLoadingManagedRestaurant } =
-    useQuery({
-      queryKey: ['managed-restaurant'],
-      queryFn: getManagedRestaurant,
-    })
+  const { data: workspace, isLoading: isLoadingWorkspace } = useQuery({
+    queryKey: ['workspace'],
+    queryFn: getWorkspace,
+    staleTime: Infinity,
+  })
+
+  console.log(workspace)
 
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
@@ -47,10 +49,10 @@ export function AccountMenu() {
             variant="outline"
             className="flex select-none items-center gap-2"
           >
-            {isLoadingManagedRestaurant ? (
+            {isLoadingWorkspace ? (
               <Skeleton className="h-4 w-40" />
             ) : (
-              managedRestaurant?.name
+              workspace?.name
             )}
             <ChevronDown />
           </Button>
@@ -91,7 +93,7 @@ export function AccountMenu() {
           </DropdownMenuLabel>
         </DropdownMenuContent>
       </DropdownMenu>
-      <StoreProfileDialog />
+      <WorkspaceProfileDialog />
     </Dialog>
   )
 }

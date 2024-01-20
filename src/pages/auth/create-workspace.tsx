@@ -6,35 +6,35 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createBusiness } from '@/api/create-business'
+import { createWorkspace } from '@/api/create-workspace'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
-const CreateBusinessFormSchema = z.object({
+const CreateWorkspaceFormSchema = z.object({
   name: z.string().min(1),
   code: z.string().min(1),
 })
 
-type CreateBusinessFormType = z.infer<typeof CreateBusinessFormSchema>
+type CreateWorkspaceFormType = z.infer<typeof CreateWorkspaceFormSchema>
 
-export function CreateBusiness() {
+export function CreateWorkspace() {
   const navigate = useNavigate()
 
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<CreateBusinessFormType>({
-    resolver: zodResolver(CreateBusinessFormSchema),
+  } = useForm<CreateWorkspaceFormType>({
+    resolver: zodResolver(CreateWorkspaceFormSchema),
   })
 
-  const { mutateAsync: createBusinessFn } = useMutation({
-    mutationFn: createBusiness,
+  const { mutateAsync: createWorkspaceFn } = useMutation({
+    mutationFn: createWorkspace,
   })
-  async function handleCreateBusiness(data: CreateBusinessFormType) {
+  async function handleCreateWorkspace(data: CreateWorkspaceFormType) {
     try {
-      await createBusinessFn({
+      await createWorkspaceFn({
         name: data.name,
         code: data.code,
       })
@@ -66,7 +66,7 @@ export function CreateBusiness() {
             <form
               id="form"
               className="space-y-4"
-              onSubmit={handleSubmit(handleCreateBusiness)}
+              onSubmit={handleSubmit(handleCreateWorkspace)}
             >
               <div className="space-y-2">
                 <Label htmlFor="name">Organização</Label>

@@ -5,6 +5,7 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { getWorkspace } from '@/api/get-workspace'
 import { signIn } from '@/api/sign-in'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -36,10 +37,20 @@ export function SignIn() {
     mutationFn: signIn,
   })
 
+  const { mutateAsync: getWorkspaceFn } = useMutation({
+    mutationFn: getWorkspace,
+  })
+
   async function handleSignIn(data: SignInForm) {
     try {
       await signInFn({ email: data.email, password: data.password })
-      navigate('/')
+      await getWorkspaceFn()
+        .then(() => {
+          navigate('/')
+        })
+        .catch(() => {
+          navigate('/create-workspace')
+        })
     } catch (error) {
       toast.error('Credenciais inválidas.')
     }

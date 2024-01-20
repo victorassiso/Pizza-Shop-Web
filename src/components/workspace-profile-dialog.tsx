@@ -4,11 +4,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import {
-  getManagedRestaurant,
-  GetManagedRestaurantResponse,
-} from '@/api/get-managed-restaurant'
-import { updateProfile } from '@/api/update-profile'
+import { getWorkspace, getWorkspaceResponse } from '@/api/get-workspace'
+import { updateWorkspace } from '@/api/update-workspace'
 
 import { Button } from './ui/button'
 import {
@@ -23,61 +20,53 @@ import { Input } from './ui/input'
 import { Label } from './ui/label'
 import { Textarea } from './ui/textarea'
 
-export function StoreProfileDialog() {
+export function WorkspaceProfileDialog() {
   const queryClient = useQueryClient()
 
-  const { data: managedRestaurant } = useQuery({
-    queryKey: ['managed-restaurant'],
-    queryFn: getManagedRestaurant,
+  const { data: workspace } = useQuery({
+    queryKey: ['workspace'],
+    queryFn: getWorkspace,
     staleTime: Infinity,
   })
 
-  const StoreProfileSchema = z.object({
+  const WorkspaceSchema = z.object({
     name: z.string().min(1),
-    description: z.string().nullable(),
+    code: z.string().min(3),
   })
 
-  type StoreProfileType = z.infer<typeof StoreProfileSchema>
+  type WorkspaceType = z.infer<typeof WorkspaceSchema>
 
-  function updateManagedRestaurantCache({
-    name,
-    description,
-  }: StoreProfileType) {
-    const cached = queryClient.getQueryData<GetManagedRestaurantResponse>([
-      'managed-restaurant',
-    ])
+  function updateWorkspaceCache({ name, code }: WorkspaceType) {
+    const cached = queryClient.getQueryData<getWorkspaceResponse>(['workspace'])
 
     if (cached) {
-      queryClient.setQueryData<GetManagedRestaurantResponse>(
-        ['managed-restaurant'],
-        {
-          ...cached,
-          name,
-          description,
-        },
-      )
+      queryClient.setQueryData<getWorkspaceResponse>(['workspace'], {
+        ...cached,
+        name,
+        code,
+      })
     }
 
     return { cached }
   }
-  const { mutateAsync: updateProfileFn } = useMutation({
-    mutationFn: updateProfile,
-    onMutate({ name, description }) {
-      const { cached } = updateManagedRestaurantCache({ name, description })
+  const { mutateAsync: updateWorkspaceFn } = useMutation({
+    mutationFn: updateWorkspace,
+    onMutate({ name, code }) {
+      const { cached } = updateWorkspaceCache({ name, code })
       return { previousProfile: cached }
     },
     onError(_, __, context) {
       if (context?.previousProfile) {
-        updateManagedRestaurantCache(context.previousProfile)
+        updateWorkspaceCache(context.previousProfile)
       }
     },
   })
 
-  async function handleUpdateProfile(data: StoreProfileType) {
+  async function handleUpdateWorkspace(data: WorkspaceType) {
     try {
-      await updateProfileFn({
+      await updateWorkspaceFn({
         name: data.name,
-        description: data.description,
+        code: data.code,
       })
 
       toast.success('Perfil atualizado com sucesso!')
@@ -90,11 +79,11 @@ export function StoreProfileDialog() {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<StoreProfileType>({
-    resolver: zodResolver(StoreProfileSchema),
+  } = useForm<WorkspaceType>({
+    resolver: zodResolver(WorkspaceSchema),
     values: {
-      name: managedRestaurant?.name ?? '',
-      description: managedRestaurant?.description ?? '',
+      name: workspace?.name ?? '',
+      code: workspace?.code ?? '',
     },
   })
 
@@ -106,7 +95,7 @@ export function StoreProfileDialog() {
           Atualize as informações do seu estabelecimento visíveis ao seu cliente
         </DialogDescription>
       </DialogHeader>
-      <form onSubmit={handleSubmit(handleUpdateProfile)}>
+      <form onSubmit={handleSubmit(handleUpdateWorkspace)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="name">
@@ -115,14 +104,10 @@ export function StoreProfileDialog() {
             <Input className="col-span-3" id="name" {...register('name')} />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="description">
-              Description
+            <Label className="text-right" htmlFor="code">
+              Code
             </Label>
-            <Textarea
-              className="col-span-3"
-              id="description"
-              {...register('description')}
-            />
+            <Textarea className="col-span-3" id="code" {...register('code')} />
           </div>
         </div>
 
