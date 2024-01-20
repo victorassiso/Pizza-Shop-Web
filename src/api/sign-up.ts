@@ -1,22 +1,15 @@
 import { api } from '@/lib/axios'
 
 export interface SignUpBody {
-  restaurantName: string
-  managerName: string
+  name: string
   email: string
-  phone: string
+  password: string
 }
 
-export async function signUp({
-  restaurantName,
-  managerName,
-  email,
-  phone,
-}: SignUpBody) {
-  await api.post('/restaurants', {
-    restaurantName,
-    managerName,
+export async function signUp({ name, email, password }: SignUpBody) {
+  await api.post('/users', {
+    name,
     email,
-    phone,
+    password,
   })
 }

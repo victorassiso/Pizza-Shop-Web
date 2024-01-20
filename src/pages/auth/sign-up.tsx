@@ -1,3 +1,4 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
@@ -11,10 +12,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 
 const signUpForm = z.object({
-  establishmentName: z.string(),
-  managerName: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
+  name: z.string().min(1),
+  email: z.string().email({ message: 'E-mail inválido' }),
+  password: z
+    .string()
+    .min(6, { message: 'A senha deve ter no mínimo 6 caracteres' }),
 })
 
 type SignUpForm = z.infer<typeof signUpForm>
@@ -26,7 +28,9 @@ export function SignUp() {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<SignUpForm>()
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpForm),
+  })
 
   const { mutateAsync: signUpFn } = useMutation({
     mutationFn: signUp,
@@ -35,10 +39,9 @@ export function SignUp() {
     try {
       console.log(data)
       await signUpFn({
-        restaurantName: data.establishmentName,
-        managerName: data.managerName,
+        name: data.name,
         email: data.email,
-        phone: data.phone,
+        password: data.password,
       })
       toast.success('Estabelecimento cadastrado com sucesso', {
         action: {
@@ -47,7 +50,7 @@ export function SignUp() {
         },
       })
     } catch (error) {
-      toast.error('Erro ao cadastrar estabelecimento.')
+      toast.error('Erro ao cadastrar usuário.')
     }
   }
 
@@ -74,33 +77,28 @@ export function SignUp() {
               onSubmit={handleSubmit(handleSignUp)}
             >
               <div className="space-y-2">
-                <Label htmlFor="establishmentName">
-                  Nome do estabelecimento
-                </Label>
-                <Input
-                  id="establishmentName"
-                  type="text"
-                  {...register('establishmentName')}
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="managerName">Nome do gerente</Label>
-                <Input
-                  id="managerName"
-                  type="text"
-                  {...register('managerName')}
-                />
+                <Label htmlFor="name">Nome</Label>
+                <Input id="name" type="text" {...register('name')} required />
               </div>
 
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
-                <Input id="email" type="email" {...register('email')} />
+                <Input
+                  id="email"
+                  type="email"
+                  {...register('email')}
+                  required
+                />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="phone">Telefone</Label>
-                <Input id="phone" type="tel" {...register('phone')} />
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register('password')}
+                  min={6}
+                />
               </div>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
