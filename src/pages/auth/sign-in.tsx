@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -12,12 +12,16 @@ import { Label } from '@/components/ui/label'
 
 const signInForm = z.object({
   email: z.string().email(),
+  password: z.string(),
 })
 
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
+  const navigate = useNavigate()
+
   const [searchParams] = useSearchParams()
+
   const {
     register,
     handleSubmit,
@@ -28,19 +32,14 @@ export function SignIn() {
     },
   })
 
-  const { mutateAsync: authenticate } = useMutation({
+  const { mutateAsync: signInFn } = useMutation({
     mutationFn: signIn,
   })
 
   async function handleSignIn(data: SignInForm) {
     try {
-      await authenticate({ email: data.email })
-      toast.success('Enviamos um link de autenticação para seu e-mail.', {
-        action: {
-          label: 'Reenviar',
-          onClick: () => handleSignIn(data),
-        },
-      })
+      await signInFn({ email: data.email, password: data.password })
+      navigate('/')
     } catch (error) {
       toast.error('Credenciais inválidas.')
     }
@@ -69,8 +68,17 @@ export function SignIn() {
               onSubmit={handleSubmit(handleSignIn)}
             >
               <div className="space-y-2">
-                <Label htmlFor="email">Seu e-mail</Label>
+                <Label htmlFor="email">E-mail</Label>
                 <Input id="email" type="email" {...register('email')} />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password">Senha</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  {...register('password')}
+                />
               </div>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
