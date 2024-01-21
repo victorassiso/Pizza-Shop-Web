@@ -50,7 +50,7 @@ export function CreateWorkspace() {
       <Helmet title="Cadastro" />
       <div className="p-8">
         <Button variant="ghost" asChild className="absolute right-8 top-8">
-          <Link to="/sign-in" className="">
+          <Link to="/join-in-workspace" className="">
             Entrar em uma organização
           </Link>
         </Button>
@@ -69,12 +69,12 @@ export function CreateWorkspace() {
               onSubmit={handleSubmit(handleCreateWorkspace)}
             >
               <div className="space-y-2">
-                <Label htmlFor="name">Organização</Label>
+                <Label htmlFor="name">Nome da organização</Label>
                 <Input id="name" type="text" {...register('name')} required />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="code">Código</Label>
+                <Label htmlFor="code">Código único da organização</Label>
                 <Input id="code" type="text" {...register('code')} required />
               </div>
 

@@ -6,6 +6,7 @@ import { NotFound } from './pages/404'
 import { Dashboard } from './pages/app/dashboard/dashboard'
 import { Orders } from './pages/app/orders/orders'
 import { CreateWorkspace } from './pages/auth/create-workspace'
+import { JoinInWorkspace } from './pages/auth/join-in-workspace'
 import { SignIn } from './pages/auth/sign-in'
 import { SignUp } from './pages/auth/sign-up'
 
@@ -29,6 +30,7 @@ export const router = createBrowserRouter(
         { path: '/sign-in', element: <SignIn /> },
         { path: '/sign-up', element: <SignUp /> },
         { path: '/create-workspace', element: <CreateWorkspace /> },
+        { path: '/join-in-workspace', element: <JoinInWorkspace /> },
       ],
     },
   ],
