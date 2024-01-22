@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createWorkspace } from '@/api/create-workspace'
+import { createWorkspace } from '@/api/workspace/create-workspace'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'

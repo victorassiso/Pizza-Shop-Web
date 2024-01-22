@@ -2,9 +2,9 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
-import { getProfile } from '@/api/get-profile'
-import { getWorkspace } from '@/api/get-workspace'
-import { signOut } from '@/api/sign-out'
+import { getProfile } from '@/api/user/get-profile'
+import { signOut } from '@/api/user/sign-out'
+import { getWorkspace } from '@/api/workspace/get-workspace'
 
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'

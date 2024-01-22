@@ -1,14 +1,19 @@
 import { api } from '@/lib/axios'
 
-export interface getWorkspaceResponse {
+export interface Workspace {
   id: string
   name: string
   code: string
   createdAt: string
 }
+export interface GetWorkspaceResponse {
+  workspace: Workspace
+}
 
 export async function getWorkspace() {
-  const response = await api.get<getWorkspaceResponse>('/workspaces')
+  const response = await api.get<GetWorkspaceResponse>('/workspaces')
 
-  return response.data
+  const workspace: Workspace = response.data.workspace
+
+  return workspace
 }
