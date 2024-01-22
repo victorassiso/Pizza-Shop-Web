@@ -3,6 +3,7 @@ import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import { ArrowRight, Search, X } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { approveOrder } from '@/api/order/approve-order'
 import { cancelOrder } from '@/api/order/cancel-order'
@@ -61,6 +62,7 @@ export function OrderTableRow({
       mutationFn: cancelOrder,
       async onSuccess(_, { orderId }) {
         updateOrderStatusOnCache(orderId, 'canceled')
+        toast.success('Pedido cancelado com sucesso!')
       },
     })
 
@@ -69,6 +71,7 @@ export function OrderTableRow({
       mutationFn: approveOrder,
       async onSuccess(_, { orderId }) {
         updateOrderStatusOnCache(orderId, 'processing')
+        toast.success('Status do pedido atualizado com sucesso!')
       },
     })
 
@@ -77,6 +80,7 @@ export function OrderTableRow({
       mutationFn: dispatchOrder,
       async onSuccess(_, { orderId }) {
         updateOrderStatusOnCache(orderId, 'delivering')
+        toast.success('Status do pedido atualizado com sucesso!')
       },
     })
 
@@ -85,6 +89,7 @@ export function OrderTableRow({
       mutationFn: deliverOrder,
       async onSuccess(_, { orderId }) {
         updateOrderStatusOnCache(orderId, 'delivered')
+        toast.success('Status do pedido atualizado com sucesso!')
       },
     })
 

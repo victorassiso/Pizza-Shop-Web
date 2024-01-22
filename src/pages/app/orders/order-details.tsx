@@ -35,8 +35,8 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
     return null
   }
 
-  const total = order.orderItems.reduce(
-    (acc, curr) => (curr.priceInCents * curr.quantity) / 100 + acc,
+  const total = order.orderItem.reduce(
+    (acc, curr) => curr.price * curr.quantity + acc,
     0,
   )
 
@@ -88,7 +88,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                 Realizado há
               </TableCell>
               <TableCell className="flex justify-end">
-                {formatDistanceToNow(order.createdAt, {
+                {formatDistanceToNow(order.created_at, {
                   locale: ptBR,
                   addSuffix: true,
                 })}
@@ -108,8 +108,8 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
           </TableHeader>
 
           <TableBody>
-            {order.orderItems.map((item) => {
-              const price = item.priceInCents / 100
+            {order.orderItem.map((item) => {
+              const price = item.price
               const subtotal = price * item.quantity
 
               return (

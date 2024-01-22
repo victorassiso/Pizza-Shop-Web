@@ -3,19 +3,20 @@ import { api } from '@/lib/axios'
 export interface GetOrderDetailsQuery {
   orderId: string
 }
-export interface GetOrderDetailsResponse {
-  status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+
+export interface OrderDetails {
   id: string
-  createdAt: string
-  totalInCents: number
+  status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+  total: number
+  created_at: Date
   customer: {
     name: string
     email: string
-    phone: string | null
+    phone: string
   }
-  orderItems: {
+  orderItem: {
     id: string
-    priceInCents: number
+    price: number
     quantity: number
     product: {
       name: string
@@ -23,8 +24,14 @@ export interface GetOrderDetailsResponse {
   }[]
 }
 
+interface GetOrderDetailsResponse {
+  orderDetails: OrderDetails
+}
+
 export async function getOrderDetails({ orderId }: GetOrderDetailsQuery) {
   const response = await api.get<GetOrderDetailsResponse>(`/orders/${orderId}`)
 
-  return response.data
+  const orderDetails = response.data.orderDetails
+
+  return orderDetails
 }
