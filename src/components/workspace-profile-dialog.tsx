@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getWorkspace, Workspace } from '@/api/workspace/get-workspace'
-import { updateWorkspace } from '@/api/workspace/update-workspace'
+import { getWorkspace, Workspace } from '@/api/workspaces/get-workspace'
+import { updateWorkspace } from '@/api/workspaces/update-workspace'
 
 import { Button } from './ui/button'
 import {

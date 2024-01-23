@@ -10,7 +10,7 @@ export interface ProductTableRowProps {
   productId: string
   productName: string
   category: string
-  retailPrice: number
+  price: number
   description: string | null
 }
 
@@ -18,7 +18,7 @@ export function ProductTableRow({
   productId,
   productName,
   category,
-  retailPrice,
+  price,
   description,
 }: ProductTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
@@ -43,7 +43,7 @@ export function ProductTableRow({
       <TableCell className="font-medium">{description}</TableCell>
       <TableCell className="font-medium">{category}</TableCell>
       <TableCell className="font-medium">
-        {retailPrice.toLocaleString('pt-BR', {
+        {price.toLocaleString('pt-BR', {
           style: 'currency',
           currency: 'BRL',
         })}

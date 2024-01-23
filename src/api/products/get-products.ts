@@ -3,13 +3,12 @@ import { api } from '@/lib/axios'
 export interface Product {
   id: string
   name: string
-  description: string
+  description: string | null
   category: string
-  cost_price: number
-  retail_price: number
-  workspace_id: string
-  created_at: Date
-  updated_at: Date
+  price: number
+  workspaceId: string
+  createdAt: Date
+  updatedAt: Date
 }
 
 export interface GetProductsResponse {

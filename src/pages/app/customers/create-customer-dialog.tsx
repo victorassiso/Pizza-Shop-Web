@@ -4,8 +4,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createProduct } from '@/api/products/create-product'
-import { Product } from '@/api/products/get-products'
+import { createCustomer } from '@/api/customers/create-customer'
+import { Customer } from '@/api/customers/get-customers'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,
@@ -19,55 +19,50 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 
-interface CreateProductDialogProps {
+interface CreateCustomerDialogProps {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-export function CreateProductDialog({
+export function CreateCustomerDialog({
   setOpenDialog,
-}: CreateProductDialogProps) {
-  const createProductSchema = z.object({
+}: CreateCustomerDialogProps) {
+  const createCustomerSchema = z.object({
     name: z.string().min(1),
-    description: z.string(),
-    category: z.string().min(1),
-    price: z.number(),
+    email: z.string().email().min(1),
+    address: z.string().min(1),
+    phone: z.string().min(1),
   })
 
-  type CreateProductSchema = z.infer<typeof createProductSchema>
+  type CreateCustomerSchema = z.infer<typeof createCustomerSchema>
 
   const {
     register,
     handleSubmit,
     formState: { isSubmitting },
-  } = useForm<CreateProductSchema>({
-    resolver: zodResolver(createProductSchema),
+  } = useForm<CreateCustomerSchema>({
+    resolver: zodResolver(createCustomerSchema),
   })
 
   const queryClient = useQueryClient()
 
-  function updateProductsCache(product: Product) {
-    const cached = queryClient.getQueryData<Product[]>(['products'])
+  function updateCustomersCache(customer: Customer) {
+    const cached = queryClient.getQueryData<Customer[]>(['customers'])
 
     if (!cached) {
       return
     }
 
-    queryClient.setQueryData<Product[]>(['products'], [...cached, product])
+    queryClient.setQueryData<Customer[]>(['customers'], [...cached, customer])
   }
 
-  const { mutateAsync: createProductFn } = useMutation({
-    mutationFn: createProduct,
+  const { mutateAsync: createCustomerFn } = useMutation({
+    mutationFn: createCustomer,
   })
 
-  async function handleCreateProdct(data: CreateProductSchema) {
+  async function handleCreateProdct(data: CreateCustomerSchema) {
     try {
-      const newProduct = await createProductFn({
-        name: data.name,
-        category: data.category,
-        description: data.description,
-        price: data.price,
-      })
-      updateProductsCache(newProduct)
+      const newCustomer = await createCustomerFn({ ...data })
+      updateCustomersCache(newCustomer)
       setOpenDialog(false)
       toast.success('Produto cadastrado com sucesso')
     } catch {
@@ -95,37 +90,36 @@ export function CreateProductDialog({
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="category">
-              Categoria
+            <Label className="text-right" htmlFor="email">
+              E-mail
             </Label>
             <Input
               className="col-span-3"
-              id="category"
-              {...register('category')}
+              id="email"
+              type="text"
+              {...register('email')}
               disabled={isSubmitting}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="description">
-              Descrição
+            <Label className="text-right" htmlFor="address">
+              Endereço
             </Label>
             <Textarea
               className="col-span-3"
-              id="description"
-              {...register('description')}
+              id="address"
+              {...register('address')}
               disabled={isSubmitting}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
-            <Label className="text-right" htmlFor="price">
-              Preço
+            <Label className="text-right" htmlFor="phone">
+              Telefone
             </Label>
             <Input
               className="col-span-3"
-              id="price"
-              step="0.01"
-              type="number"
-              {...register('price', { valueAsNumber: true })}
+              id="phone"
+              {...register('phone')}
               disabled={isSubmitting}
             />
           </div>

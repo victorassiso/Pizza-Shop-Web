@@ -6,8 +6,7 @@ export interface CreateProductRequest {
   name: string
   description: string
   category: string
-  cost_price: number
-  retail_price: number
+  price: number
 }
 
 export interface CreateProductResponse {
@@ -18,15 +17,13 @@ export async function createProduct({
   name,
   description,
   category,
-  cost_price,
-  retail_price,
+  price,
 }: CreateProductRequest) {
   const response = await api.post<CreateProductResponse>('/products', {
     name,
     description,
     category,
-    cost_price,
-    retail_price,
+    price,
   })
 
   const product = response.data.product
