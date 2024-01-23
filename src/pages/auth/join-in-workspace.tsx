@@ -73,7 +73,7 @@ export function JoinInWorkspace() {
               </div>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
-                Acessar Painel
+                Entrar
               </Button>
             </form>
           </div>

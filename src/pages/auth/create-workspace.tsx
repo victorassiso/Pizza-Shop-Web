@@ -85,7 +85,7 @@ export function CreateWorkspace() {
               </p>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
-                Finalizar Cadastro
+                Cadastrar Organização
               </Button>
             </form>
           </div>

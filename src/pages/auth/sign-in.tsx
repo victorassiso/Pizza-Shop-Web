@@ -62,7 +62,7 @@ export function SignIn() {
       <div className="p-8">
         <Button variant="ghost" asChild className="absolute right-8 top-8">
           <Link to="/sign-up" className="">
-            Novo estabelecimento
+            Nova conta
           </Link>
         </Button>
         <div className="flex w-[350px] flex-col justify-center gap-6">
@@ -93,7 +93,7 @@ export function SignIn() {
               </div>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
-                Acessar Painel
+                Entrar
               </Button>
             </form>
           </div>
