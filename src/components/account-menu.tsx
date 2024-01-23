@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
@@ -33,9 +33,11 @@ export function AccountMenu() {
     staleTime: Infinity,
   })
 
+  const queryClient = useQueryClient()
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
+      queryClient.clear()
       navigate('/sign-in', { replace: true })
     },
   })
