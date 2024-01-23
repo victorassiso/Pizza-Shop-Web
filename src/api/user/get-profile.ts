@@ -15,6 +15,6 @@ export async function getProfile() {
   const response = await api.get<getProfileResponse>('/me')
 
   const user: Profile = response.data.user
-  console.log(user)
+
   return user
 }

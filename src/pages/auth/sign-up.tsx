@@ -37,7 +37,6 @@ export function SignUp() {
   })
   async function handleSignUp(data: SignUpForm) {
     try {
-      console.log(data)
       await signUpFn({
         name: data.name,
         email: data.email,

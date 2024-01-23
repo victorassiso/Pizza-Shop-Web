@@ -33,8 +33,6 @@ export function AccountMenu() {
     staleTime: Infinity,
   })
 
-  console.log(workspace)
-
   const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOut,
     onSuccess: () => {
