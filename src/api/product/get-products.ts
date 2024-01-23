@@ -3,7 +3,7 @@ import { api } from '@/lib/axios'
 export interface Product {
   id: string
   name: string
-  description: string | null
+  description: string
   category: string
   cost_price: number
   retail_price: number

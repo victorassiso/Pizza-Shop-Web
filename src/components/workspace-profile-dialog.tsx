@@ -18,7 +18,6 @@ import {
 } from './ui/dialog'
 import { Input } from './ui/input'
 import { Label } from './ui/label'
-import { Textarea } from './ui/textarea'
 
 export function WorkspaceProfileDialog() {
   const queryClient = useQueryClient()
@@ -107,7 +106,7 @@ export function WorkspaceProfileDialog() {
             <Label className="text-right" htmlFor="code">
               Code
             </Label>
-            <Textarea className="col-span-3" id="code" {...register('code')} />
+            <Input className="col-span-3" id="code" {...register('code')} />
           </div>
         </div>
 
