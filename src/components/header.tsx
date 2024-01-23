@@ -1,4 +1,4 @@
-import { Home, Pizza, UtensilsCrossed } from 'lucide-react'
+import { Barcode, Home, Pizza, Users, UtensilsCrossed } from 'lucide-react'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
@@ -19,7 +19,7 @@ export function Header() {
             Início
           </NavLink>
           <NavLink to="/orders">
-            <UtensilsCrossed className="h-4 w-4" />
+            <Barcode className="h-4 w-4" />
             Pedidos
           </NavLink>
           <NavLink to="/products">
@@ -27,7 +27,7 @@ export function Header() {
             Produtos
           </NavLink>
           <NavLink to="/customers">
-            <UtensilsCrossed className="h-4 w-4" />
+            <Users className="h-4 w-4" />
             Clientes
           </NavLink>
         </nav>
