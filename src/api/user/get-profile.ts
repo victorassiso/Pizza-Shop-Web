@@ -8,13 +8,13 @@ interface Profile {
   createdAt: Date | null
 }
 interface getProfileResponse {
-  profile: Profile
+  user: Profile
 }
 
 export async function getProfile() {
   const response = await api.get<getProfileResponse>('/me')
 
-  const profile: Profile = response.data.profile
-
-  return profile
+  const user: Profile = response.data.user
+  console.log(user)
+  return user
 }
