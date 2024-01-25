@@ -8,13 +8,13 @@ export interface OrderDetails {
   id: string
   status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
   total: number
-  created_at: Date
+  createdAt: Date
   customer: {
     name: string
     email: string
     phone: string
   }
-  orderItem: {
+  orderItems: {
     id: string
     price: number
     quantity: number

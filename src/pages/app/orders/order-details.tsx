@@ -35,7 +35,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
     return null
   }
 
-  const total = order.orderItem.reduce(
+  const total = order.orderItems.reduce(
     (acc, curr) => curr.price * curr.quantity + acc,
     0,
   )
@@ -88,7 +88,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
                 Realizado há
               </TableCell>
               <TableCell className="flex justify-end">
-                {formatDistanceToNow(order.created_at, {
+                {formatDistanceToNow(order.createdAt, {
                   locale: ptBR,
                   addSuffix: true,
                 })}
@@ -108,7 +108,7 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
           </TableHeader>
 
           <TableBody>
-            {order.orderItem.map((item) => {
+            {order.orderItems.map((item) => {
               const price = item.price
               const subtotal = price * item.quantity
 
