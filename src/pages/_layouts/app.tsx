@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Header } from '@/components/header'
-import { CreateOrderContextProvider } from '@/contexts/create-order-context'
 import { api } from '@/lib/axios'
 
 export function AppLayout() {
@@ -36,9 +35,7 @@ export function AppLayout() {
       <Header />
 
       <div className="flex flex-1 flex-col gap-4 p-8 pt-6">
-        <CreateOrderContextProvider>
-          <Outlet />
-        </CreateOrderContextProvider>
+        <Outlet />
       </div>
     </div>
   )

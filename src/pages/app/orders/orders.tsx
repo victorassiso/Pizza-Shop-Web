@@ -1,7 +1,9 @@
+import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { useQuery } from '@tanstack/react-query'
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
@@ -15,14 +17,63 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { createOrderContext } from '@/contexts/create-order-context'
 
 import { CreateOrderDialog } from './create-order/create-order-dialog'
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
 
+export const createOrderSchema = z.object({
+  // customerId: z
+  //   .string({
+  //     errorMap: () => ({ message: 'O cliente é obrigatório' }),
+  //   })
+  //   .min(1),
+  customerName: z
+    .string({
+      errorMap: () => ({ message: 'O cliente é obrigatório' }),
+    })
+    .min(1),
+  items: z
+    .array(
+      z.object({
+        product: z.object({
+          id: z
+            .string({
+              errorMap: () => ({ message: 'produto inválido' }),
+            })
+            .uuid(),
+          name: z
+            .string({
+              errorMap: () => ({ message: 'produto inválido' }),
+            })
+            .min(1),
+          price: z.coerce.number({
+            errorMap: () => ({ message: 'produto inválido' }),
+          }),
+        }),
+        quantity: z.coerce
+          .number({
+            errorMap: () => ({ message: 'produto inválido' }),
+          })
+          .min(1),
+      }),
+    )
+    .min(1, { message: 'Adicione pelo menos um produto' }),
+})
+
+export type CreateOrderSchema = z.infer<typeof createOrderSchema>
+
 export function Orders() {
-  const { clearItems } = useContext(createOrderContext)
+  const createOrderForm = useForm<CreateOrderSchema>({
+    resolver: zodResolver(createOrderSchema),
+    defaultValues: {
+      // customerId: '',
+      customerName: '',
+      items: [],
+    },
+  })
+  const { reset } = createOrderForm
+
   const [searchParams, setSearchParams] = useSearchParams()
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -56,7 +107,7 @@ export function Orders() {
 
   function handleOpenDialog(open: boolean) {
     if (!open) {
-      clearItems()
+      reset()
     }
     setOpenDialog(open)
   }
@@ -70,9 +121,9 @@ export function Orders() {
             <DialogTrigger asChild>
               <Button>Novo pedido</Button>
             </DialogTrigger>
-            {/* <CreateOrderContextProvider> */}
-            <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
-            {/* </CreateOrderContextProvider> */}
+            <FormProvider {...createOrderForm}>
+              <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
+            </FormProvider>
           </Dialog>
         </div>
         <div className="space-y-2.5">
