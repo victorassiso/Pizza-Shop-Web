@@ -19,14 +19,12 @@ export async function createCustomer({
   address,
   phone,
 }: CreateCustomerRequest) {
-  const response = await api.post<CreateCustomerResponse>('/customers', {
+  const response = await api.post('/customers', {
     name,
     email,
     address,
     phone,
   })
 
-  const customer = response.data.customer
-
-  return customer
+  return response
 }

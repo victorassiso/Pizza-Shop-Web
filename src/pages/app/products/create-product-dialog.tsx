@@ -52,7 +52,7 @@ export function CreateProductDialog({
       return
     }
 
-    queryClient.setQueryData<Product[]>(['products'], [...cached, product])
+    queryClient.setQueryData<Product[]>(['products'], [product, ...cached])
   }
 
   const { mutateAsync: createProductFn } = useMutation({

@@ -20,10 +20,12 @@ import { ItemList } from './item-list'
 import { ProductsCombobox } from './products-combobox'
 
 interface CreateOrderDialogProps {
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
+  handleOpenDialog: (open: boolean) => void
 }
 
-export function CreateOrderDialog({ setOpenDialog }: CreateOrderDialogProps) {
+export function CreateOrderDialog({
+  handleOpenDialog,
+}: CreateOrderDialogProps) {
   const {
     submitPreSelectedProduct,
     preSelectProduct,
@@ -40,7 +42,7 @@ export function CreateOrderDialog({ setOpenDialog }: CreateOrderDialogProps) {
       return
     }
 
-    queryClient.setQueryData<Order[]>(['orders'], [...cached, order])
+    queryClient.setQueryData<Order[]>(['orders'], [order, ...cached])
   }
 
   const { mutateAsync: createOrderFn } = useMutation({
@@ -59,7 +61,7 @@ export function CreateOrderDialog({ setOpenDialog }: CreateOrderDialogProps) {
         }),
       })
       updateOrdersCache(newOrder)
-      setOpenDialog(false)
+      handleOpenDialog(false)
       toast.success('Pedido cadastrado com sucesso')
     } catch {
       toast.error('Erro ao cadastrar pedido')
@@ -105,7 +107,7 @@ export function CreateOrderDialog({ setOpenDialog }: CreateOrderDialogProps) {
               Cancelar
             </Button>
           </DialogClose>
-          <Button type="submit" variant="success">
+          <Button type="button" variant="success" onClick={handleCreateOrder}>
             Salvar
           </Button>
         </DialogFooter>

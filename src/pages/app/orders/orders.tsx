@@ -71,7 +71,7 @@ export function Orders() {
               <Button>Novo pedido</Button>
             </DialogTrigger>
             {/* <CreateOrderContextProvider> */}
-            <CreateOrderDialog setOpenDialog={setOpenDialog} />
+            <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
             {/* </CreateOrderContextProvider> */}
           </Dialog>
         </div>

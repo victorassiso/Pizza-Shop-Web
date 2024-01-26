@@ -1,5 +1,6 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { isAxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
@@ -52,7 +53,7 @@ export function CreateCustomerDialog({
       return
     }
 
-    queryClient.setQueryData<Customer[]>(['customers'], [...cached, customer])
+    queryClient.setQueryData<Customer[]>(['customers'], [customer, ...cached])
   }
 
   const { mutateAsync: createCustomerFn } = useMutation({
@@ -61,12 +62,19 @@ export function CreateCustomerDialog({
 
   async function handleCreateProdct(data: CreateCustomerSchema) {
     try {
-      const newCustomer = await createCustomerFn({ ...data })
-      updateCustomersCache(newCustomer)
+      const response = await createCustomerFn({ ...data })
+      updateCustomersCache(response.data.customer)
       setOpenDialog(false)
-      toast.success('Produto cadastrado com sucesso')
-    } catch {
-      toast.error('Erro ao cadastrar produto')
+      toast.success('Cliente cadastrado com sucesso')
+    } catch (error) {
+      if (isAxiosError(error) && error.response) {
+        if (error.response?.data.message === 'Phone already exists') {
+          toast.error(`Erro ao cadastrar cliente! Telefone já em uso.`)
+        }
+        if (error.response?.data.message === 'Email already exists') {
+          toast.error(`Erro ao cadastrar cliente! E-mail já em uso.`)
+        }
+      }
     }
   }
 
