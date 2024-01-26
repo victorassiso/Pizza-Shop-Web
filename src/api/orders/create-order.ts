@@ -37,6 +37,7 @@ export async function createOrder({ customerId, items }: CreateOrderRequest) {
     items,
   })
 
+  console.log(response.data)
   const order = response.data.order
 
   return order
