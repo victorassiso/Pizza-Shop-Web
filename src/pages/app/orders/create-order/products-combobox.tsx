@@ -47,13 +47,13 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
           <Input
             id="productId"
             className="hidden"
-            value={getValues().items[index].product.id}
+            value={getValues().items[index].product?.id || ''}
             {...register(`items.${index}.product.id`)}
           />
           <Input
             id="productName"
             className="flex-1 cursor-pointer rounded-l border px-4 py-2"
-            value={getValues().items[index].product.name}
+            value={getValues().items[index].product?.name || ''}
             placeholder="Selecione um produto..."
             {...register(`items.${index}.product.name`)}
             autoComplete="off"

@@ -3,6 +3,7 @@ import { useFieldArray, useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { createOrder, Order } from '@/api/orders/create-order'
+import { GetOrdersResponse } from '@/api/orders/get-orders'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,
@@ -35,7 +36,6 @@ interface CreateOrderDialogProps {
 export function CreateOrderDialog({
   handleOpenDialog,
 }: CreateOrderDialogProps) {
-  const queryClient = useQueryClient()
   const {
     handleSubmit,
     reset,
@@ -53,14 +53,45 @@ export function CreateOrderDialog({
     name: 'items',
   })
 
-  function updateOrdersCache(order: Order) {
-    const cached = queryClient.getQueryData<Order[]>(['orders'])
+  const queryClient = useQueryClient()
 
+  function updateOrdersCache(order: Order, customerName: string) {
+    console.log(order)
+    const cached = queryClient.getQueryData<GetOrdersResponse>([
+      'orders',
+      0, // pageIndex
+      null, // orderId
+      null, // customerName
+      null, // status
+    ])
+    console.log(cached)
     if (!cached) {
       return
     }
+    console.log(cached)
 
-    queryClient.setQueryData<Order[]>(['orders'], [order, ...cached])
+    queryClient.setQueryData<GetOrdersResponse>(
+      [
+        'orders',
+        0, // pageIndex
+        null, // orderId
+        null, // customerName
+        null, // status
+      ],
+      {
+        ...cached,
+        orders: [
+          {
+            orderId: order.id,
+            createdAt: order.createdAt,
+            status: order.status,
+            customerName,
+            total: order.total,
+          },
+          ...cached.orders,
+        ],
+      },
+    )
   }
 
   const { mutateAsync: createOrderFn } = useMutation({
@@ -70,7 +101,7 @@ export function CreateOrderDialog({
   async function handleCreateOrder(data: CreateOrderSchema) {
     console.log(data)
     try {
-      const newOrder = await createOrderFn({
+      const response = await createOrderFn({
         customerId: data.customerId,
         items: data.items.map((item) => {
           return {
@@ -79,7 +110,8 @@ export function CreateOrderDialog({
           }
         }),
       })
-      updateOrdersCache(newOrder)
+      console.log(response)
+      updateOrdersCache(response, data.customerName)
       handleOpenDialog(false)
       toast.success('Pedido cadastrado com sucesso')
     } catch (error) {
@@ -103,8 +135,6 @@ export function CreateOrderDialog({
   function removeItem(index: number) {
     remove(index)
   }
-
-  console.log({ errors })
 
   return (
     <CreateOrderContextProvider>

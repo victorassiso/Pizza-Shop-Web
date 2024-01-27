@@ -9,7 +9,7 @@ export interface GetOrdersQuery {
 export interface GetOrdersResponse {
   orders: {
     orderId: string
-    createdAt: string
+    createdAt: Date
     status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
     customerName: string
     total: number

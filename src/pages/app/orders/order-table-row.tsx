@@ -18,7 +18,7 @@ import { OrderDetails } from './order-details'
 import { OrderStatus, OrderStatusType } from './order-status'
 export interface OrderTableRowProps {
   orderId: string
-  createdAt: string
+  createdAt: Date
   status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
   customerName: string
   total: number
