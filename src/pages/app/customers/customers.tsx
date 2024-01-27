@@ -42,12 +42,12 @@ export function Customers() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[64px]"></TableHead>
                   <TableHead className="w-[140px]">Identificador</TableHead>
                   <TableHead className="w-[140px]">Nome</TableHead>
                   <TableHead className="w-[180px]">Endereço</TableHead>
                   <TableHead className="w-[140px]">E-mail</TableHead>
                   <TableHead className="w-[140px]">Telefone</TableHead>
+                  <TableHead className="w-[64px]"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>

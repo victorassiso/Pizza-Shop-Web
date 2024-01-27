@@ -21,6 +21,7 @@ import {
 import { CreateOrderDialog } from './create-order/create-order-dialog'
 import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
+import { OrderTableSkeleton } from './order-table-skeleton'
 
 export const createOrderSchema = z.object({
   customerId: z
@@ -71,8 +72,7 @@ export function Orders() {
     .transform((page) => page - 1)
     .parse(searchParams.get('page') ?? '1')
 
-  console.log({ pageIndex, orderId, customerName, status })
-  const { data: response } = useQuery({
+  const { data: response, isLoading: isLoadingOrders } = useQuery({
     queryKey: ['orders', pageIndex, orderId, customerName, status],
     queryFn: () =>
       getOrders({
@@ -97,6 +97,7 @@ export function Orders() {
     }
     setOpenDialog(open)
   }
+
   return (
     <>
       <Helmet title="Pedidos" />
@@ -130,6 +131,7 @@ export function Orders() {
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {isLoadingOrders && <OrderTableSkeleton />}
                 {response &&
                   response.orders.map((order) => {
                     return <OrderTableRow key={order.orderId} {...order} />

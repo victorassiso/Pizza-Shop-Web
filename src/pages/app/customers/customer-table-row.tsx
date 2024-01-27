@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -25,22 +25,22 @@ export function CustomerTableRow({
 
   return (
     <TableRow>
+      <TableCell className="font-mono text-xs font-medium">{id}</TableCell>
+      <TableCell className="font-medium">{name}</TableCell>
+      <TableCell className="font-medium">{address}</TableCell>
+      <TableCell className="font-medium">{email}</TableCell>
+      <TableCell className="font-medium">{phone}</TableCell>
       <TableCell>
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
             <Button variant="outline" size="xs">
-              <Search className="h-3 w-3" />
+              <Pencil className="h-3 w-3" />
               <span className="sr-only">Detalhes do produto</span>
             </Button>
           </DialogTrigger>
           {/* <OrderDetails orderId={customerId} open={isDetailsOpen} /> */}
         </Dialog>
       </TableCell>
-      <TableCell className="font-mono text-xs font-medium">{id}</TableCell>
-      <TableCell className="font-medium">{name}</TableCell>
-      <TableCell className="font-medium">{address}</TableCell>
-      <TableCell className="font-medium">{email}</TableCell>
-      <TableCell className="font-medium">{phone}</TableCell>
     </TableRow>
   )
 }

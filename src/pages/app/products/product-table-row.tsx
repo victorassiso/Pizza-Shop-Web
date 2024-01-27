@@ -28,7 +28,7 @@ export function ProductTableRow({
       <TableCell>
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="xs">
+            <Button variant="outline" size="xs" disabled>
               <Search className="h-3 w-3" />
               <span className="sr-only">Detalhes do produto</span>
             </Button>
