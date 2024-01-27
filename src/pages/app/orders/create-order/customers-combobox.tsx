@@ -5,7 +5,7 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { Customer, getCustomers } from '@/api/customers/get-customers'
+import { getCustomers } from '@/api/customers/get-customers'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -25,12 +25,13 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
 import { CreateCustomerDialog } from '../../customers/create-customer-dialog'
+import { CreateOrderSchema } from '../orders'
 
-export function CustomerCombobox() {
-  const { setValue, register } = useFormContext()
+export function CustomersCombobox() {
+  const { setValue, register, getValues } = useFormContext<CreateOrderSchema>()
   const [openPopover, setOpenPopover] = useState(false)
-  const [customer, setCustomer] = useState<Customer | null>(null)
   const [openDialog, setOpenDialog] = useState(false)
+  // const [customer, setCustomer] = useState<Customer | null>(null)
   const { data: customers } = useQuery({
     queryKey: ['customers'],
     queryFn: () => getCustomers({}),
@@ -43,18 +44,21 @@ export function CustomerCombobox() {
           <Input
             id="customerName"
             className="flex-1 cursor-pointer rounded-l border px-4 py-2"
-            value={customer?.name || ''}
+            value={getValues().customerName}
             placeholder="Selecione um cliente..."
             {...register('customerName')}
-            onChange={() => {
-              setValue('customerId', customer?.id)
-            }}
             autoComplete="off"
+          />
+          <Input
+            id="customerId"
+            className="hidden"
+            value={getValues().customerId}
+            {...register('customerId')}
           />
           <ChevronsUpDown className="absolute right-0 mr-4 h-4 w-4 shrink-0 opacity-50" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[200px] p-0">
+      <PopoverContent className="w-[250px] p-0">
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>
@@ -72,12 +76,14 @@ export function CustomerCombobox() {
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {
-                    if (currentValue === customer?.name.toLowerCase()) {
-                      setCustomer(null)
-                      setValue('customerId', null)
+                    if (
+                      currentValue === getValues().customerName.toLowerCase()
+                    ) {
+                      setValue('customerId', '')
+                      setValue('customerName', '')
                     } else {
-                      setCustomer(item)
                       setValue('customerId', item.id)
+                      setValue('customerName', item.name)
                     }
                     setOpenPopover(false)
                   }}
@@ -85,7 +91,7 @@ export function CustomerCombobox() {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      customer?.name === item.name
+                      getValues().customerName === item.name
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}

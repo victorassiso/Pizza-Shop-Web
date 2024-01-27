@@ -23,42 +23,26 @@ import { OrderTableFilters } from './order-table-filters'
 import { OrderTableRow } from './order-table-row'
 
 export const createOrderSchema = z.object({
-  // customerId: z
-  //   .string({
-  //     errorMap: () => ({ message: 'O cliente é obrigatório' }),
-  //   })
-  //   .min(1),
-  customerName: z
+  customerId: z
     .string({
       errorMap: () => ({ message: 'O cliente é obrigatório' }),
     })
     .min(1),
+  customerName: z.string().min(1),
   items: z
     .array(
       z.object({
         product: z.object({
-          id: z
-            .string({
-              errorMap: () => ({ message: 'produto inválido' }),
-            })
-            .uuid(),
-          name: z
-            .string({
-              errorMap: () => ({ message: 'produto inválido' }),
-            })
-            .min(1),
-          price: z.coerce.number({
-            errorMap: () => ({ message: 'produto inválido' }),
-          }),
+          name: z.string().min(1),
+          id: z.string(),
+          price: z.coerce.number(),
         }),
-        quantity: z.coerce
-          .number({
-            errorMap: () => ({ message: 'produto inválido' }),
-          })
-          .min(1),
+        quantity: z.coerce.number(),
+        subtotal: z.coerce.number(),
       }),
     )
-    .min(1, { message: 'Adicione pelo menos um produto' }),
+    .min(1),
+  total: z.coerce.number(),
 })
 
 export type CreateOrderSchema = z.infer<typeof createOrderSchema>
@@ -67,9 +51,10 @@ export function Orders() {
   const createOrderForm = useForm<CreateOrderSchema>({
     resolver: zodResolver(createOrderSchema),
     defaultValues: {
-      // customerId: '',
+      customerId: '',
       customerName: '',
       items: [],
+      total: 0,
     },
   })
   const { reset } = createOrderForm

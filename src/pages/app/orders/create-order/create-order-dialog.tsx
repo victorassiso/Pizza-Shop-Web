@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Trash } from 'lucide-react'
 import { useFieldArray, useFormContext } from 'react-hook-form'
+import { toast } from 'sonner'
 
 import { createOrder, Order } from '@/api/orders/create-order'
 import { Button } from '@/components/ui/button'
@@ -12,7 +12,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import {
   Table,
@@ -26,6 +25,8 @@ import {
 import { CreateOrderContextProvider } from '@/contexts/create-order-context'
 
 import { CreateOrderSchema } from '../orders'
+import { CustomersCombobox } from './customers-combobox'
+import { Item } from './item'
 
 interface CreateOrderDialogProps {
   handleOpenDialog: (open: boolean) => void
@@ -34,17 +35,15 @@ interface CreateOrderDialogProps {
 export function CreateOrderDialog({
   handleOpenDialog,
 }: CreateOrderDialogProps) {
-  // const { comboboxProduct, selectCoboboxProduct } =
-  //   useContext(createOrderContext)
   const queryClient = useQueryClient()
   const {
     handleSubmit,
     reset,
     formState: { errors },
     control,
-    register,
+    watch,
   } = useFormContext<CreateOrderSchema>()
-
+  const watchedItems = watch('items')
   const {
     fields: items,
     append,
@@ -68,25 +67,25 @@ export function CreateOrderDialog({
     mutationFn: createOrder,
   })
 
-  async function handleCreateOrder(data: any) {
+  async function handleCreateOrder(data: CreateOrderSchema) {
     console.log(data)
-    // try {
-    //   const newOrder = await createOrderFn({
-    //     customerId: data.customerId,
-    //     items: data.items.map((item: any) => {
-    //       return {
-    //         productId: item.product.id,
-    //         quantity: item.quantity,
-    //       }
-    //     }),
-    //   })
-    //   updateOrdersCache(newOrder)
-    //   handleOpenDialog(false)
-    //   toast.success('Pedido cadastrado com sucesso')
-    // } catch (error) {
-    //   console.log(error)
-    //   toast.error('Erro ao cadastrar pedido')
-    // }
+    try {
+      const newOrder = await createOrderFn({
+        customerId: data.customerId,
+        items: data.items.map((item) => {
+          return {
+            productId: item.product.id,
+            quantity: item.quantity,
+          }
+        }),
+      })
+      updateOrdersCache(newOrder)
+      handleOpenDialog(false)
+      toast.success('Pedido cadastrado com sucesso')
+    } catch (error) {
+      console.log(error)
+      toast.error('Erro ao cadastrar pedido')
+    }
   }
 
   function addItem() {
@@ -97,6 +96,7 @@ export function CreateOrderDialog({
         price: 0,
       },
       quantity: 0,
+      subtotal: 0,
     })
   }
 
@@ -108,7 +108,7 @@ export function CreateOrderDialog({
 
   return (
     <CreateOrderContextProvider>
-      <DialogContent className="max-w-2xl">
+      <DialogContent className="max-w-3xl">
         <DialogHeader>
           <DialogTitle>Novo Pedido</DialogTitle>
           <DialogDescription>Crie um novo pedido</DialogDescription>
@@ -117,21 +117,22 @@ export function CreateOrderDialog({
           <div className="space-y-10 py-4">
             <div>
               <div className="ml-4 flex items-center gap-4">
-                <Label className="text-right" htmlFor="customerName">
-                  Cliente
-                </Label>
-                <Input id="customerName" {...register('customerName')} />
-              </div>
-              <div className="mt-4 flex justify-center">
-                {errors.customerName && (
-                  <span>{errors.customerName.message}</span>
-                )}
+                <Label className="text-right">Cliente</Label>
+                <CustomersCombobox />
               </div>
             </div>
             <div className="ml-4 flex items-center justify-between">
-              <Label className="text-right" htmlFor="customerName">
-                Itens
-              </Label>
+              <div className="flex items-center gap-4">
+                <Label className="text-right">Itens</Label>
+                {errors.items && (
+                  <span className="text-rose-500">
+                    {errors.items.message ===
+                    'Array must contain at least 1 element(s)'
+                      ? 'Adicione ao menos um item ao pedido'
+                      : errors.items.message}
+                  </span>
+                )}
+              </div>
               <Button type="button" variant="secondary" onClick={addItem}>
                 Adicionar
               </Button>
@@ -139,61 +140,43 @@ export function CreateOrderDialog({
             <Table className="w-full">
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-2/6">Produto</TableHead>
+                  <TableHead className="">Produto</TableHead>
                   <TableHead className="w-1/6 text-right">Qtd.</TableHead>
                   <TableHead className="w-1/6 text-right">Preço</TableHead>
                   <TableHead className="w-1/6 text-right">Subtotal</TableHead>
-                  <TableHead className="w-1/6 text-right"></TableHead>
+                  <TableHead className="w-0 text-right"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {items.map((item, index) => {
                   return (
-                    <TableRow key={item.id}>
-                      <>
-                        <TableCell className="w-2/6">
-                          <Input {...register(`items.${index}.product.name`)} />
-                        </TableCell>
-                        <TableCell className="w-1/6 text-right">
-                          <Input
-                            {...register(`items.${index}.quantity`, {
-                              valueAsNumber: true,
-                            })}
-                            type="number"
-                          />
-                        </TableCell>
-                        <TableCell className="w-1/6 text-right">
-                          R$ 100,00
-                        </TableCell>
-                        <TableCell className="w-1/6 text-right">
-                          R$ 100,00
-                        </TableCell>
-                        <TableCell>
-                          <Button
-                            type="button"
-                            variant="outline"
-                            onClick={() => removeItem(index)}
-                          >
-                            <Trash size={18} />
-                          </Button>
-                        </TableCell>
-                        <div className="mt-4 flex justify-center">
-                          {errors.items?.[index] && (
-                            <span>{errors.items[index]?.message}</span>
-                          )}
-                        </div>
-                      </>
-                    </TableRow>
+                    <Item
+                      key={item.id}
+                      index={index}
+                      item={item}
+                      removeItem={removeItem}
+                    />
                   )
                 })}
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={3}>Total do pedido</TableCell>
-                  <TableCell className="w-1/6 text-right font-medium">
-                    R$ 1.000,00
+                  <TableCell colSpan={1}>Total do pedido</TableCell>
+                  <TableCell
+                    colSpan={2}
+                    className="text-right font-medium"
+                  ></TableCell>
+                  <TableCell colSpan={1} className="text-right font-medium">
+                    <span>
+                      {watchedItems
+                        .reduce((acc, cur) => acc + cur.subtotal, 0)
+                        .toLocaleString('pt-BR', {
+                          style: 'currency',
+                          currency: 'BRL',
+                        })}
+                    </span>
                   </TableCell>
-                  <TableCell className="w-1/6"></TableCell>
+                  <TableCell colSpan={1}></TableCell>
                 </TableRow>
               </TableFooter>
             </Table>
