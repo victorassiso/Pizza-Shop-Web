@@ -10,7 +10,9 @@ import {
   CardTitle,
 } from '@/components/ui/card'
 
-import { OrderStatus } from '../order-status'
+import { CancelOrderButton } from '../cancel-order-button'
+import { ChangeStatusButton } from '../change-status-button'
+import { OrderStatus, OrderStatusType } from '../order-status'
 
 export interface OrderCardProps {
   orderId: string
@@ -18,6 +20,7 @@ export interface OrderCardProps {
   status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
   customerName: string
   total: number
+  updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void
 }
 
 export function OrderCard({
@@ -26,15 +29,24 @@ export function OrderCard({
   status,
   customerName,
   total,
+  updateOrderStatusOnCache,
 }: OrderCardProps) {
   return (
     <Card>
       <CardHeader>
         <CardTitle>{customerName}</CardTitle>
-        <CardDescription>{orderId}</CardDescription>
+        <CardDescription className="flex justify-between">
+          {orderId}
+          <span className="text-right">
+            {formatDistanceToNow(createdAt, {
+              locale: ptBR,
+              addSuffix: true,
+            })}
+          </span>
+        </CardDescription>
         {/* <OrderCardStatus status={status} /> */}
       </CardHeader>
-      <CardContent>
+      <CardContent className="flex justify-between">
         <div className="flex gap-4">
           <OrderStatus status={status} />
         </div>
@@ -47,17 +59,19 @@ export function OrderCard({
             })}
           </span>
         </div>
-        <div className="text-muted-foreground">
-          <span>Realizado há: </span>
-          <span>
-            {formatDistanceToNow(createdAt, {
-              locale: ptBR,
-              addSuffix: true,
-            })}
-          </span>
-        </div>
       </CardContent>
-      <CardFooter></CardFooter>
+      <CardFooter className="flex justify-between">
+        <CancelOrderButton
+          orderId={orderId}
+          status={status}
+          updateOrderStatusOnCache={updateOrderStatusOnCache}
+        />
+        <ChangeStatusButton
+          orderId={orderId}
+          status={status}
+          updateOrderStatusOnCache={updateOrderStatusOnCache}
+        />
+      </CardFooter>
     </Card>
   )
 }

@@ -1,13 +1,14 @@
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { getOrders } from '@/api/orders/get-orders'
+import { getOrders, GetOrdersResponse } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
 
 import { OrderCardList } from './components/card-list/order-card-list'
 import { OrdersHeader } from './components/header/orders-header'
+import { OrderStatusType } from './components/order-status'
 import { OrderTable } from './components/table/order-table'
 
 export function Orders() {
@@ -33,6 +34,31 @@ export function Orders() {
       }),
   })
 
+  const queryClient = useQueryClient()
+
+  function updateOrderStatusOnCache(orderId: string, status: OrderStatusType) {
+    const ordersListCache = queryClient.getQueriesData<GetOrdersResponse>({
+      queryKey: ['orders'],
+    })
+
+    ordersListCache.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) {
+        /* empty */
+        return
+      }
+
+      queryClient.setQueryData<GetOrdersResponse>(cacheKey, {
+        ...cacheData,
+        orders: cacheData.orders.map((order) => {
+          if (order.orderId === orderId) {
+            return { ...order, status }
+          }
+          return order
+        }),
+      })
+    })
+  }
+
   function handlePaginate(pageIndex: number) {
     setSearchParams((state) => {
       state.set('page', (pageIndex + 1).toString())
@@ -47,7 +73,11 @@ export function Orders() {
       <OrdersHeader />
       {/* Small Screen: Card View */}
       <div className="lg:hidden">
-        <OrderCardList />
+        <OrderCardList
+          orders={response?.orders}
+          isLoadingOrders={isLoadingOrders}
+          updateOrderStatusOnCache={updateOrderStatusOnCache}
+        />
       </div>
       {/* Large Screen: Table View */}
       <div className="hidden lg:block">
@@ -56,69 +86,14 @@ export function Orders() {
           isLoadingOrders={isLoadingOrders}
         />
       </div>
-      {/* {response && (
+      {response && (
         <Pagination
           pageIndex={response.meta.pageIndex}
           totalCount={response.meta.totalCount}
           perPage={response.meta.perPage}
           onPageChange={handlePaginate}
         />
-      )} */}
-
-      {/* <div className="flex flex-col gap-4">
-        <div className="flex justify-between">
-          <h1 className="text-3xl font-bold tracking-tight">Pedidos</h1>
-          <Dialog open={openDialog} onOpenChange={handleOpenDialog}>
-            <DialogTrigger asChild>
-              <Button>Novo pedido</Button>
-            </DialogTrigger>
-            <FormProvider {...createOrderForm}>
-              <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
-            </FormProvider>
-          </Dialog>
-        </div>
-        <div className="hidden space-y-2.5 lg:block">
-          <OrderTableFilters />
-
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[64px]"></TableHead>
-                  <TableHead className="w-[180px]">Identificador</TableHead>
-                  <TableHead className="w-[180px]">Realizado há</TableHead>
-                  <TableHead className="w-[140px]">Status</TableHead>
-                  <TableHead>Cliente</TableHead>
-                  <TableHead className="w-[140px]">Total do pedido</TableHead>
-                  <TableHead className="w-[164px]"></TableHead>
-                  <TableHead className="w-[132px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {isLoadingOrders && <OrderTableSkeleton />}
-                {response &&
-                  response.orders.map((order) => {
-                    return <OrderTableRow key={order.orderId} {...order} />
-                  })}
-              </TableBody>
-            </Table>
-          </div>
-          {response && (
-            <Pagination
-              pageIndex={response.meta.pageIndex}
-              totalCount={response.meta.totalCount}
-              perPage={response.meta.perPage}
-              onPageChange={handlePaginate}
-            />
-          )}
-        </div>
-        <div className="lg:hidden">
-          {response &&
-            response.orders.map((order) => {
-              return <OrderCard key={order.orderId} {...order} />
-            })}
-        </div>
-      </div> */}
+      )}
     </>
   )
 }
