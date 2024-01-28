@@ -7,10 +7,8 @@ import { getOrders } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
 
 import { OrderCardList } from './components/card-list/order-card-list'
-import { OrderCardListSkeleton } from './components/card-list/order-card-list-skeleton'
 import { OrdersHeader } from './components/header/orders-header'
 import { OrderTable } from './components/table/order-table'
-import { OrderTableSkeleton } from './components/table/order-table-skeleton'
 
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -58,14 +56,14 @@ export function Orders() {
           isLoadingOrders={isLoadingOrders}
         />
       </div>
-      {response && (
+      {/* {response && (
         <Pagination
           pageIndex={response.meta.pageIndex}
           totalCount={response.meta.totalCount}
           perPage={response.meta.perPage}
           onPageChange={handlePaginate}
         />
-      )}
+      )} */}
 
       {/* <div className="flex flex-col gap-4">
         <div className="flex justify-between">

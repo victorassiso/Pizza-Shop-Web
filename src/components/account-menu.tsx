@@ -52,7 +52,7 @@ export function AccountMenu() {
             {isLoadingWorkspace ? (
               <Skeleton className="h-4 w-40" />
             ) : (
-              <span className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+              <span className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap lg:max-w-none">
                 {workspace?.name}
               </span>
             )}

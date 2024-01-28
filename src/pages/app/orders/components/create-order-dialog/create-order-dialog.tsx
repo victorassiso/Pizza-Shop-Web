@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/table'
 import { CreateOrderContextProvider } from '@/contexts/create-order-context'
 
-import { CreateOrderSchema } from '../components/header/orders-header'
+import { CreateOrderSchema } from '../header/orders-header'
 import { CustomersCombobox } from './customers-combobox'
 import { Item } from './item'
 
