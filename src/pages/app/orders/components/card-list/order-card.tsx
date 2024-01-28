@@ -35,9 +35,9 @@ export function OrderCard({
     <Card>
       <CardHeader>
         <CardTitle>{customerName}</CardTitle>
-        <CardDescription className="flex justify-between">
-          {orderId}
-          <span className="text-right">
+        <CardDescription className="flex justify-between gap-2">
+          <span className="">{orderId}</span>
+          <span className="min-w-14 text-right">
             {formatDistanceToNow(createdAt, {
               locale: ptBR,
               addSuffix: true,
