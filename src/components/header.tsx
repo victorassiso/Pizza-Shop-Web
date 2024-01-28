@@ -28,7 +28,7 @@ export function Header() {
 
         <Separator orientation="vertical" />
         {/* Drop Down Menu */}
-        <div className="lg:hidden">
+        <div className="md:hidden">
           <DropdownMenu open={openDropdownMenu}>
             <DropdownMenuTrigger>
               <Menu onClick={() => setOpenDropdownMenu(!openDropdownMenu)} />
@@ -70,32 +70,20 @@ export function Header() {
           </DropdownMenu>
         </div>
         {/* Nav Bar */}
-        <nav className="hidden items-center space-x-4 md:flex lg:space-x-6">
-          <NavLink
-            to="/"
-            onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-          >
+        <nav className="hidden items-center md:flex md:space-x-4 lg:space-x-6">
+          <NavLink to="/">
             <Home className="h-4 w-4" />
             Início
           </NavLink>
-          <NavLink
-            to="/orders"
-            onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-          >
+          <NavLink to="/orders">
             <Barcode className="h-4 w-4" />
             Pedidos
           </NavLink>
-          <NavLink
-            to="/products"
-            onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-          >
+          <NavLink to="/products">
             <UtensilsCrossed className="h-4 w-4" />
             Produtos
           </NavLink>
-          <NavLink
-            to="/customers"
-            onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-          >
+          <NavLink to="/customers">
             <Users className="h-4 w-4" />
             Clientes
           </NavLink>
