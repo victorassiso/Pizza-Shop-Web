@@ -52,7 +52,9 @@ export function AccountMenu() {
             {isLoadingWorkspace ? (
               <Skeleton className="h-4 w-40" />
             ) : (
-              workspace?.name
+              <span className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap">
+                {workspace?.name}
+              </span>
             )}
             <ChevronDown />
           </Button>

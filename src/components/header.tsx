@@ -22,15 +22,17 @@ export function Header() {
   return (
     <div className="">
       <div className="flex h-16 items-center gap-6 px-6">
-        <Pizza className="h-6 w-6" />
-        <Separator orientation="vertical" />
+        <div className="hidden h-16 items-center gap-6 md:flex">
+          <Pizza className="h-6 w-6" />
+          <Separator orientation="vertical" />
+        </div>
         {/* Drop Down Menu */}
         <div className="md:hidden">
           <DropdownMenu>
             <DropdownMenuTrigger>
               <Menu />
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="ml-24 md:hidden">
+            <DropdownMenuContent className="ml-6 md:ml-24 md:hidden">
               <DropdownMenuItemLink to="/">
                 <Home className="h-4 w-4" />
                 Início

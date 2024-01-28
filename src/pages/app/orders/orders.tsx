@@ -1,67 +1,19 @@
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { useQuery } from '@tanstack/react-query'
-import { useState } from 'react'
 import { Helmet } from 'react-helmet-async'
-import { FormProvider, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
 import { getOrders } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
-import { Button } from '@/components/ui/button'
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
-import { CreateOrderDialog } from './create-order/create-order-dialog'
-import { OrderTableFilters } from './order-table-filters'
-import { OrderTableRow } from './order-table-row'
-import { OrderTableSkeleton } from './order-table-skeleton'
-
-export const createOrderSchema = z.object({
-  customerId: z
-    .string({
-      errorMap: () => ({ message: 'O cliente é obrigatório' }),
-    })
-    .min(1),
-  customerName: z.string().min(1),
-  items: z
-    .array(
-      z.object({
-        product: z.object({
-          name: z.string().min(1),
-          id: z.string(),
-          price: z.coerce.number(),
-        }),
-        quantity: z.coerce.number(),
-        subtotal: z.coerce.number(),
-      }),
-    )
-    .min(1),
-  total: z.coerce.number(),
-})
-
-export type CreateOrderSchema = z.infer<typeof createOrderSchema>
+import { OrderCardList } from './components/card-list/order-card-list'
+import { OrderCardListSkeleton } from './components/card-list/order-card-list-skeleton'
+import { OrdersHeader } from './components/header/orders-header'
+import { OrderTable } from './components/table/order-table'
+import { OrderTableSkeleton } from './components/table/order-table-skeleton'
 
 export function Orders() {
-  const createOrderForm = useForm<CreateOrderSchema>({
-    resolver: zodResolver(createOrderSchema),
-    defaultValues: {
-      customerId: '',
-      customerName: '',
-      items: [],
-      total: 0,
-    },
-  })
-  const { reset } = createOrderForm
-
   const [searchParams, setSearchParams] = useSearchParams()
-  const [openDialog, setOpenDialog] = useState(false)
 
   const orderId = searchParams.get('orderId')
   const customerName = searchParams.get('customerName')
@@ -91,17 +43,31 @@ export function Orders() {
     })
   }
 
-  function handleOpenDialog(open: boolean) {
-    if (!open) {
-      reset()
-    }
-    setOpenDialog(open)
-  }
-
   return (
     <>
       <Helmet title="Pedidos" />
-      <div className="flex flex-col gap-4">
+      <OrdersHeader />
+      {/* Small Screen: Card View */}
+      <div className="lg:hidden">
+        <OrderCardList />
+      </div>
+      {/* Large Screen: Table View */}
+      <div className="hidden lg:block">
+        <OrderTable
+          orders={response?.orders}
+          isLoadingOrders={isLoadingOrders}
+        />
+      </div>
+      {response && (
+        <Pagination
+          pageIndex={response.meta.pageIndex}
+          totalCount={response.meta.totalCount}
+          perPage={response.meta.perPage}
+          onPageChange={handlePaginate}
+        />
+      )}
+
+      {/* <div className="flex flex-col gap-4">
         <div className="flex justify-between">
           <h1 className="text-3xl font-bold tracking-tight">Pedidos</h1>
           <Dialog open={openDialog} onOpenChange={handleOpenDialog}>
@@ -113,7 +79,7 @@ export function Orders() {
             </FormProvider>
           </Dialog>
         </div>
-        <div className="space-y-2.5">
+        <div className="hidden space-y-2.5 lg:block">
           <OrderTableFilters />
 
           <div className="rounded-md border">
@@ -148,7 +114,13 @@ export function Orders() {
             />
           )}
         </div>
-      </div>
+        <div className="lg:hidden">
+          {response &&
+            response.orders.map((order) => {
+              return <OrderCard key={order.orderId} {...order} />
+            })}
+        </div>
+      </div> */}
     </>
   )
 }

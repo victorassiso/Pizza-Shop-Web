@@ -25,7 +25,7 @@ import {
 } from '@/components/ui/table'
 import { CreateOrderContextProvider } from '@/contexts/create-order-context'
 
-import { CreateOrderSchema } from '../orders'
+import { CreateOrderSchema } from '../components/header/orders-header'
 import { CustomersCombobox } from './customers-combobox'
 import { Item } from './item'
 
@@ -56,7 +56,6 @@ export function CreateOrderDialog({
   const queryClient = useQueryClient()
 
   function updateOrdersCache(order: Order, customerName: string) {
-    console.log(order)
     const cached = queryClient.getQueryData<GetOrdersResponse>([
       'orders',
       0, // pageIndex
@@ -64,11 +63,9 @@ export function CreateOrderDialog({
       null, // customerName
       null, // status
     ])
-    console.log(cached)
     if (!cached) {
       return
     }
-    console.log(cached)
 
     queryClient.setQueryData<GetOrdersResponse>(
       [

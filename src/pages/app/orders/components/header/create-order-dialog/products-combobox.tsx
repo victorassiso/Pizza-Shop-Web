@@ -24,8 +24,8 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
-import { CreateProductDialog } from '../../products/create-product-dialog'
-import { CreateOrderSchema } from '../orders'
+import { CreateProductDialog } from '../../../../products/create-product-dialog'
+import { CreateOrderSchema } from '../orders-header'
 
 interface ProductComboboxProps {
   index: number

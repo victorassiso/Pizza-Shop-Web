@@ -14,8 +14,8 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { OrderDetails } from './order-details'
-import { OrderStatus, OrderStatusType } from './order-status'
+import { OrderDetails } from '../details-dialog/order-details'
+import { OrderStatus, OrderStatusType } from '../order-status'
 export interface OrderTableRowProps {
   orderId: string
   createdAt: Date
