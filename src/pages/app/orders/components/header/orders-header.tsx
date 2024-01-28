@@ -6,7 +6,7 @@ import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
 
-import { CreateOrderDialog } from './create-order-dialog/create-order-dialog'
+import { CreateOrderDialog } from '../create-order-dialog/create-order-dialog'
 import { OrderFilters } from './order-filters'
 
 export const createOrderSchema = z.object({
