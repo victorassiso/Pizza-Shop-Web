@@ -1,4 +1,4 @@
-import { Search } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
@@ -25,17 +25,6 @@ export function ProductTableRow({
 
   return (
     <TableRow>
-      <TableCell>
-        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-          <DialogTrigger asChild>
-            <Button variant="outline" size="xs" disabled>
-              <Search className="h-3 w-3" />
-              <span className="sr-only">Detalhes do produto</span>
-            </Button>
-          </DialogTrigger>
-          {/* <OrderDetails orderId={productId} open={isDetailsOpen} /> */}
-        </Dialog>
-      </TableCell>
       <TableCell className="font-mono text-xs font-medium">
         {productId}
       </TableCell>
@@ -47,6 +36,17 @@ export function ProductTableRow({
           style: 'currency',
           currency: 'BRL',
         })}
+      </TableCell>
+      <TableCell>
+        <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+          <DialogTrigger asChild>
+            <Button variant="outline" size="xs" disabled>
+              <Pencil className="h-3 w-3" />
+              <span className="sr-only">Detalhes do produto</span>
+            </Button>
+          </DialogTrigger>
+          {/* <OrderDetails orderId={productId} open={isDetailsOpen} /> */}
+        </Dialog>
       </TableCell>
     </TableRow>
   )

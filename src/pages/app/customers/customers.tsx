@@ -15,9 +15,10 @@ import {
 
 import { CreateCustomerDialog } from './create-customer-dialog'
 import { CustomerTableRow } from './customer-table-row'
+import { CustomerTableSkeleton } from './customer-table-skeleton'
 
 export function Customers() {
-  const { data: customers } = useQuery({
+  const { data: customers, isLoading: isCustomersLoading } = useQuery({
     queryKey: ['customers'],
     queryFn: () => getCustomers({}),
   })
@@ -42,15 +43,16 @@ export function Customers() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[140px]">Identificador</TableHead>
-                  <TableHead className="w-[140px]">Nome</TableHead>
-                  <TableHead className="w-[180px]">Endereço</TableHead>
-                  <TableHead className="w-[140px]">E-mail</TableHead>
-                  <TableHead className="w-[140px]">Telefone</TableHead>
-                  <TableHead className="w-[64px]"></TableHead>
+                  <TableHead className="w-2/12">Identificador</TableHead>
+                  <TableHead className="w-2/12">Nome</TableHead>
+                  <TableHead className="w-3/12">Endereço</TableHead>
+                  <TableHead className="w-2/12">E-mail</TableHead>
+                  <TableHead className="w-2/12">Telefone</TableHead>
+                  <TableHead className="w-1/12"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {isCustomersLoading && <CustomerTableSkeleton />}
                 {customers &&
                   customers.map((customer) => {
                     return (

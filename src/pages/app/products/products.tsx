@@ -15,9 +15,10 @@ import {
 
 import { CreateProductDialog } from './create-product-dialog'
 import { ProductTableRow } from './product-table-row'
+import { ProductTableSkeleton } from './product-table-skeleton'
 
 export function Products() {
-  const { data: products } = useQuery({
+  const { data: products, isLoading: isProductsLoading } = useQuery({
     queryKey: ['products'],
     queryFn: () => getProducts(),
   })
@@ -42,15 +43,16 @@ export function Products() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead className="w-[64px]"></TableHead>
-                  <TableHead className="w-[140px]">Identificador</TableHead>
-                  <TableHead className="w-[140px]">Nome</TableHead>
-                  <TableHead className="w-[180px]">Descrição</TableHead>
-                  <TableHead className="w-[140px]">Categoria</TableHead>
-                  <TableHead className="w-[140px]">Preço</TableHead>
+                  <TableHead className="w-3/14">Identificador</TableHead>
+                  <TableHead className="w-2/14">Nome</TableHead>
+                  <TableHead className="w-4/14">Descrição</TableHead>
+                  <TableHead className="w-2/14">Categoria</TableHead>
+                  <TableHead className="w-2/14">Preço</TableHead>
+                  <TableHead className="w-1/14"></TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
+                {isProductsLoading && <ProductTableSkeleton />}
                 {products &&
                   products.map((product) => {
                     return (
