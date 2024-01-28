@@ -6,10 +6,10 @@ import {
   Users,
   UtensilsCrossed,
 } from 'lucide-react'
-import { useState } from 'react'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
+import { DropdownMenuItemLink } from './nav-link-menu-item'
 import { ModeToggle } from './theme/mode-toggle'
 import {
   DropdownMenu,
@@ -19,53 +19,34 @@ import {
 import { Separator } from './ui/separator'
 
 export function Header() {
-  const [openDropdownMenu, setOpenDropdownMenu] = useState(false)
-
   return (
     <div className="">
       <div className="flex h-16 items-center gap-6 px-6">
         <Pizza className="h-6 w-6" />
-
         <Separator orientation="vertical" />
         {/* Drop Down Menu */}
         <div className="md:hidden">
-          <DropdownMenu open={openDropdownMenu}>
+          <DropdownMenu>
             <DropdownMenuTrigger>
-              <Menu onClick={() => setOpenDropdownMenu(!openDropdownMenu)} />
+              <Menu />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="ml-24 md:hidden">
-              <NavLink
-                to="/"
-                className="rounded-sm p-2"
-                onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-              >
+              <DropdownMenuItemLink to="/">
                 <Home className="h-4 w-4" />
                 Início
-              </NavLink>
-              <NavLink
-                to="/orders"
-                className="rounded-sm p-2"
-                onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-              >
+              </DropdownMenuItemLink>
+              <DropdownMenuItemLink to="/orders">
                 <Barcode className="h-4 w-4" />
                 Pedidos
-              </NavLink>
-              <NavLink
-                to="/products"
-                className="rounded-sm p-2"
-                onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-              >
+              </DropdownMenuItemLink>
+              <DropdownMenuItemLink to="/products">
                 <UtensilsCrossed className="h-4 w-4" />
                 Produtos
-              </NavLink>
-              <NavLink
-                to="/customers"
-                className="rounded-sm p-2"
-                onClick={() => setOpenDropdownMenu(!openDropdownMenu)}
-              >
+              </DropdownMenuItemLink>
+              <DropdownMenuItemLink to="/customers">
                 <Users className="h-4 w-4" />
                 Clientes
-              </NavLink>
+              </DropdownMenuItemLink>
             </DropdownMenuContent>
           </DropdownMenu>
         </div>
