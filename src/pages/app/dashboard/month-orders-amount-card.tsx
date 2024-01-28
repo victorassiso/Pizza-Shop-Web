@@ -14,7 +14,7 @@ export function MonthOrdersAmountCard() {
   })
 
   return (
-    <Card>
+    <Card className="w-full min-w-[250px]">
       <CardHeader className="flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-base font-semibold">Pedidos (mês)</CardTitle>
         <Utensils className="h-4 w-4 text-muted-foreground" />
