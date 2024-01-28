@@ -100,12 +100,12 @@ export function OrderFilters() {
               </Button>
             </SheetTrigger>
           </div>
-          <SheetContent>
+          <SheetContent className="overflow-y-auto">
             <SheetHeader>
               <SheetTitle>Filtros:</SheetTitle>
             </SheetHeader>
             <form
-              className="flex h-full flex-col justify-between"
+              className="flex h-[calc(100%-28px)] flex-col justify-between"
               onSubmit={handleSubmit(handleFilter)}
             >
               <div className="mt-4 flex flex-col gap-4">
@@ -165,7 +165,7 @@ export function OrderFilters() {
                 />
               </div>
 
-              <SheetFooter className="mb-6">
+              <SheetFooter className="mt-6">
                 <SheetClose className="flex w-full flex-col gap-4">
                   <Button
                     type="submit"
