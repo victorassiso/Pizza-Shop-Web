@@ -22,7 +22,7 @@ export function Header() {
   const [openDropdownMenu, setOpenDropdownMenu] = useState(false)
 
   return (
-    <div className="border-r">
+    <div className="">
       <div className="flex h-16 items-center gap-6 px-6">
         <Pizza className="h-6 w-6" />
 

@@ -50,10 +50,21 @@
   }
 }
 
- 
+
 @layer base {
   * {
     @apply border-border;
+    &::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    &::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: theme('colors.border');
+      border-radius: 9999px;
+    }
   }
   body {
     @apply bg-background text-foreground;

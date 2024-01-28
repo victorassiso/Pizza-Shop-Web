@@ -14,14 +14,14 @@ export function Dashboard() {
       <div className="flex flex-col gap-4">
         <h1 className="text-3xl font-bold tracking-tight">Dashboard</h1>
 
-        <div className="flex gap-4 overflow-auto">
+        <div className="flex gap-4 overflow-auto pb-2">
           <MonthRevenueCard />
           <MonthOrdersAmountCard />
           <DayOrdersAmountCard />
           <MonthCanceledOrdersAmount />
         </div>
 
-        <div className="gap-4 space-y-4 md:grid md:grid-cols-9">
+        <div className="gap-4 space-y-4 xl:grid xl:grid-cols-9 xl:space-y-0">
           <RevenueChart />
           <PopularProductsChart />
         </div>
