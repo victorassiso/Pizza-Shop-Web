@@ -30,7 +30,6 @@ export function MonthCanceledOrdersAmount() {
             <p className="text-xs text-muted-foreground">
               {monthCanceledOrdersAmount.percentualDiffFromLastMonth < 0 ? (
                 <span className="text-emerald-500 dark:text-emerald-400">
-                  +
                   {monthCanceledOrdersAmount.percentualDiffFromLastMonth.toFixed(
                     2,
                   )}
@@ -38,6 +37,7 @@ export function MonthCanceledOrdersAmount() {
                 </span>
               ) : (
                 <span className="text-rose-500 dark:text-rose-400">
+                  +
                   {monthCanceledOrdersAmount.percentualDiffFromLastMonth.toFixed(
                     2,
                   )}
