@@ -1,6 +1,9 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
+import { MoreHorizontal } from 'lucide-react'
+import { useState } from 'react'
 
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -9,9 +12,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
 import { CancelOrderButton } from '../cancel-order-button'
 import { ChangeStatusButton } from '../change-status-button'
+import { OrderDetails } from '../details-dialog/order-details'
 import { OrderStatus, OrderStatusType } from '../order-status'
 
 export interface OrderCardProps {
@@ -31,8 +36,19 @@ export function OrderCard({
   total,
   updateOrderStatusOnCache,
 }: OrderCardProps) {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+
   return (
-    <Card>
+    <Card style={{ position: 'relative' }}>
+      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+        <DialogTrigger asChild className="absolute right-2 top-2">
+          <Button variant="ghost" size="xs" className="">
+            <MoreHorizontal className="h-3 w-3" />
+            <span className="sr-only">Detalhes do pedido</span>
+          </Button>
+        </DialogTrigger>
+        <OrderDetails orderId={orderId} open={isDetailsOpen} />
+      </Dialog>
       <CardHeader>
         <CardTitle>{customerName}</CardTitle>
         <CardDescription className="flex justify-between gap-2">
