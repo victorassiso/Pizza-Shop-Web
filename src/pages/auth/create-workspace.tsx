@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -18,7 +18,6 @@ const CreateWorkspaceFormSchema = z.object({
 type CreateWorkspaceFormType = z.infer<typeof CreateWorkspaceFormSchema>
 
 export function CreateWorkspace() {
-  const navigate = useNavigate()
   const { createWorkspace } = useAuth()
 
   const {
@@ -35,7 +34,7 @@ export function CreateWorkspace() {
         name: data.name,
         code: data.code,
       })
-      navigate('/', { replace: true })
+      window.location.replace('/')
     } catch (error) {
       toast.error('Erro ao cadastrar organização.')
     }

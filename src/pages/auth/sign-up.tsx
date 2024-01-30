@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -22,7 +22,6 @@ const signUpForm = z.object({
 type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
-  const navigate = useNavigate()
   const { signUp } = useAuth()
 
   const {
@@ -40,7 +39,7 @@ export function SignUp() {
         email: data.email,
         password: data.password,
       })
-      navigate('/', { replace: true })
+      window.location.replace('/')
     } catch (error) {
       if (
         isApiError(error) &&

@@ -1,6 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
 
 import { getProfile } from '@/api/users/get-profile'
 import { getWorkspace } from '@/api/workspaces/get-workspace'
@@ -20,7 +19,6 @@ import { Skeleton } from './ui/skeleton'
 import { WorkspaceProfileDialog } from './workspace-profile-dialog'
 
 export function AccountMenu() {
-  const navigate = useNavigate()
   const { signOut, isSigningOut } = useAuth()
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
@@ -37,7 +35,7 @@ export function AccountMenu() {
   async function handleSignOut() {
     try {
       await signOut()
-      navigate('/', { replace: true })
+      window.location.replace('/')
     } catch (error) {
       console.error(error)
     }

@@ -1,7 +1,7 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -17,7 +17,6 @@ const JoinInWorkspaceFormSchema = z.object({
 type JoinInWorkspaceFormType = z.infer<typeof JoinInWorkspaceFormSchema>
 
 export function JoinInWorkspace() {
-  const navigate = useNavigate()
   const { joinInWorkspace } = useAuth()
 
   const {
@@ -30,8 +29,11 @@ export function JoinInWorkspace() {
 
   async function handleJoinInWorkspace(data: JoinInWorkspaceFormType) {
     try {
-      await joinInWorkspace({ code: data.workspaceCode })
-      navigate('/', { replace: true })
+      const { workspaceId } = await joinInWorkspace({
+        code: data.workspaceCode,
+      })
+      console.log({ workspaceId })
+      window.location.replace('/')
     } catch (error) {
       toast.error('Essa organização não existe.')
     }

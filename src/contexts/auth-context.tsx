@@ -96,9 +96,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   async function joinInWorkspace({ code }: JoinInWorkspaceBody) {
     const { data: joinInWorkspaceData } = await joinInWorkspaceApiFn({ code })
-
+    console.log(joinInWorkspaceData)
     const { data: refreshData } = await refreshTokenApiFn()
-
+    console.log(refreshData)
     setUser({
       ...user,
       workspaceId: joinInWorkspaceData.workspaceId,
@@ -146,8 +146,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         accessToken: data.accessToken,
       }
     } catch (error) {
-      setUser({} as UserDTO)
-      setAccessToken('')
+      if (user.id) {
+        setUser({} as UserDTO)
+      }
+      if (accessToken) {
+        setAccessToken('')
+      }
       queryClient.clear()
 
       throw error

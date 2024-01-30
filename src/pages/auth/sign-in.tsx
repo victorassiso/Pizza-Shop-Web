@@ -1,6 +1,6 @@
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
@@ -18,7 +18,6 @@ const signInForm = z.object({
 type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
-  const navigate = useNavigate()
   const { signIn } = useAuth()
   const [searchParams] = useSearchParams()
 
@@ -38,10 +37,8 @@ export function SignIn() {
         email: data.email,
         password: data.password,
       })
-
-      navigate('/', { replace: true })
+      window.location.replace('/')
     } catch (error) {
-      console.error(error)
       if (
         isApiError(error) &&
         error.response?.data.message === 'Invalid credentials'
