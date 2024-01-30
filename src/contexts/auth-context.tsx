@@ -132,23 +132,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   async function refreshToken() {
     try {
       const { data } = await refreshTokenApiFn()
-
       setAccessToken(data.accessToken)
       setUser({
-        id: data.user.id,
+        id: 'test',
         workspaceId: data.user.workspaceId,
       })
+
+      return {
+        user: {
+          id: data.user.id,
+          workspaceId: data.user.workspaceId,
+        },
+        accessToken: data.accessToken,
+      }
     } catch (error) {
       setUser({} as UserDTO)
       setAccessToken('')
       queryClient.clear()
 
       throw error
-    }
-
-    return {
-      user,
-      accessToken,
     }
   }
 

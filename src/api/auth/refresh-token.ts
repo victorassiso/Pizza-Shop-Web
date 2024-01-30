@@ -10,6 +10,6 @@ export interface RefreshTokenResponseData {
 
 export async function refreshToken() {
   const response = await api.patch<RefreshTokenResponseData>('/token/refresh')
-  console.log(response)
+
   return response
 }
