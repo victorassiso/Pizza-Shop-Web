@@ -1,11 +1,15 @@
 import { api } from '@/lib/axios'
 
-interface refreshTokenResponseData {
+export interface RefreshTokenResponseData {
+  user: {
+    id: string
+    workspaceId: string
+  }
   accessToken: string
 }
 
 export async function refreshToken() {
-  const response = await api.patch<refreshTokenResponseData>('/token/refresh')
-
+  const response = await api.patch<RefreshTokenResponseData>('/token/refresh')
+  console.log(response)
   return response
 }

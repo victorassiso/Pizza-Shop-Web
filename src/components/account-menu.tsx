@@ -39,7 +39,7 @@ export function AccountMenu() {
       await signOut()
       navigate('/', { replace: true })
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
   return (

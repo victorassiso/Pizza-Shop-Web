@@ -1,7 +1,10 @@
 import { useMutation } from '@tanstack/react-query'
 import { createContext, ReactNode, useState } from 'react'
 
-import { refreshToken as refreshTokenApi } from '@/api/auth/refresh-token'
+import {
+  refreshToken as refreshTokenApi,
+  RefreshTokenResponseData,
+} from '@/api/auth/refresh-token'
 import { signIn as signInApi, SignInBody } from '@/api/auth/sign-in'
 import { signOut as signOutApi } from '@/api/auth/sign-out'
 import { signUp as signUpApi, SignUpBody } from '@/api/auth/sign-up'
@@ -27,7 +30,7 @@ interface AuthContextProps {
   signOut: () => Promise<void>
   joinInWorkspace: (data: JoinInWorkspaceBody) => Promise<UserDTO>
   createWorkspace: (data: CreateWorkspaceBody) => Promise<UserDTO>
-  refreshToken: () => Promise<string>
+  refreshToken: () => Promise<RefreshTokenResponseData>
   isSigningOut: boolean
 }
 
@@ -127,11 +130,26 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   }
 
   async function refreshToken() {
-    const { data } = await refreshTokenApiFn()
+    try {
+      const { data } = await refreshTokenApiFn()
 
-    setAccessToken(data.accessToken)
+      setAccessToken(data.accessToken)
+      setUser({
+        id: data.user.id,
+        workspaceId: data.user.workspaceId,
+      })
+    } catch (error) {
+      setUser({} as UserDTO)
+      setAccessToken('')
+      queryClient.clear()
 
-    return data.accessToken
+      throw error
+    }
+
+    return {
+      user,
+      accessToken,
+    }
   }
 
   return (
