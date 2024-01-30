@@ -1,15 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { createWorkspace } from '@/api/workspaces/create-workspace'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/use-auth'
 
 const CreateWorkspaceFormSchema = z.object({
   name: z.string().min(1),
@@ -20,6 +19,7 @@ type CreateWorkspaceFormType = z.infer<typeof CreateWorkspaceFormSchema>
 
 export function CreateWorkspace() {
   const navigate = useNavigate()
+  const { createWorkspace } = useAuth()
 
   const {
     register,
@@ -29,16 +29,12 @@ export function CreateWorkspace() {
     resolver: zodResolver(CreateWorkspaceFormSchema),
   })
 
-  const { mutateAsync: createWorkspaceFn } = useMutation({
-    mutationFn: createWorkspace,
-  })
   async function handleCreateWorkspace(data: CreateWorkspaceFormType) {
     try {
-      await createWorkspaceFn({
+      await createWorkspace({
         name: data.name,
         code: data.code,
       })
-      toast.success('Organização cadastrada com sucesso')
       navigate('/', { replace: true })
     } catch (error) {
       toast.error('Erro ao cadastrar organização.')

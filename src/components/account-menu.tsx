@@ -1,10 +1,10 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 import { getProfile } from '@/api/users/get-profile'
-import { signOut } from '@/api/users/sign-out'
 import { getWorkspace } from '@/api/workspaces/get-workspace'
+import { useAuth } from '@/hooks/use-auth'
 
 import { Button } from './ui/button'
 import { Dialog, DialogTrigger } from './ui/dialog'
@@ -21,6 +21,7 @@ import { WorkspaceProfileDialog } from './workspace-profile-dialog'
 
 export function AccountMenu() {
   const navigate = useNavigate()
+  const { signOut, isSigningOut } = useAuth()
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
@@ -33,14 +34,14 @@ export function AccountMenu() {
     staleTime: Infinity,
   })
 
-  const queryClient = useQueryClient()
-  const { mutateAsync: signOutFn, isPending: isSigningOut } = useMutation({
-    mutationFn: signOut,
-    onSuccess: () => {
-      queryClient.clear()
-      navigate('/sign-in', { replace: true })
-    },
-  })
+  async function handleSignOut() {
+    try {
+      await signOut()
+      navigate('/', { replace: true })
+    } catch (error) {
+      console.log(error)
+    }
+  }
   return (
     <Dialog>
       <DropdownMenu>
@@ -87,7 +88,7 @@ export function AccountMenu() {
               className="text-rose-500 dark:text-rose-400"
               disabled={isSigningOut}
             >
-              <button onClick={() => signOutFn()} className="w-full">
+              <button onClick={() => handleSignOut()} className="w-full">
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Sair</span>
               </button>

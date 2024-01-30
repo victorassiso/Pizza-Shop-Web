@@ -1,15 +1,14 @@
-import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signIn } from '@/api/users/sign-in'
-import { getWorkspace } from '@/api/workspaces/get-workspace'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/use-auth'
+import { isApiError } from '@/lib/axios'
 
 const signInForm = z.object({
   email: z.string().email(),
@@ -20,7 +19,7 @@ type SignInForm = z.infer<typeof signInForm>
 
 export function SignIn() {
   const navigate = useNavigate()
-
+  const { signIn } = useAuth()
   const [searchParams] = useSearchParams()
 
   const {
@@ -33,26 +32,26 @@ export function SignIn() {
     },
   })
 
-  const { mutateAsync: signInFn } = useMutation({
-    mutationFn: signIn,
-  })
-
-  const { mutateAsync: getWorkspaceFn } = useMutation({
-    mutationFn: getWorkspace,
-  })
-
   async function handleSignIn(data: SignInForm) {
     try {
-      await signInFn({ email: data.email, password: data.password })
-      await getWorkspaceFn()
-        .then(() => {
-          navigate('/')
-        })
-        .catch(() => {
-          navigate('/create-workspace')
-        })
+      await signIn({
+        email: data.email,
+        password: data.password,
+      })
+
+      navigate('/', { replace: true })
     } catch (error) {
-      toast.error('Credenciais inválidas.')
+      console.error(error)
+      if (
+        isApiError(error) &&
+        error.response?.data.message === 'Invalid credentials'
+      ) {
+        toast.error('Credenciais inválidas.')
+      } else {
+        toast.error(
+          'Ops... Um erro interno ocorreu! Aguarde alguns instantes e tente novamente.',
+        )
+      }
     }
   }
 

@@ -1,15 +1,15 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { signUp } from '@/api/users/sign-up'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useAuth } from '@/hooks/use-auth'
+import { isApiError } from '@/lib/axios'
 
 const signUpForm = z.object({
   name: z.string().min(1),
@@ -23,6 +23,7 @@ type SignUpForm = z.infer<typeof signUpForm>
 
 export function SignUp() {
   const navigate = useNavigate()
+  const { signUp } = useAuth()
 
   const {
     register,
@@ -32,24 +33,23 @@ export function SignUp() {
     resolver: zodResolver(signUpForm),
   })
 
-  const { mutateAsync: signUpFn } = useMutation({
-    mutationFn: signUp,
-  })
   async function handleSignUp(data: SignUpForm) {
     try {
-      await signUpFn({
+      await signUp({
         name: data.name,
         email: data.email,
         password: data.password,
       })
-      toast.success('Estabelecimento cadastrado com sucesso', {
-        action: {
-          label: 'Login',
-          onClick: () => navigate(`/sign-in?email=${data.email}`),
-        },
-      })
+      navigate('/', { replace: true })
     } catch (error) {
-      toast.error('Erro ao cadastrar usuário.')
+      if (
+        isApiError(error) &&
+        error.response?.data.message === 'E-mail already exists'
+      ) {
+        toast.error('E-mail já em uso!')
+      } else {
+        toast.error('Erro ao cadastrar usuário.')
+      }
     }
   }
 

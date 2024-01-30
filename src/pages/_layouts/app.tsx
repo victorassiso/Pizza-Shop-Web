@@ -1,18 +1,19 @@
-import { isAxiosError } from 'axios'
 import { useEffect } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 
 import { Header } from '@/components/header'
-import { api } from '@/lib/axios'
+import { useAuth } from '@/hooks/use-auth'
+import { api, isApiError } from '@/lib/axios'
 
 export function AppLayout() {
   const navigate = useNavigate()
+  const { refreshToken, accessToken } = useAuth()
 
   useEffect(() => {
     const interceptorId = api.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (isAxiosError(error)) {
+        if (isApiError(error)) {
           const status = error.response?.status
           const message = error.response?.data.message
 
@@ -29,6 +30,29 @@ export function AppLayout() {
       api.interceptors.response.eject(interceptorId)
     }
   }, [navigate])
+
+  useEffect(() => {
+    const responseIntercept = api.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const prevRequest = error?.config
+        if (error?.response?.status === 401 && !prevRequest?.sent) {
+          prevRequest._retry = true
+
+          await refreshToken()
+
+          prevRequest.headers.Authorization = `Bearer ${accessToken}`
+
+          return api(prevRequest)
+        }
+        return Promise.reject(error)
+      },
+    )
+
+    return () => {
+      api.interceptors.response.eject(responseIntercept)
+    }
+  }, [accessToken, refreshToken])
 
   return (
     <div className="flex min-h-screen flex-col antialiased">
