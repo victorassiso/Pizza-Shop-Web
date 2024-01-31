@@ -55,17 +55,15 @@ export function SignIn() {
   return (
     <>
       <Helmet title="Login" />
-      <div className="p-8">
-        <Button variant="ghost" asChild className="absolute right-8 top-8">
+      <div className="flex justify-center p-8">
+        <Button variant="outline" asChild className="absolute right-8 top-8">
           <Link to="/sign-up" className="">
             Nova conta
           </Link>
         </Button>
-        <div className="flex w-[350px] flex-col justify-center gap-6">
+        <div className="w-full max-w-[350px]">
           <div className="flex flex-col gap-2 text-center">
-            <h1 className="text-2xl font-semibold tracking-tight">
-              Acessar Painel
-            </h1>
+            <h1 className="text-2xl font-semibold tracking-tight">Login</h1>
             <p className="text-sm text-muted-foreground">
               Acompanhe suas vendas pelo painel do parceiro!
             </p>

@@ -55,19 +55,19 @@ export function SignUp() {
   return (
     <>
       <Helmet title="Cadastro" />
-      <div className="p-8">
-        <Button variant="ghost" asChild className="absolute right-8 top-8">
+      <div className="flex justify-center p-8">
+        <Button variant="outline" asChild className="absolute right-8 top-8">
           <Link to="/sign-in" className="">
-            Fazer Login
+            Login
           </Link>
         </Button>
-        <div className="flex w-[350px] flex-col justify-center gap-6">
+        <div className="w-full max-w-[350px]">
           <div className="flex flex-col gap-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
               Criar conta grátis
             </h1>
             <p className="text-sm text-muted-foreground">
-              Seja um parceiro e comece suas vendas!
+              Seja um parceiro e comecece suas vendas
             </p>
             <form
               id="form"
@@ -76,17 +76,11 @@ export function SignUp() {
             >
               <div className="space-y-2">
                 <Label htmlFor="name">Nome</Label>
-                <Input id="name" type="text" {...register('name')} required />
+                <Input id="name" type="text" {...register('name')} />
               </div>
-
               <div className="space-y-2">
                 <Label htmlFor="email">E-mail</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  {...register('email')}
-                  required
-                />
+                <Input id="email" type="email" {...register('email')} />
               </div>
 
               <div className="space-y-2">
@@ -95,25 +89,12 @@ export function SignUp() {
                   id="password"
                   type="password"
                   {...register('password')}
-                  min={6}
                 />
               </div>
 
               <Button disabled={isSubmitting} className="w-full" type="submit">
                 Finalizar Cadastro
               </Button>
-
-              <p className="px-6 text-center text-sm leading-relaxed text-muted-foreground">
-                Ao continuar, você concorda com nossos{' '}
-                <a className="underline underline-offset-4" href="">
-                  termos de serviço
-                </a>{' '}
-                e{' '}
-                <a className="underline underline-offset-4" href="">
-                  políticas de privacidade
-                </a>
-                .
-              </p>
             </form>
           </div>
         </div>
