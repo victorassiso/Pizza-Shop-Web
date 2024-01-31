@@ -55,7 +55,7 @@ export function SignIn() {
   return (
     <>
       <Helmet title="Login" />
-      <div className="flex justify-center p-8">
+      <div className="flex w-full justify-center p-8">
         <Button variant="outline" asChild className="absolute right-8 top-8">
           <Link to="/sign-up" className="">
             Nova conta
