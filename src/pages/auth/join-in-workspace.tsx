@@ -29,10 +29,9 @@ export function JoinInWorkspace() {
 
   async function handleJoinInWorkspace(data: JoinInWorkspaceFormType) {
     try {
-      const { workspaceId } = await joinInWorkspace({
+      await joinInWorkspace({
         code: data.workspaceCode,
       })
-      console.log({ workspaceId })
       window.location.replace('/')
     } catch (error) {
       toast.error('Essa organização não existe.')

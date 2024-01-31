@@ -12,11 +12,10 @@ export function Routes() {
   const [route, setRoute] = useState<typeof appRouter | null>(null)
 
   useEffect(() => {
-    console.log('Use Effect Routes')
     async function getRoute() {
       try {
         const { user: newUser } = await refreshToken()
-        console.log('Get Route 2')
+
         if (newUser.workspaceId) {
           setRoute(appRouter)
         } else if (newUser.id) {
@@ -29,9 +28,7 @@ export function Routes() {
       }
     }
 
-    console.log({ accessToken })
     if (!accessToken) {
-      console.log('Get Route 1')
       getRoute()
     }
 

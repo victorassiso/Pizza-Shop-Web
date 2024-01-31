@@ -96,7 +96,6 @@ export function CreateOrderDialog({
   })
 
   async function handleCreateOrder(data: CreateOrderSchema) {
-    console.log(data)
     try {
       const response = await createOrderFn({
         customerId: data.customerId,
@@ -107,12 +106,11 @@ export function CreateOrderDialog({
           }
         }),
       })
-      console.log(response)
+
       updateOrdersCache(response, data.customerName)
       handleOpenDialog(false)
       toast.success('Pedido cadastrado com sucesso')
-    } catch (error) {
-      console.log(error)
+    } catch {
       toast.error('Erro ao cadastrar pedido')
     }
   }

@@ -96,9 +96,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   async function joinInWorkspace({ code }: JoinInWorkspaceBody) {
     const { data: joinInWorkspaceData } = await joinInWorkspaceApiFn({ code })
-    console.log(joinInWorkspaceData)
+
     const { data: refreshData } = await refreshTokenApiFn()
-    console.log(refreshData)
     setUser({
       ...user,
       workspaceId: joinInWorkspaceData.workspaceId,
