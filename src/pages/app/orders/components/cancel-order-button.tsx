@@ -4,20 +4,18 @@ import { toast } from 'sonner'
 
 import { cancelOrder } from '@/api/orders/cancel-order'
 import { Button } from '@/components/ui/button'
+import { useOrders } from '@/hooks/use-orders'
 
 import { OrderStatusType } from './order-status'
 
 interface CancelOrderButtonProps {
   orderId: string
   status: OrderStatusType
-  updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void
 }
 
-export function CancelOrderButton({
-  orderId,
-  status,
-  updateOrderStatusOnCache,
-}: CancelOrderButtonProps) {
+export function CancelOrderButton({ orderId, status }: CancelOrderButtonProps) {
+  const { updateOrderStatusOnCache } = useOrders()
+
   const { mutateAsync: cancelOrderFn, isPending: isCancelingOrder } =
     useMutation({
       mutationFn: cancelOrder,

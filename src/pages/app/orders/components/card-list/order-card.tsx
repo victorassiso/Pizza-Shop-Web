@@ -17,7 +17,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { CancelOrderButton } from '../cancel-order-button'
 import { ChangeStatusButton } from '../change-status-button'
 import { OrderDetails } from '../details-dialog/order-details'
-import { OrderStatus, OrderStatusType } from '../order-status'
+import { OrderStatus } from '../order-status'
 
 export interface OrderCardProps {
   orderId: string
@@ -25,7 +25,6 @@ export interface OrderCardProps {
   status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
   customerName: string
   total: number
-  updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void
 }
 
 export function OrderCard({
@@ -34,7 +33,6 @@ export function OrderCard({
   status,
   customerName,
   total,
-  updateOrderStatusOnCache,
 }: OrderCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
@@ -77,16 +75,8 @@ export function OrderCard({
         </div>
       </CardContent>
       <CardFooter className="flex justify-between">
-        <CancelOrderButton
-          orderId={orderId}
-          status={status}
-          updateOrderStatusOnCache={updateOrderStatusOnCache}
-        />
-        <ChangeStatusButton
-          orderId={orderId}
-          status={status}
-          updateOrderStatusOnCache={updateOrderStatusOnCache}
-        />
+        <CancelOrderButton orderId={orderId} status={status} />
+        <ChangeStatusButton orderId={orderId} status={status} />
       </CardFooter>
     </Card>
   )

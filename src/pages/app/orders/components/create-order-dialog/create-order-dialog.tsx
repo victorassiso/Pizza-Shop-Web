@@ -23,8 +23,8 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { CreateOrderContextProvider } from '@/contexts/create-order-context'
 
+// import { CreateOrderContextProvider } from '@/contexts/orders-context'
 import { CreateOrderSchema } from '../header/orders-header'
 import { CustomersCombobox } from './customers-combobox'
 import { Item } from './item'
@@ -132,91 +132,91 @@ export function CreateOrderDialog({
   }
 
   return (
-    <CreateOrderContextProvider>
-      <DialogContent className="max-w-3xl">
-        <DialogHeader>
-          <DialogTitle>Novo Pedido</DialogTitle>
-          <DialogDescription>Crie um novo pedido</DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(handleCreateOrder)}>
-          <div className="space-y-10 py-4">
-            <div>
-              <div className="ml-4 flex items-center gap-4">
-                <Label className="text-right">Cliente</Label>
-                <CustomersCombobox />
-              </div>
+    // <CreateOrderContextProvider>
+    <DialogContent className="max-w-3xl">
+      <DialogHeader>
+        <DialogTitle>Novo Pedido</DialogTitle>
+        <DialogDescription>Crie um novo pedido</DialogDescription>
+      </DialogHeader>
+      <form onSubmit={handleSubmit(handleCreateOrder)}>
+        <div className="space-y-10 py-4">
+          <div>
+            <div className="ml-4 flex items-center gap-4">
+              <Label className="text-right">Cliente</Label>
+              <CustomersCombobox />
             </div>
-            <div className="ml-4 flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                <Label className="text-right">Itens</Label>
-                {errors.items && (
-                  <span className="text-rose-500">
-                    {errors.items.message ===
-                    'Array must contain at least 1 element(s)'
-                      ? 'Adicione ao menos um item ao pedido'
-                      : errors.items.message}
-                  </span>
-                )}
-              </div>
-              <Button type="button" variant="secondary" onClick={addItem}>
-                Adicionar
-              </Button>
-            </div>
-            <Table className="w-full">
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="">Produto</TableHead>
-                  <TableHead className="w-1/6 text-right">Qtd.</TableHead>
-                  <TableHead className="w-1/6 text-right">Preço</TableHead>
-                  <TableHead className="w-1/6 text-right">Subtotal</TableHead>
-                  <TableHead className="w-0 text-right"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {items.map((item, index) => {
-                  return (
-                    <Item
-                      key={item.id}
-                      index={index}
-                      item={item}
-                      removeItem={removeItem}
-                    />
-                  )
-                })}
-              </TableBody>
-              <TableFooter>
-                <TableRow>
-                  <TableCell colSpan={1}>Total do pedido</TableCell>
-                  <TableCell
-                    colSpan={2}
-                    className="text-right font-medium"
-                  ></TableCell>
-                  <TableCell colSpan={1} className="text-right font-medium">
-                    <span>
-                      {watchedItems
-                        .reduce((acc, cur) => acc + cur.subtotal, 0)
-                        .toLocaleString('pt-BR', {
-                          style: 'currency',
-                          currency: 'BRL',
-                        })}
-                    </span>
-                  </TableCell>
-                  <TableCell colSpan={1}></TableCell>
-                </TableRow>
-              </TableFooter>
-            </Table>
           </div>
+          <div className="ml-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <Label className="text-right">Itens</Label>
+              {errors.items && (
+                <span className="text-rose-500">
+                  {errors.items.message ===
+                  'Array must contain at least 1 element(s)'
+                    ? 'Adicione ao menos um item ao pedido'
+                    : errors.items.message}
+                </span>
+              )}
+            </div>
+            <Button type="button" variant="secondary" onClick={addItem}>
+              Adicionar
+            </Button>
+          </div>
+          <Table className="w-full">
+            <TableHeader>
+              <TableRow>
+                <TableHead className="">Produto</TableHead>
+                <TableHead className="w-1/6 text-right">Qtd.</TableHead>
+                <TableHead className="w-1/6 text-right">Preço</TableHead>
+                <TableHead className="w-1/6 text-right">Subtotal</TableHead>
+                <TableHead className="w-0 text-right"></TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {items.map((item, index) => {
+                return (
+                  <Item
+                    key={item.id}
+                    index={index}
+                    item={item}
+                    removeItem={removeItem}
+                  />
+                )
+              })}
+            </TableBody>
+            <TableFooter>
+              <TableRow>
+                <TableCell colSpan={1}>Total do pedido</TableCell>
+                <TableCell
+                  colSpan={2}
+                  className="text-right font-medium"
+                ></TableCell>
+                <TableCell colSpan={1} className="text-right font-medium">
+                  <span>
+                    {watchedItems
+                      .reduce((acc, cur) => acc + cur.subtotal, 0)
+                      .toLocaleString('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL',
+                      })}
+                  </span>
+                </TableCell>
+                <TableCell colSpan={1}></TableCell>
+              </TableRow>
+            </TableFooter>
+          </Table>
+        </div>
 
-          <DialogFooter>
-            <DialogClose asChild>
-              <Button type="button" variant="ghost" onClick={() => reset()}>
-                Cancelar
-              </Button>
-            </DialogClose>
-            <Button variant="success">Salvar</Button>
-          </DialogFooter>
-        </form>
-      </DialogContent>
-    </CreateOrderContextProvider>
+        <DialogFooter>
+          <DialogClose asChild>
+            <Button type="button" variant="ghost" onClick={() => reset()}>
+              Cancelar
+            </Button>
+          </DialogClose>
+          <Button variant="success">Salvar</Button>
+        </DialogFooter>
+      </form>
+    </DialogContent>
+    // </CreateOrderContextProvider>
   )
 }

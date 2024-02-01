@@ -6,19 +6,20 @@ import { approveOrder } from '@/api/orders/approve-order'
 import { deliverOrder } from '@/api/orders/deliver-order'
 import { dispatchOrder } from '@/api/orders/dispatch-order'
 import { Button } from '@/components/ui/button'
+import { useOrders } from '@/hooks/use-orders'
 
 import { OrderStatusType } from './order-status'
 
 interface ChangeStatusButtonProps {
   orderId: string
   status: OrderStatusType
-  updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void
 }
 export function ChangeStatusButton({
   orderId,
   status,
-  updateOrderStatusOnCache,
 }: ChangeStatusButtonProps) {
+  const { updateOrderStatusOnCache } = useOrders()
+
   const { mutateAsync: approveOrderFn, isPending: isApprovingOrder } =
     useMutation({
       mutationFn: approveOrder,
