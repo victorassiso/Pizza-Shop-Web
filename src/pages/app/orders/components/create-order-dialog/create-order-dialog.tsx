@@ -24,7 +24,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-// import { CreateOrderContextProvider } from '@/contexts/orders-context'
 import { CreateOrderSchema } from '../header/orders-header'
 import { CustomersCombobox } from './customers-combobox'
 import { Item } from './item'
@@ -132,7 +131,6 @@ export function CreateOrderDialog({
   }
 
   return (
-    // <CreateOrderContextProvider>
     <DialogContent className="max-w-3xl">
       <DialogHeader>
         <DialogTitle>Novo Pedido</DialogTitle>
@@ -217,6 +215,5 @@ export function CreateOrderDialog({
         </DialogFooter>
       </form>
     </DialogContent>
-    // </CreateOrderContextProvider>
   )
 }

@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { getOrders } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
+import { OrdersProvider } from '@/contexts/orders-context'
 
 import { OrderCardList } from './components/card-list/order-card-list'
 import { OrdersHeader } from './components/header/orders-header'
@@ -42,7 +43,7 @@ export function Orders() {
   }
 
   return (
-    <>
+    <OrdersProvider>
       <Helmet title="Pedidos" />
       <OrdersHeader />
       {/* Small Screen: Card View */}
@@ -67,6 +68,6 @@ export function Orders() {
           onPageChange={handlePaginate}
         />
       )}
-    </>
+    </OrdersProvider>
   )
 }
