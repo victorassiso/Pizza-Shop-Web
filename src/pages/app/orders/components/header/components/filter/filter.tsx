@@ -32,7 +32,7 @@ const OrderFilterSchema = z.object({
 
 type OrderFilterType = z.infer<typeof OrderFilterSchema>
 
-export function OrderFilters() {
+export function Filter() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const orderId = searchParams.get('orderId')

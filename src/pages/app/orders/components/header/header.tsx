@@ -7,7 +7,7 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 
 import { CreateOrderDialog } from '../create-order-dialog/create-order-dialog'
-import { OrderFilters } from './order-filters'
+import { Filter } from './components/filter/filter'
 
 export const createOrderSchema = z.object({
   customerId: z
@@ -34,7 +34,7 @@ export const createOrderSchema = z.object({
 
 export type CreateOrderSchema = z.infer<typeof createOrderSchema>
 
-export function OrdersHeader() {
+export function Header() {
   const [openDialog, setOpenDialog] = useState(false)
 
   const createOrderForm = useForm<CreateOrderSchema>({
@@ -69,7 +69,7 @@ export function OrdersHeader() {
           </FormProvider>
         </Dialog>
       </div>
-      <OrderFilters />
+      <Filter />
     </div>
   )
 }

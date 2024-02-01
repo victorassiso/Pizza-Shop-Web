@@ -24,7 +24,7 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { CreateOrderSchema } from '../header/orders-header'
+import { CreateOrderSchema } from '../header/header'
 import { CustomersCombobox } from './customers-combobox'
 import { Item } from './item'
 

@@ -8,7 +8,7 @@ import { Pagination } from '@/components/pagination'
 import { OrdersProvider } from '@/contexts/orders-context'
 
 import { OrderCardList } from './components/card-list/order-card-list'
-import { OrdersHeader } from './components/header/orders-header'
+import { Header } from './components/header/header'
 import { OrderTable } from './components/table/order-table'
 
 export function Orders() {
@@ -45,7 +45,7 @@ export function Orders() {
   return (
     <OrdersProvider>
       <Helmet title="Pedidos" />
-      <OrdersHeader />
+      <Header />
       {/* Small Screen: Card View */}
       <div className="lg:hidden">
         <OrderCardList
