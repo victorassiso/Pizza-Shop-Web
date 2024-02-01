@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { CreateOrderSchema } from '../header'
+import { CreateOrderSchema } from '../../../header'
 import { ProductsCombobox } from './products-combobox'
 
 interface ItemProps {

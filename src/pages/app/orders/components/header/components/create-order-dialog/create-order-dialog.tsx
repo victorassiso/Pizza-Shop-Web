@@ -24,9 +24,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { CreateOrderSchema } from '../header'
-import { CustomersCombobox } from './customers-combobox'
-import { Item } from './item'
+import { CreateOrderSchema } from '../../header'
+import { CustomersCombobox } from './components/customers-combobox'
+import { Item } from './components/item'
 
 interface CreateOrderDialogProps {
   handleOpenDialog: (open: boolean) => void

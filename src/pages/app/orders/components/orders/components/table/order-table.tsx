@@ -8,7 +8,7 @@ import {
 } from '@/components/ui/table'
 
 import { OrderTableRow } from './components/order-table-row'
-import { OrderTableSkeleton } from './components/order-table-skeleton'
+import { OrderTableSkeleton } from './order-table-skeleton'
 
 interface OrderTableProps {
   orders?: GetOrdersResponseOrder[]
