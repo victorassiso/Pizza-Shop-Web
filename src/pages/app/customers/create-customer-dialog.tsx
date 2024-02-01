@@ -81,8 +81,8 @@ export function CreateCustomerDialog({
   return (
     <DialogContent>
       <DialogHeader>
-        <DialogTitle>Novo Produto</DialogTitle>
-        <DialogDescription>Crie um novo produto</DialogDescription>
+        <DialogTitle>Novo Cliente</DialogTitle>
+        <DialogDescription>Crie um novo cliente</DialogDescription>
       </DialogHeader>
       <form onSubmit={handleSubmit(handleCreateProdct)}>
         <div className="space-y-4 py-4">

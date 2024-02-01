@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora de preços</title>
+</head>
+<body>
+
+<h2>Calculadora de preços</h2>
+
+<label for="phoneModel">Modelo:</label>
+<select id="phoneModel" onchange="updateMaxValue()">
+    <option value="iPhone 6" data-price="1000">iPhone 6</option>
+    <option value="iPhone 7" data-price="1500">iPhone 7</option>
+    <option value="iPhone 8" data-price="2000">iPhone 8</option>
+    <option value="iPhone 9" data-price="2500">iPhone 9</option>
+    <!-- Add more phone models as needed -->
+</select>
+
+<label for="entrada">Valor de Entrada:</label>
+<div class="slider-labels">
+    <span>0</span>
+    <span id="entradaValue">0</span>
+    <span id="entradaMax">0</span>
+</div>
+<input type="range" id="entrada" min="0" step="10" oninput="updateValueLabel('entrada', 'entradaValue')">
+
+<label for="parcelas">Número de parcelas:</label>
+<div class="slider-labels">
+    <span>1</span>
+    <span id="parcelasValue">1</span>
+    <span id="parcelasMax">24</span>
+</div>
+<input type="range" id="parcelas" min="1" max="24" step="1" oninput="updateValueLabel('parcelas', 'parcelasValue')">
+
+<button onclick="calculateTotal()">Calculate Total</button>
+
+<p id="result">Total to Pay: </p>
+
+<script>
+    function updateMaxValue() {
+        var phoneModelSelect = document.getElementById("phoneModel");
+        var entradaSlider = document.getElementById("entrada");
+        var entradaMax = document.getElementById("entradaMax");
+        var selectedModel = phoneModelSelect.options[phoneModelSelect.selectedIndex];
+        var maxPrice = selectedModel.getAttribute("data-price");
+        entradaSlider.max = maxPrice;
+        entradaMax.textContent = maxPrice; // Update the label to match the new max value
+        updateValueLabel('entrada', 'entradaValue'); // Update the label to match the new max value
+    }
+
+    function updateValueLabel(inputId, labelId) {
+        var inputSlider = document.getElementById(inputId);
+        var label = document.getElementById(labelId);
+        label.textContent = inputSlider.value;
+    }
+
+    function calculateTotal() {
+        var phoneModel = document.getElementById("phoneModel").value;
+        var entrada = parseFloat(document.getElementById("entrada").value);
+        var parcelas = parseInt(document.getElementById("parcelas").value);
+
+        if (isNaN(entrada) || isNaN(parcelas)) {
+            alert("Please enter valid numeric values for Valor de Entrada and Number of Parcelas.");
+            return;
+        }
+
+        // Compound Interest Calculation
+        var juro = 4.8 / 100; // Interest rate of 4.8%
+        var totalToPay = entrada * Math.pow(1 + juro, parcelas);
+
+        // Display the result
+        document.getElementById("result").innerHTML = "Total to Pay for " + phoneModel + ": $" + totalToPay.toFixed(2);
+    }
+</script>
+
+</body>
+</html>
