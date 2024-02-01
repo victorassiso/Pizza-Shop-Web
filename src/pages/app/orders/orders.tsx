@@ -8,8 +8,8 @@ import { Pagination } from '@/components/pagination'
 import { OrdersProvider } from '@/contexts/orders-context'
 
 import { Header } from './components/header/header'
-import { OrderCardList } from './components/orders/card-list/order-card-list'
-import { OrderTable } from './components/orders/table/order-table'
+import { OrderCardList } from './components/orders/components/card-list/order-card-list'
+import { OrderTable } from './components/orders/components/table/order-table'
 
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()

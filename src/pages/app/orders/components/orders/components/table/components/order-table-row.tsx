@@ -7,10 +7,10 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { OrderDetails } from '../details-dialog/order-details'
-import { CancelOrderButton } from '../status/cancel-order-button'
-import { ChangeStatusButton } from '../status/change-status-button'
-import { OrderStatus, OrderStatusType } from '../status/order-status'
+import { OrderDetails } from '../../details-dialog/order-details'
+import { CancelOrderButton } from '../../status/cancel-order-button'
+import { ChangeStatusButton } from '../../status/change-status-button'
+import { OrderStatus, OrderStatusType } from '../../status/order-status'
 export interface OrderTableRowProps {
   orderId: string
   createdAt: Date
