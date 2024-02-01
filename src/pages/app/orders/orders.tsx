@@ -7,9 +7,9 @@ import { getOrders } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
 import { OrdersProvider } from '@/contexts/orders-context'
 
-import { OrderCardList } from './components/card-list/order-card-list'
 import { Header } from './components/header/header'
-import { OrderTable } from './components/table/order-table'
+import { OrderCardList } from './components/orders/card-list/order-card-list'
+import { OrderTable } from './components/orders/table/order-table'
 
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()

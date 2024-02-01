@@ -5,7 +5,7 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 import { useFormContext } from 'react-hook-form'
 
-import { getCustomers } from '@/api/customers/get-customers'
+import { getProducts } from '@/api/products/get-products'
 import { Button } from '@/components/ui/button'
 import {
   Command,
@@ -24,41 +24,50 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { cn } from '@/lib/utils'
 
-import { CreateCustomerDialog } from '../../../customers/create-customer-dialog'
-import { CreateOrderSchema } from '../header/header'
+import { CreateProductDialog } from '../../../../products/create-product-dialog'
+import { CreateOrderSchema } from '../header'
 
-export function CustomersCombobox() {
+interface ProductComboboxProps {
+  index: number
+}
+
+export function ProductsCombobox({ index }: ProductComboboxProps) {
   const { setValue, register, getValues } = useFormContext<CreateOrderSchema>()
   const [openPopover, setOpenPopover] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
-  // const [customer, setCustomer] = useState<Customer | null>(null)
-  const { data: customers } = useQuery({
-    queryKey: ['customers'],
-    queryFn: () => getCustomers({}),
+  const { data: products } = useQuery({
+    queryKey: ['products'],
+    queryFn: () => getProducts(),
   })
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
       <PopoverTrigger asChild>
-        <button className="relative flex w-[250px] cursor-pointer items-center">
+        <button className="relative flex w-[280px] cursor-pointer items-center">
           <Input
-            id="customerName"
+            id="productId"
+            className="hidden"
+            value={getValues().items[index].product?.id || ''}
+            {...register(`items.${index}.product.id`)}
+          />
+          <Input
+            id="productName"
             className="flex-1 cursor-pointer rounded-l border px-4 py-2"
-            value={getValues().customerName}
-            placeholder="Selecione um cliente..."
-            {...register('customerName')}
+            value={getValues().items[index].product?.name || ''}
+            placeholder="Selecione um produto..."
+            {...register(`items.${index}.product.name`)}
             autoComplete="off"
           />
           <Input
-            id="customerId"
+            id="productId"
             className="hidden"
-            value={getValues().customerId}
-            {...register('customerId')}
+            value={getValues().items[index].product.price}
+            {...register(`items.${index}.product.price`)}
           />
           <ChevronsUpDown className="absolute right-0 mr-4 h-4 w-4 shrink-0 opacity-50" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent className="w-[280px] p-0">
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>
@@ -67,23 +76,33 @@ export function CustomersCombobox() {
                 <DialogTrigger asChild>
                   <Button>Novo cliente</Button>
                 </DialogTrigger>
-                <CreateCustomerDialog setOpenDialog={setOpenDialog} />
+                <CreateProductDialog setOpenDialog={setOpenDialog} />
               </Dialog>
             </CommandEmpty>
             <CommandGroup>
-              {customers?.map((item) => (
+              {products?.map((item) => (
                 <CommandItem
                   key={item.id}
                   value={item.name}
                   onSelect={(currentValue) => {
                     if (
-                      currentValue === getValues().customerName.toLowerCase()
+                      currentValue ===
+                      getValues().items[index].product.name.toLowerCase()
                     ) {
-                      setValue('customerId', '')
-                      setValue('customerName', '')
+                      setValue(`items.${index}.product.id`, '')
+                      setValue(`items.${index}.product.name`, '')
+                      setValue(`items.${index}.product.price`, 0)
+                      setValue(`items.${index}.quantity`, 0)
+                      setValue(`items.${index}.subtotal`, 0)
                     } else {
-                      setValue('customerId', item.id)
-                      setValue('customerName', item.name)
+                      setValue(`items.${index}.product.id`, item.id)
+                      setValue(`items.${index}.product.name`, item.name)
+                      setValue(`items.${index}.product.price`, item.price)
+                      setValue(`items.${index}.quantity`, 1)
+                      setValue(
+                        `items.${index}.subtotal`,
+                        getValues().items[index].product.price,
+                      )
                     }
                     setOpenPopover(false)
                   }}
@@ -91,7 +110,7 @@ export function CustomersCombobox() {
                   <Check
                     className={cn(
                       'mr-2 h-4 w-4',
-                      getValues().customerName === item.name
+                      getValues().items[index].product.name === item.name
                         ? 'opacity-100'
                         : 'opacity-0',
                     )}

@@ -2,7 +2,7 @@ import { useQueryClient } from '@tanstack/react-query'
 import { createContext, ReactNode } from 'react'
 
 import { GetOrdersResponse } from '@/api/orders/get-orders'
-import { OrderStatusType } from '@/pages/app/orders/components/status/order-status'
+import { OrderStatusType } from '@/pages/app/orders/components/orders/status/order-status'
 
 interface OrdersContextProps {
   updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void

@@ -14,9 +14,9 @@ import {
 } from '@/components/ui/card'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
+import { OrderDetails } from '../details-dialog/order-details'
 import { CancelOrderButton } from '../status/cancel-order-button'
 import { ChangeStatusButton } from '../status/change-status-button'
-import { OrderDetails } from '../details-dialog/order-details'
 import { OrderStatus } from '../status/order-status'
 
 export interface OrderCardProps {
