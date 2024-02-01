@@ -14,10 +14,10 @@ import {
 } from '@/components/ui/card'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
-import { CancelOrderButton } from '../cancel-order-button'
-import { ChangeStatusButton } from '../change-status-button'
+import { CancelOrderButton } from '../status/cancel-order-button'
+import { ChangeStatusButton } from '../status/change-status-button'
 import { OrderDetails } from '../details-dialog/order-details'
-import { OrderStatus } from '../order-status'
+import { OrderStatus } from '../status/order-status'
 
 export interface OrderCardProps {
   orderId: string

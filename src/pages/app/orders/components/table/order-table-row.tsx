@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { CancelOrderButton } from '../cancel-order-button'
-import { ChangeStatusButton } from '../change-status-button'
 import { OrderDetails } from '../details-dialog/order-details'
-import { OrderStatus } from '../order-status'
+import { CancelOrderButton } from '../status/cancel-order-button'
+import { ChangeStatusButton } from '../status/change-status-button'
+import { OrderStatus, OrderStatusType } from '../status/order-status'
 export interface OrderTableRowProps {
   orderId: string
   createdAt: Date
-  status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+  status: OrderStatusType
   customerName: string
   total: number
 }
