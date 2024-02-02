@@ -1,34 +1,31 @@
 import { Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import { Controller, useFormContext, useWatch } from 'react-hook-form'
+import {
+  Controller,
+  FieldArrayWithId,
+  useFormContext,
+  useWatch,
+} from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { CreateOrderSchema } from '../../../header'
-import { ProductsCombobox } from './products-combobox'
+import { CreateOrderType } from '../../../../../../../header'
+import { ProductsCombobox } from '../../../../products-combobox/products-combobox'
 
-interface ItemProps {
+interface ItemTableRowProps {
   index: number
-  item: {
-    id: string
-    product: {
-      id: string
-      name: string
-      price: number
-    }
-    quantity: number
-  }
+  item: FieldArrayWithId<CreateOrderType>
   removeItem: (index: number) => void
 }
 
-export function Item({ index, item, removeItem }: ItemProps) {
-  const { register, control, setValue } = useFormContext<CreateOrderSchema>()
+export function ItemTableRow({ index, item, removeItem }: ItemTableRowProps) {
+  const { register, control, setValue } = useFormContext<CreateOrderType>()
   // const [subtotal, setSubtotal] = useState(0)
   const [disableQuantityInput, setDisableQuantityInput] = useState(true)
 
-  const { items } = useWatch<CreateOrderSchema>()
+  const { items } = useWatch<CreateOrderType>()
 
   useEffect(() => {
     // const orderSubtotal = items?.reduce(

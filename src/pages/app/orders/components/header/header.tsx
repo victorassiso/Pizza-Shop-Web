@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button'
 import { CreateOrderDialog } from './components/create-order-dialog/create-order-dialog'
 import { Filter } from './components/filter/filter'
 
-export const createOrderSchema = z.object({
+export const CreateOrderSchema = z.object({
   customerId: z
     .string({
       errorMap: () => ({ message: 'O cliente é obrigatório' }),
@@ -32,13 +32,13 @@ export const createOrderSchema = z.object({
   total: z.coerce.number(),
 })
 
-export type CreateOrderSchema = z.infer<typeof createOrderSchema>
+export type CreateOrderType = z.infer<typeof CreateOrderSchema>
 
 export function Header() {
   const [openDialog, setOpenDialog] = useState(false)
 
-  const createOrderForm = useForm<CreateOrderSchema>({
-    resolver: zodResolver(createOrderSchema),
+  const createOrderForm = useForm<CreateOrderType>({
+    resolver: zodResolver(CreateOrderSchema),
     defaultValues: {
       customerId: '',
       customerName: '',

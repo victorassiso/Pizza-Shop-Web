@@ -14,19 +14,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
 
-import { CreateOrderSchema } from '../../header'
-import { CustomersCombobox } from './components/customers-combobox'
-import { Item } from './components/item'
+import { CreateOrderType } from '../../header'
+import { CustomersCombobox } from './components/customers-combobox/customers-combobox'
+import { ItemTable } from './components/items/components/table/item-table'
 
 interface CreateOrderDialogProps {
   handleOpenDialog: (open: boolean) => void
@@ -40,9 +31,8 @@ export function CreateOrderDialog({
     reset,
     formState: { errors },
     control,
-    watch,
-  } = useFormContext<CreateOrderSchema>()
-  const watchedItems = watch('items')
+  } = useFormContext<CreateOrderType>()
+
   const {
     fields: items,
     append,
@@ -94,7 +84,7 @@ export function CreateOrderDialog({
     mutationFn: createOrder,
   })
 
-  async function handleCreateOrder(data: CreateOrderSchema) {
+  async function handleCreateOrder(data: CreateOrderType) {
     try {
       const response = await createOrderFn({
         customerId: data.customerId,
@@ -160,49 +150,7 @@ export function CreateOrderDialog({
               Adicionar
             </Button>
           </div>
-          <Table className="w-full">
-            <TableHeader>
-              <TableRow>
-                <TableHead className="">Produto</TableHead>
-                <TableHead className="w-1/6 text-right">Qtd.</TableHead>
-                <TableHead className="w-1/6 text-right">Preço</TableHead>
-                <TableHead className="w-1/6 text-right">Subtotal</TableHead>
-                <TableHead className="w-0 text-right"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {items.map((item, index) => {
-                return (
-                  <Item
-                    key={item.id}
-                    index={index}
-                    item={item}
-                    removeItem={removeItem}
-                  />
-                )
-              })}
-            </TableBody>
-            <TableFooter>
-              <TableRow>
-                <TableCell colSpan={1}>Total do pedido</TableCell>
-                <TableCell
-                  colSpan={2}
-                  className="text-right font-medium"
-                ></TableCell>
-                <TableCell colSpan={1} className="text-right font-medium">
-                  <span>
-                    {watchedItems
-                      .reduce((acc, cur) => acc + cur.subtotal, 0)
-                      .toLocaleString('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL',
-                      })}
-                  </span>
-                </TableCell>
-                <TableCell colSpan={1}></TableCell>
-              </TableRow>
-            </TableFooter>
-          </Table>
+          <ItemTable items={items} removeItem={removeItem} />
         </div>
 
         <DialogFooter>
