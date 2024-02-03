@@ -1,53 +1,17 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
 import { useState } from 'react'
-import { FormProvider, useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import { Button } from '@/components/ui/button'
+import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { CreateOrderDialog } from './components/create-order-dialog/create-order-dialog'
 import { Filter } from './components/filter/filter'
 
-export const CreateOrderSchema = z.object({
-  customerId: z
-    .string({
-      errorMap: () => ({ message: 'O cliente é obrigatório' }),
-    })
-    .min(1),
-  customerName: z.string().min(1),
-  items: z
-    .array(
-      z.object({
-        product: z.object({
-          name: z.string().min(1),
-          id: z.string(),
-          price: z.coerce.number(),
-        }),
-        quantity: z.coerce.number(),
-        subtotal: z.coerce.number(),
-      }),
-    )
-    .min(1),
-  total: z.coerce.number(),
-})
-
-export type CreateOrderType = z.infer<typeof CreateOrderSchema>
-
 export function Header() {
   const [openDialog, setOpenDialog] = useState(false)
-
-  const createOrderForm = useForm<CreateOrderType>({
-    resolver: zodResolver(CreateOrderSchema),
-    defaultValues: {
-      customerId: '',
-      customerName: '',
-      items: [],
-      total: 0,
-    },
-  })
-
-  const { reset } = createOrderForm
+  const {
+    formMethods: { reset },
+  } = useCreateOrderFormContext()
 
   function handleOpenDialog(open: boolean) {
     if (!open) {
@@ -64,9 +28,7 @@ export function Header() {
           <DialogTrigger asChild>
             <Button>Novo pedido</Button>
           </DialogTrigger>
-          <FormProvider {...createOrderForm}>
-            <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
-          </FormProvider>
+          <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
         </Dialog>
       </div>
       <Filter />

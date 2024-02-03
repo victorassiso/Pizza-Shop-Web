@@ -1,44 +1,34 @@
-import { Trash } from 'lucide-react'
+import { Minus, Plus, Trash } from 'lucide-react'
 import { useEffect, useState } from 'react'
-import {
-  Controller,
-  FieldArrayWithId,
-  useFormContext,
-  useWatch,
-} from 'react-hook-form'
+import { Controller, FieldArrayWithId } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/table'
+import { CreateOrderType } from '@/contexts/create-order-form-context'
+import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { CreateOrderType } from '../../../../../../../header'
 import { ProductsCombobox } from '../../../../products-combobox/products-combobox'
 
 interface ItemTableRowProps {
   index: number
   item: FieldArrayWithId<CreateOrderType>
-  removeItem: (index: number) => void
 }
 
-export function ItemTableRow({ index, item, removeItem }: ItemTableRowProps) {
-  const { register, control, setValue } = useFormContext<CreateOrderType>()
-  // const [subtotal, setSubtotal] = useState(0)
+export function ItemTableRow({ index, item }: ItemTableRowProps) {
+  const {
+    formMethods: { register, control },
+    fieldArrayMethods: { remove, fields: items, update },
+  } = useCreateOrderFormContext()
+
   const [disableQuantityInput, setDisableQuantityInput] = useState(true)
 
-  const { items } = useWatch<CreateOrderType>()
-
   useEffect(() => {
-    // const orderSubtotal = items?.reduce(
-    //   (acc, cur) => acc + (cur.product?.price || 0) * (cur.quantity || 0),
-    //   0,
-    // )
-
     if (items?.[index].product?.id === '') {
       setDisableQuantityInput(true)
     } else {
       setDisableQuantityInput(false)
     }
-    // setSubtotal(orderSubtotal || 0)
   }, [index, items])
 
   return (
@@ -47,22 +37,54 @@ export function ItemTableRow({ index, item, removeItem }: ItemTableRowProps) {
         <ProductsCombobox index={index} />
       </TableCell>
       <TableCell className="text-right">
-        <Input
-          className="disabled:cursor-default"
-          {...register(`items.${index}.quantity`, {
-            valueAsNumber: true,
-          })}
-          onChange={(e) => {
-            // setSubtotal(item.product.price * parseFloat(e.target.value))
-            setValue(
-              `items.${index}.subtotal`,
-              item.product.price * parseFloat(e.target.value),
-            )
-          }}
-          min={1}
-          disabled={disableQuantityInput}
-          type="number"
-        />
+        <div className="flex items-center gap-2">
+          <Button
+            type="button"
+            disabled={disableQuantityInput}
+            variant="outline"
+            className="h-5 w-5 p-0"
+            onClick={() =>
+              update(index, {
+                ...item,
+                quantity: item.quantity + 1,
+              })
+            }
+          >
+            <Plus className="h-4 w-4" />
+          </Button>
+          <Input
+            className="disabled:cursor-default"
+            {...register(`items.${index}.quantity`, {
+              valueAsNumber: true,
+            })}
+            onBlur={(e) => {
+              const parsedValue = parseInt(e.target.value)
+              const value = parsedValue >= 1 ? parsedValue : 1
+              update(index, {
+                ...item,
+                quantity: value,
+                subtotal: item.product.price * value,
+              })
+            }}
+            min={1}
+            disabled={disableQuantityInput}
+            type="number"
+          />
+          <Button
+            type="button"
+            variant="outline"
+            disabled={disableQuantityInput || items[index].quantity <= 1}
+            className="h-5 w-5 p-0"
+            onClick={() =>
+              update(index, {
+                ...item,
+                quantity: item.quantity - 1,
+              })
+            }
+          >
+            <Minus className="h-4 w-4" />
+          </Button>
+        </div>
       </TableCell>
       <TableCell className="text-right">
         <Controller
@@ -81,27 +103,15 @@ export function ItemTableRow({ index, item, removeItem }: ItemTableRowProps) {
         />
       </TableCell>
       <TableCell className="text-right">
-        <Controller
-          control={control}
-          name={`items.${index}.subtotal`}
-          render={({ field: { value } }) => {
-            return (
-              <span>
-                {value.toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
-              </span>
-            )
-          }}
-        />
+        <span>
+          {(item.product.price * item.quantity).toLocaleString('pt-BR', {
+            style: 'currency',
+            currency: 'BRL',
+          })}
+        </span>
       </TableCell>
       <TableCell>
-        <Button
-          type="button"
-          variant="outline"
-          onClick={() => removeItem(index)}
-        >
+        <Button type="button" variant="outline" onClick={() => remove(index)}>
           <Trash size={18} />
         </Button>
       </TableCell>

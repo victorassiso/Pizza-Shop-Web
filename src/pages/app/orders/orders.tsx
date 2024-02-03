@@ -5,6 +5,7 @@ import { z } from 'zod'
 
 import { getOrders } from '@/api/orders/get-orders'
 import { Pagination } from '@/components/pagination'
+import { CreateOrderFormProvider } from '@/contexts/create-order-form-context'
 import { OrdersProvider } from '@/contexts/orders-context'
 
 import { Header } from './components/header/header'
@@ -45,7 +46,9 @@ export function Orders() {
   return (
     <OrdersProvider>
       <Helmet title="Pedidos" />
-      <Header />
+      <CreateOrderFormProvider>
+        <Header />
+      </CreateOrderFormProvider>
       {/* Small Screen: Card View */}
       <div className="lg:hidden">
         <OrderCardList

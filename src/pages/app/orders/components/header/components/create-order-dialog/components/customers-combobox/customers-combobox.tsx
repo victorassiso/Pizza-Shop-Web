@@ -3,7 +3,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
-import { useFormContext } from 'react-hook-form'
 
 import { getCustomers } from '@/api/customers/get-customers'
 import { Button } from '@/components/ui/button'
@@ -22,13 +21,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 import { cn } from '@/lib/utils'
 
 import { CreateCustomerDialog } from '../../../../../../../customers/create-customer-dialog'
-import { CreateOrderSchema } from '../../../../header'
 
 export function CustomersCombobox() {
-  const { setValue, register, getValues } = useFormContext<CreateOrderSchema>()
+  const {
+    formMethods: { setValue, register, getValues },
+  } = useCreateOrderFormContext()
   const [openPopover, setOpenPopover] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
   // const [customer, setCustomer] = useState<Customer | null>(null)
@@ -40,7 +41,7 @@ export function CustomersCombobox() {
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
       <PopoverTrigger asChild>
-        <button className="relative flex w-[250px] cursor-pointer items-center">
+        <button className="relative flex w-[190px] cursor-pointer items-center md:w-[250px]">
           <Input
             id="customerName"
             className="flex-1 cursor-pointer rounded-l border px-4 py-2"
@@ -58,7 +59,7 @@ export function CustomersCombobox() {
           <ChevronsUpDown className="absolute right-0 mr-4 h-4 w-4 shrink-0 opacity-50" />
         </button>
       </PopoverTrigger>
-      <PopoverContent className="w-[250px] p-0">
+      <PopoverContent className="w-[190px] p-0 md:w-[250px]">
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>

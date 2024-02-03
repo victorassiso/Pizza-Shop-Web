@@ -1,5 +1,4 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useFieldArray, useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { createOrder, Order } from '@/api/orders/create-order'
@@ -14,10 +13,11 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
+import { CreateOrderType } from '@/contexts/create-order-form-context'
+import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { CreateOrderType } from '../../header'
 import { CustomersCombobox } from './components/customers-combobox/customers-combobox'
-import { ItemTable } from './components/items/components/table/item-table'
+import { Items } from './components/items/items'
 
 interface CreateOrderDialogProps {
   handleOpenDialog: (open: boolean) => void
@@ -27,21 +27,8 @@ export function CreateOrderDialog({
   handleOpenDialog,
 }: CreateOrderDialogProps) {
   const {
-    handleSubmit,
-    reset,
-    formState: { errors },
-    control,
-  } = useFormContext<CreateOrderType>()
-
-  const {
-    fields: items,
-    append,
-    remove,
-  } = useFieldArray({
-    control,
-    name: 'items',
-  })
-
+    formMethods: { handleSubmit, reset },
+  } = useCreateOrderFormContext()
   const queryClient = useQueryClient()
 
   function updateOrdersCache(order: Order, customerName: string) {
@@ -104,22 +91,6 @@ export function CreateOrderDialog({
     }
   }
 
-  function addItem() {
-    append({
-      product: {
-        id: '',
-        name: '',
-        price: 0,
-      },
-      quantity: 0,
-      subtotal: 0,
-    })
-  }
-
-  function removeItem(index: number) {
-    remove(index)
-  }
-
   return (
     <DialogContent className="max-w-3xl">
       <DialogHeader>
@@ -127,30 +98,14 @@ export function CreateOrderDialog({
         <DialogDescription>Crie um novo pedido</DialogDescription>
       </DialogHeader>
       <form onSubmit={handleSubmit(handleCreateOrder)}>
-        <div className="space-y-10 py-4">
+        <div className="py-4">
           <div>
             <div className="ml-4 flex items-center gap-4">
               <Label className="text-right">Cliente</Label>
               <CustomersCombobox />
             </div>
           </div>
-          <div className="ml-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Label className="text-right">Itens</Label>
-              {errors.items && (
-                <span className="text-rose-500">
-                  {errors.items.message ===
-                  'Array must contain at least 1 element(s)'
-                    ? 'Adicione ao menos um item ao pedido'
-                    : errors.items.message}
-                </span>
-              )}
-            </div>
-            <Button type="button" variant="secondary" onClick={addItem}>
-              Adicionar
-            </Button>
-          </div>
-          <ItemTable items={items} removeItem={removeItem} />
+          <Items />
         </div>
 
         <DialogFooter>
