@@ -5,7 +5,6 @@ import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
 
 import { getProducts } from '@/api/products/get-products'
-import { Button } from '@/components/ui/button'
 import {
   Command,
   CommandEmpty,
@@ -13,7 +12,6 @@ import {
   CommandInput,
   CommandItem,
 } from '@/components/ui/command'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import {
   Popover,
@@ -23,8 +21,6 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 import { cn } from '@/lib/utils'
-
-import { CreateProductDialog } from '../../../../../../../products/create-product-dialog'
 
 interface ProductComboboxProps {
   index: number
@@ -36,7 +32,6 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
     fieldArrayMethods: { update, fields: items },
   } = useCreateOrderFormContext()
   const [openPopover, setOpenPopover] = useState(false)
-  const [openDialog, setOpenDialog] = useState(false)
   const { data: products } = useQuery({
     queryKey: ['products'],
     queryFn: () => getProducts(),
@@ -73,14 +68,7 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>
-            <CommandEmpty>
-              <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogTrigger asChild>
-                  <Button>Novo cliente</Button>
-                </DialogTrigger>
-                <CreateProductDialog setOpenDialog={setOpenDialog} />
-              </Dialog>
-            </CommandEmpty>
+            <CommandEmpty>Produto não encontrado</CommandEmpty>
             <CommandGroup>
               {products?.map((item) => (
                 <CommandItem
