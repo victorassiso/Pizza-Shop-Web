@@ -1,5 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { createContext, ReactNode } from 'react'
+import { createContext, ReactNode, useState } from 'react'
 import {
   useFieldArray,
   UseFieldArrayReturn,
@@ -36,6 +36,8 @@ export type CreateOrderType = z.infer<typeof CreateOrderSchema>
 interface CreateOrderFormContextProps {
   formMethods: UseFormReturn<CreateOrderType>
   fieldArrayMethods: UseFieldArrayReturn<CreateOrderType>
+  openDialog: boolean
+  handleOpenDialog: (open: boolean) => void
 }
 
 export const CreateOrderFormContext = createContext(
@@ -49,6 +51,8 @@ export interface CreateOrderFormProvierProps {
 export function CreateOrderFormProvider({
   children,
 }: CreateOrderFormProvierProps) {
+  const [openDialog, setOpenDialog] = useState(false)
+
   const formMethods = useForm<CreateOrderType>({
     resolver: zodResolver(CreateOrderSchema),
     defaultValues: {
@@ -64,11 +68,17 @@ export function CreateOrderFormProvider({
     control,
     name: 'items',
   })
+
+  function handleOpenDialog(open: boolean) {
+    setOpenDialog(open)
+  }
   return (
     <CreateOrderFormContext.Provider
       value={{
         fieldArrayMethods,
         formMethods,
+        openDialog,
+        handleOpenDialog,
       }}
     >
       {children}

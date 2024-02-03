@@ -7,7 +7,7 @@ import { CreateOrderType } from '@/contexts/create-order-form-context'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { ProductsCombobox } from '../../../../products-combobox/products-combobox'
-import { Quantity } from '../../card-list/components/item-card/components/quantity'
+import { Quantity } from '../../quantity/quantity'
 
 interface ItemTableRowProps {
   index: number
@@ -16,13 +16,16 @@ interface ItemTableRowProps {
 
 export function ItemTableRow({ index, item }: ItemTableRowProps) {
   const {
-    formMethods: { control },
+    formMethods: {
+      control,
+      formState: { isSubmitting },
+    },
     fieldArrayMethods: { remove },
   } = useCreateOrderFormContext()
 
   return (
     <TableRow>
-      <TableCell>
+      <TableCell className="w-[10000px]">
         <ProductsCombobox index={index} />
       </TableCell>
       <TableCell className="flex justify-center">
@@ -55,7 +58,12 @@ export function ItemTableRow({ index, item }: ItemTableRowProps) {
         </span>
       </TableCell>
       <TableCell>
-        <Button type="button" variant="outline" onClick={() => remove(index)}>
+        <Button
+          disabled={isSubmitting}
+          type="button"
+          variant="outline"
+          onClick={() => remove(index)}
+        >
           <Trash size={18} />
         </Button>
       </TableCell>

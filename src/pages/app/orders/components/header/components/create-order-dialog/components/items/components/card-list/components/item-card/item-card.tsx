@@ -6,7 +6,7 @@ import { CreateOrderType } from '@/contexts/create-order-form-context'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { ProductsCombobox } from '../../../../../products-combobox/products-combobox'
-import { Quantity } from './components/quantity'
+import { Quantity } from '../../../quantity/quantity'
 
 interface ItemTableRowProps {
   index: number

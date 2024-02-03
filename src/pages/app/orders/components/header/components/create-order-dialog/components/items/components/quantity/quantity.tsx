@@ -17,6 +17,9 @@ interface QuantityProps {
 }
 export function Quantity({ item, index }: QuantityProps) {
   const {
+    formMethods: {
+      formState: { isSubmitting },
+    },
     fieldArrayMethods: { fields: items, update },
   } = useCreateOrderFormContext()
   const [disableQuantityInput, setDisableQuantityInput] = useState(true)
@@ -48,7 +51,6 @@ export function Quantity({ item, index }: QuantityProps) {
       <Tooltip>
         <TooltipTrigger asChild>
           <div className="flex flex-col items-center gap-1">
-            {/* <Label className="text-muted-foreground">Qtd.</Label> */}
             <div
               className={`flex h-8 items-center justify-center gap-2 rounded-md bg-border p-2 leading-[130%] ${
                 disableQuantityInput ? 'opacity-50' : ''
@@ -56,31 +58,12 @@ export function Quantity({ item, index }: QuantityProps) {
             >
               <button
                 type="button"
-                disabled={disableQuantityInput}
+                disabled={disableQuantityInput || isSubmitting}
                 className="text-muted-foreground"
                 onClick={handleIncrementQuantity}
               >
                 <Plus size={14} />
               </button>
-
-              {/* <Input
-    className="h-8 w-10 border-none bg-transparent p-2 disabled:cursor-default"
-    {...register(`items.${index}.quantity`, {
-      valueAsNumber: true,
-    })}
-    onBlur={(e) => {
-      const parsedValue = parseInt(e.target.value)
-      const value = parsedValue >= 1 ? parsedValue : 1
-      update(index, {
-        ...item,
-        quantity: value,
-        subtotal: item.product.price * value,
-      })
-    }}
-    min={1}
-    disabled={disableQuantityInput}
-    type="number"
-  /> */}
               <span
                 className={disableQuantityInput ? 'text-muted-foreground' : ''}
               >
@@ -90,7 +73,11 @@ export function Quantity({ item, index }: QuantityProps) {
               <button
                 type="button"
                 className="text-muted-foreground"
-                disabled={disableQuantityInput || items[index].quantity <= 1}
+                disabled={
+                  disableQuantityInput ||
+                  isSubmitting ||
+                  items[index].quantity <= 1
+                }
                 onClick={handleDecrementQuantity}
               >
                 <Minus size={14} />

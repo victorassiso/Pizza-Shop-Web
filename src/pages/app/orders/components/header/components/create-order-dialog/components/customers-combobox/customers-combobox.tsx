@@ -28,7 +28,12 @@ import { CreateCustomerDialog } from '../../../../../../../customers/create-cust
 
 export function CustomersCombobox() {
   const {
-    formMethods: { setValue, register, getValues },
+    formMethods: {
+      setValue,
+      register,
+      getValues,
+      formState: { isSubmitting },
+    },
   } = useCreateOrderFormContext()
   const [openPopover, setOpenPopover] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
@@ -40,11 +45,12 @@ export function CustomersCombobox() {
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={isSubmitting} asChild>
         <button className="relative flex w-[190px] cursor-pointer items-center md:w-[250px]">
           <Input
+            disabled={isSubmitting}
             id="customerName"
-            className="flex-1 cursor-pointer rounded-l border px-4 py-2"
+            className="flex-1 cursor-pointer rounded-l border px-4 py-2 disabled:cursor-default"
             value={getValues().customerName}
             placeholder="Selecione um cliente..."
             {...register('customerName')}

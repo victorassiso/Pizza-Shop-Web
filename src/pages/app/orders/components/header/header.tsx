@@ -1,5 +1,5 @@
 import { Dialog, DialogTrigger } from '@radix-ui/react-dialog'
-import { useState } from 'react'
+import { useEffect } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
@@ -8,17 +8,18 @@ import { CreateOrderDialog } from './components/create-order-dialog/create-order
 import { Filter } from './components/filter/filter'
 
 export function Header() {
-  const [openDialog, setOpenDialog] = useState(false)
   const {
-    formMethods: { reset },
+    formMethods: {
+      reset,
+      formState: { isSubmitSuccessful },
+    },
+    openDialog,
+    handleOpenDialog,
   } = useCreateOrderFormContext()
 
-  function handleOpenDialog(open: boolean) {
-    if (!open) {
-      reset()
-    }
-    setOpenDialog(open)
-  }
+  useEffect(() => {
+    reset()
+  }, [isSubmitSuccessful, reset])
 
   return (
     <div className="flex flex-col gap-4">
@@ -28,7 +29,7 @@ export function Header() {
           <DialogTrigger asChild>
             <Button>Novo pedido</Button>
           </DialogTrigger>
-          <CreateOrderDialog handleOpenDialog={handleOpenDialog} />
+          <CreateOrderDialog />
         </Dialog>
       </div>
       <Filter />

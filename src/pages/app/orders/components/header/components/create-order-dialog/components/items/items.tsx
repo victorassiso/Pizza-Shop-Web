@@ -68,7 +68,7 @@ export function Items() {
           <ItemTable />
         </div>
       </div>
-      <div className="mt-3 flex flex-col gap-4 md:hidden">
+      <div className="mt-3 flex flex-col gap-8 md:hidden">
         <ItemCardList />
         <div className="flex justify-between">
           <div>

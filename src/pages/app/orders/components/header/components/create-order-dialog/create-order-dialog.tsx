@@ -19,15 +19,14 @@ import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 import { CustomersCombobox } from './components/customers-combobox/customers-combobox'
 import { Items } from './components/items/items'
 
-interface CreateOrderDialogProps {
-  handleOpenDialog: (open: boolean) => void
-}
-
-export function CreateOrderDialog({
-  handleOpenDialog,
-}: CreateOrderDialogProps) {
+export function CreateOrderDialog() {
   const {
-    formMethods: { handleSubmit, reset },
+    formMethods: {
+      handleSubmit,
+      reset,
+      formState: { isSubmitting },
+    },
+    handleOpenDialog,
   } = useCreateOrderFormContext()
   const queryClient = useQueryClient()
 
@@ -110,11 +109,18 @@ export function CreateOrderDialog({
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost" onClick={() => reset()}>
+            <Button
+              type="button"
+              variant="ghost"
+              onClick={() => reset()}
+              disabled={isSubmitting}
+            >
               Cancelar
             </Button>
           </DialogClose>
-          <Button variant="success">Salvar</Button>
+          <Button disabled={isSubmitting} variant="success">
+            Salvar
+          </Button>
         </DialogFooter>
       </form>
     </DialogContent>

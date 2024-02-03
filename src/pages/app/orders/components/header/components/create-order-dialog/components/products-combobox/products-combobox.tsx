@@ -28,7 +28,10 @@ interface ProductComboboxProps {
 
 export function ProductsCombobox({ index }: ProductComboboxProps) {
   const {
-    formMethods: { register },
+    formMethods: {
+      register,
+      formState: { isSubmitting },
+    },
     fieldArrayMethods: { update, fields: items },
   } = useCreateOrderFormContext()
   const [openPopover, setOpenPopover] = useState(false)
@@ -39,7 +42,7 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
-      <PopoverTrigger asChild>
+      <PopoverTrigger disabled={isSubmitting} asChild>
         <button className="relative flex w-[218px] cursor-pointer items-center">
           <Input
             id="productId"
@@ -49,7 +52,8 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
           />
           <Input
             id="productName"
-            className="flex-1 cursor-pointer rounded-l border px-4 py-2"
+            disabled={isSubmitting}
+            className="flex-1 cursor-pointer rounded-l border px-4 py-2 disabled:cursor-default"
             value={items[index].product.name || ''}
             placeholder="Selecione um produto..."
             {...register(`items.${index}.product.name`)}
