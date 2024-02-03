@@ -1,14 +1,13 @@
-import { Minus, Plus, Trash } from 'lucide-react'
-import { useEffect, useState } from 'react'
+import { Trash } from 'lucide-react'
 import { Controller, FieldArrayWithId } from 'react-hook-form'
 
 import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { CreateOrderType } from '@/contexts/create-order-form-context'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { ProductsCombobox } from '../../../../products-combobox/products-combobox'
+import { Quantity } from '../../card-list/components/item-card/components/quantity'
 
 interface ItemTableRowProps {
   index: number
@@ -17,73 +16,18 @@ interface ItemTableRowProps {
 
 export function ItemTableRow({ index, item }: ItemTableRowProps) {
   const {
-    formMethods: { register, control },
-    fieldArrayMethods: { remove, fields: items, update },
+    formMethods: { control },
+    fieldArrayMethods: { remove },
   } = useCreateOrderFormContext()
-
-  const [disableQuantityInput, setDisableQuantityInput] = useState(true)
-
-  useEffect(() => {
-    if (items?.[index].product?.id === '') {
-      setDisableQuantityInput(true)
-    } else {
-      setDisableQuantityInput(false)
-    }
-  }, [index, items])
 
   return (
     <TableRow>
       <TableCell>
         <ProductsCombobox index={index} />
       </TableCell>
-      <TableCell className="text-right">
+      <TableCell className="flex justify-center">
         <div className="flex items-center gap-2">
-          <Button
-            type="button"
-            disabled={disableQuantityInput}
-            variant="outline"
-            className="h-5 w-5 p-0"
-            onClick={() =>
-              update(index, {
-                ...item,
-                quantity: item.quantity + 1,
-              })
-            }
-          >
-            <Plus className="h-4 w-4" />
-          </Button>
-          <Input
-            className="disabled:cursor-default"
-            {...register(`items.${index}.quantity`, {
-              valueAsNumber: true,
-            })}
-            onBlur={(e) => {
-              const parsedValue = parseInt(e.target.value)
-              const value = parsedValue >= 1 ? parsedValue : 1
-              update(index, {
-                ...item,
-                quantity: value,
-                subtotal: item.product.price * value,
-              })
-            }}
-            min={1}
-            disabled={disableQuantityInput}
-            type="number"
-          />
-          <Button
-            type="button"
-            variant="outline"
-            disabled={disableQuantityInput || items[index].quantity <= 1}
-            className="h-5 w-5 p-0"
-            onClick={() =>
-              update(index, {
-                ...item,
-                quantity: item.quantity - 1,
-              })
-            }
-          >
-            <Minus className="h-4 w-4" />
-          </Button>
+          <Quantity item={item} index={index} />
         </div>
       </TableCell>
       <TableCell className="text-right">

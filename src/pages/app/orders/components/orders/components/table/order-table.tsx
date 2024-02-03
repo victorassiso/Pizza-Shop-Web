@@ -17,7 +17,7 @@ interface OrderTableProps {
 
 export function OrderTable({ orders, isLoadingOrders }: OrderTableProps) {
   return (
-    <div className="rounded-md border">
+    <div className="w-full rounded-md">
       <Table>
         <TableHeader>
           <TableRow>

@@ -15,19 +15,33 @@ export function ItemTable() {
   const {
     fieldArrayMethods: { fields: items },
   } = useCreateOrderFormContext()
-  console.log({ items })
+
+  const total = items.reduce((acc, cur) => {
+    const subtotal = cur.product.price * cur.quantity
+    return acc + subtotal
+  }, 0)
+
   return (
-    <Table className="block max-h-80">
+    <Table className="block h-80 w-full">
       <TableHeader>
         <TableRow>
-          <TableHead className="">Produto</TableHead>
-          <TableHead className="w-1/5 text-center">Qtd.</TableHead>
-          <TableHead className=" text-right">Preço</TableHead>
-          <TableHead className="w-1/6 text-right">Subtotal</TableHead>
-          <TableHead className="w-0 text-right"></TableHead>
+          <TableHead className="w-[40%]">Produto</TableHead>
+          <TableHead className="w-[18%] text-center">Qtd.</TableHead>
+          <TableHead className="w-[15%] text-center">Preço</TableHead>
+          <TableHead className="w-[15%] text-center">Subtotal</TableHead>
+          <TableHead className="w-[12%]"></TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
+        {items.length === 0 && (
+          <TableRow>
+            <TableCell className="w-[10000px]"></TableCell>
+            <TableCell className="w-[18%]"></TableCell>
+            <TableCell className="w-[15%]"></TableCell>
+            <TableCell className="w-[15%]"></TableCell>
+            <TableCell className="w-[12%]"></TableCell>
+          </TableRow>
+        )}
         {items.map((item, index) => {
           return <ItemTableRow key={item.id} index={index} item={item} />
         })}
@@ -38,12 +52,10 @@ export function ItemTable() {
           <TableCell colSpan={2} className="text-right font-medium"></TableCell>
           <TableCell colSpan={1} className="text-right font-medium">
             <span>
-              {items
-                .reduce((acc, cur) => acc + cur.subtotal, 0)
-                .toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
+              {total.toLocaleString('pt-BR', {
+                style: 'currency',
+                currency: 'BRL',
+              })}
             </span>
           </TableCell>
           <TableCell colSpan={1}></TableCell>
