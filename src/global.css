@@ -79,8 +79,7 @@
       background-color 500000s ease-in-out 0s,
       color 500000s ease-in-out 0s;
     }
-    
-  }
+  },
   /* Chrome, Safari, Edge, Opera */
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
