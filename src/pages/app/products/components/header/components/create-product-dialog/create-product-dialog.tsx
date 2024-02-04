@@ -1,8 +1,6 @@
-import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { useForm } from 'react-hook-form'
+import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
-import { z } from 'zod'
 
 import { createProduct } from '@/api/products/create-product'
 import { Product } from '@/api/products/get-products'
@@ -19,31 +17,21 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 
+import { CreateProductFormType } from '../../header'
+
 interface CreateProductDialogProps {
-  setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
+  handleOpenDialog: (open: boolean) => void
 }
 
 export function CreateProductDialog({
-  setOpenDialog,
+  handleOpenDialog,
 }: CreateProductDialogProps) {
-  const createProductSchema = z.object({
-    name: z.string().min(1),
-    description: z.string(),
-    category: z.string().min(1),
-    price: z.number(),
-  })
-
-  type CreateProductSchema = z.infer<typeof createProductSchema>
-
-  const {
-    register,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<CreateProductSchema>({
-    resolver: zodResolver(createProductSchema),
-  })
-
   const queryClient = useQueryClient()
+  const {
+    handleSubmit,
+    register,
+    formState: { isSubmitting },
+  } = useFormContext<CreateProductFormType>()
 
   function updateProductsCache(product: Product) {
     const cached = queryClient.getQueryData<Product[]>(['products'])
@@ -59,7 +47,7 @@ export function CreateProductDialog({
     mutationFn: createProduct,
   })
 
-  async function handleCreateProdct(data: CreateProductSchema) {
+  async function handleCreateProduct(data: CreateProductFormType) {
     try {
       const newProduct = await createProductFn({
         name: data.name,
@@ -68,7 +56,7 @@ export function CreateProductDialog({
         price: data.price,
       })
       updateProductsCache(newProduct)
-      setOpenDialog(false)
+      handleOpenDialog(false)
       toast.success('Produto cadastrado com sucesso')
     } catch {
       toast.error('Erro ao cadastrar produto')
@@ -81,7 +69,7 @@ export function CreateProductDialog({
         <DialogTitle>Novo Produto</DialogTitle>
         <DialogDescription>Crie um novo produto</DialogDescription>
       </DialogHeader>
-      <form onSubmit={handleSubmit(handleCreateProdct)}>
+      <form onSubmit={handleSubmit(handleCreateProduct)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="name">
