@@ -5,20 +5,15 @@ import { z } from 'zod'
 
 import { getProducts } from '@/api/products/get-products'
 import { Pagination } from '@/components/pagination'
-import {
-  Table,
-  TableBody,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
+import { useScreenSize } from '@/hooks/use-screen-size'
 
 import { Header } from './components/common/header'
-import { ProductTableRow } from './components/desktop/product-table-row'
-import { ProductTableSkeleton } from './components/desktop/product-table-skeleton'
+import { ProductTable } from './components/desktop/product-table'
+import { ProductCardList } from './components/mobile/product-card-list'
 
 export function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const { screenWidth } = useScreenSize()
 
   const id = searchParams.get('id')
   const name = searchParams.get('name')
@@ -75,38 +70,17 @@ export function Products() {
     <>
       <Helmet title="Pedidos" />
       <Header />
-      <div className="space-y-2.5">
-        <div className="rounded-md border">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-3/14">Identificador</TableHead>
-                <TableHead className="w-2/14">Nome</TableHead>
-                <TableHead className="w-4/14">Descrição</TableHead>
-                <TableHead className="w-2/14">Categoria</TableHead>
-                <TableHead className="w-2/14">Preço</TableHead>
-                <TableHead className="w-1/14"></TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {isLoadingProducts && <ProductTableSkeleton />}
-              {response &&
-                response.products.map((product) => {
-                  return (
-                    <ProductTableRow
-                      key={product.id}
-                      productId={product.id}
-                      category={product.category}
-                      description={product.description}
-                      productName={product.name}
-                      price={product.price}
-                    />
-                  )
-                })}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
+      {screenWidth >= 768 ? (
+        <ProductTable
+          isLoadingProducts={isLoadingProducts}
+          response={response}
+        />
+      ) : (
+        <ProductCardList
+          isLoadingProducts={isLoadingProducts}
+          response={response}
+        />
+      )}
       {response && (
         <Pagination
           pageIndex={response.meta.pageIndex}
