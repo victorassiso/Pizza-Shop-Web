@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
+import { PulseLoader } from 'react-spinners'
 
 import { getCustomers } from '@/api/customers/get-customers'
 import { Button } from '@/components/ui/button'
@@ -38,7 +39,7 @@ export function CustomersCombobox() {
   const [openPopover, setOpenPopover] = useState(false)
   const [openDialog, setOpenDialog] = useState(false)
   // const [customer, setCustomer] = useState<Customer | null>(null)
-  const { data: customers } = useQuery({
+  const { data: response, isLoading: isLoadingCustomers } = useQuery({
     queryKey: ['customers'],
     queryFn: () => getCustomers({}),
   })
@@ -69,43 +70,52 @@ export function CustomersCombobox() {
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>
-            <CommandEmpty>
-              <Dialog open={openDialog} onOpenChange={setOpenDialog}>
-                <DialogTrigger asChild>
-                  <Button>Novo cliente</Button>
-                </DialogTrigger>
-                <CreateCustomerDialog setOpenDialog={setOpenDialog} />
-              </Dialog>
-            </CommandEmpty>
+            {isLoadingCustomers && (
+              <div className="flex h-10 items-center justify-center">
+                <PulseLoader color="#c72323" size={8} speedMultiplier={0.5} />
+              </div>
+            )}
+            {response && (
+              <CommandEmpty>
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
+                  <DialogTrigger asChild>
+                    <Button>Novo cliente</Button>
+                  </DialogTrigger>
+                  <CreateCustomerDialog setOpenDialog={setOpenDialog} />
+                </Dialog>
+              </CommandEmpty>
+            )}
+
             <CommandGroup>
-              {customers?.map((item) => (
-                <CommandItem
-                  key={item.id}
-                  value={item.name}
-                  onSelect={(currentValue) => {
-                    if (
-                      currentValue === getValues().customerName.toLowerCase()
-                    ) {
-                      setValue('customerId', '')
-                      setValue('customerName', '')
-                    } else {
-                      setValue('customerId', item.id)
-                      setValue('customerName', item.name)
-                    }
-                    setOpenPopover(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      getValues().customerName === item.name
-                        ? 'opacity-100'
-                        : 'opacity-0',
-                    )}
-                  />
-                  {item.name}
-                </CommandItem>
-              ))}
+              {response &&
+                response.customers.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    value={item.name}
+                    onSelect={(currentValue) => {
+                      if (
+                        currentValue === getValues().customerName.toLowerCase()
+                      ) {
+                        setValue('customerId', '')
+                        setValue('customerName', '')
+                      } else {
+                        setValue('customerId', item.id)
+                        setValue('customerName', item.name)
+                      }
+                      setOpenPopover(false)
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        getValues().customerName === item.name
+                          ? 'opacity-100'
+                          : 'opacity-0',
+                      )}
+                    />
+                    {item.name}
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </ScrollArea>
         </Command>

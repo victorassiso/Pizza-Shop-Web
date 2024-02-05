@@ -18,7 +18,7 @@ import { CustomerTableRow } from './customer-table-row'
 import { CustomerTableSkeleton } from './customer-table-skeleton'
 
 export function Customers() {
-  const { data: customers, isLoading: isCustomersLoading } = useQuery({
+  const { data: response, isLoading: isCustomersLoading } = useQuery({
     queryKey: ['customers'],
     queryFn: () => getCustomers({}),
   })
@@ -53,8 +53,8 @@ export function Customers() {
               </TableHeader>
               <TableBody>
                 {isCustomersLoading && <CustomerTableSkeleton />}
-                {customers &&
-                  customers.map((customer) => {
+                {response &&
+                  response.customers.map((customer) => {
                     return (
                       <CustomerTableRow
                         key={customer.id}

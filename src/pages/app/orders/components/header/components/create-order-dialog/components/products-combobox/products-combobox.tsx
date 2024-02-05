@@ -3,6 +3,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Check, ChevronsUpDown } from 'lucide-react'
 import { useState } from 'react'
+import { PulseLoader } from 'react-spinners'
 
 import { getProducts } from '@/api/products/get-products'
 import {
@@ -35,10 +36,15 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
     fieldArrayMethods: { update, fields: items },
   } = useCreateOrderFormContext()
   const [openPopover, setOpenPopover] = useState(false)
-  const { data: products } = useQuery({
+  const { data: response, isLoading: isLoadingProducts } = useQuery({
     queryKey: ['products'],
-    queryFn: () => getProducts(),
+    queryFn: () => handleGetProducts(),
   })
+
+  async function handleGetProducts() {
+    await new Promise((resolve) => setTimeout(resolve, 500000))
+    return getProducts({})
+  }
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
@@ -72,50 +78,56 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
         <Command>
           <CommandInput placeholder="Busque um cliente..." />
           <ScrollArea>
-            <CommandEmpty>Produto não encontrado</CommandEmpty>
+            {response && <CommandEmpty>Produto não encontrado</CommandEmpty>}
             <CommandGroup>
-              {products?.map((item) => (
-                <CommandItem
-                  key={item.id}
-                  value={item.name}
-                  onSelect={(currentValue) => {
-                    if (
-                      currentValue === items[index].product.name.toLowerCase()
-                    ) {
-                      update(index, {
-                        product: {
-                          id: '',
-                          name: '',
-                          price: 0,
-                        },
-                        quantity: 0,
-                        subtotal: 0,
-                      })
-                    } else {
-                      update(index, {
-                        product: {
-                          id: item.id,
-                          name: item.name,
-                          price: item.price,
-                        },
-                        quantity: 1,
-                        subtotal: item.price,
-                      })
-                    }
-                    setOpenPopover(false)
-                  }}
-                >
-                  <Check
-                    className={cn(
-                      'mr-2 h-4 w-4',
-                      items[index].product.name === item.name
-                        ? 'opacity-100'
-                        : 'opacity-0',
-                    )}
-                  />
-                  {item.name}
-                </CommandItem>
-              ))}
+              {isLoadingProducts && (
+                <div className="flex h-10 items-center justify-center">
+                  <PulseLoader color="#c72323" size={8} speedMultiplier={0.5} />
+                </div>
+              )}
+              {response &&
+                response.products.map((item) => (
+                  <CommandItem
+                    key={item.id}
+                    value={item.name}
+                    onSelect={(currentValue) => {
+                      if (
+                        currentValue === items[index].product.name.toLowerCase()
+                      ) {
+                        update(index, {
+                          product: {
+                            id: '',
+                            name: '',
+                            price: 0,
+                          },
+                          quantity: 0,
+                          subtotal: 0,
+                        })
+                      } else {
+                        update(index, {
+                          product: {
+                            id: item.id,
+                            name: item.name,
+                            price: item.price,
+                          },
+                          quantity: 1,
+                          subtotal: item.price,
+                        })
+                      }
+                      setOpenPopover(false)
+                    }}
+                  >
+                    <Check
+                      className={cn(
+                        'mr-2 h-4 w-4',
+                        items[index].product.name === item.name
+                          ? 'opacity-100'
+                          : 'opacity-0',
+                      )}
+                    />
+                    {item.name}
+                  </CommandItem>
+                ))}
             </CommandGroup>
           </ScrollArea>
         </Command>

@@ -3,7 +3,7 @@ import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
 import { createProduct } from '@/api/products/create-product'
-import { Product } from '@/api/products/get-products'
+import { ProductDTO } from '@/api/products/get-products'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,
@@ -33,14 +33,14 @@ export function CreateProductDialog({
     formState: { isSubmitting },
   } = useFormContext<CreateProductFormType>()
 
-  function updateProductsCache(product: Product) {
-    const cached = queryClient.getQueryData<Product[]>(['products'])
+  function updateProductsCache(product: ProductDTO) {
+    const cached = queryClient.getQueryData<ProductDTO[]>(['products'])
 
     if (!cached) {
       return
     }
 
-    queryClient.setQueryData<Product[]>(['products'], [product, ...cached])
+    queryClient.setQueryData<ProductDTO[]>(['products'], [product, ...cached])
   }
 
   const { mutateAsync: createProductFn } = useMutation({

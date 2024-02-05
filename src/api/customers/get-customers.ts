@@ -27,6 +27,6 @@ export async function getCustomers(data: GetCustomersRequest) {
   const response = await api.get<GetCustomersResponse>('/customers', {
     params: { ...data },
   })
-  const customers = response.data.customers
-  return customers
+
+  return response.data
 }
