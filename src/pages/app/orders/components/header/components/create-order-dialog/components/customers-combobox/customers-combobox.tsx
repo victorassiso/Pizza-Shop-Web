@@ -25,7 +25,7 @@ import { ScrollArea } from '@/components/ui/scroll-area'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 import { cn } from '@/lib/utils'
 
-import { CreateCustomerDialog } from '../../../../../../../customers/create-customer-dialog'
+import { CreateCustomerDialog } from '../../../../../../../customers/components/header/create-customer-dialog'
 
 export function CustomersCombobox() {
   const {
