@@ -6,7 +6,6 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
-import colors from 'tailwindcss/colors'
 
 import {
   Card,
@@ -60,7 +59,7 @@ export function RevenueChart() {
               type="linear"
               strokeWidth={2}
               dataKey="revenue"
-              stroke={colors.violet[500]}
+              stroke="hsl(var(--primary))"
             />
           </LineChart>
         </ResponsiveContainer>

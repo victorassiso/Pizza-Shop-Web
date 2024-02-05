@@ -78,7 +78,7 @@ export function PopularProductsChart() {
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index]}
-                      className="stroke-background hover:opacity-80"
+                      className="stroke-card hover:opacity-80"
                     />
                   )
                 })}

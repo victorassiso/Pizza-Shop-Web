@@ -72,7 +72,11 @@ export function CustomersCombobox() {
           <ScrollArea>
             {isLoadingCustomers && (
               <div className="flex h-10 items-center justify-center">
-                <PulseLoader color="#c72323" size={8} speedMultiplier={0.5} />
+                <PulseLoader
+                  color="hsl(var(--muted-foreground))"
+                  size={8}
+                  speedMultiplier={0.5}
+                />
               </div>
             )}
             {response && (
