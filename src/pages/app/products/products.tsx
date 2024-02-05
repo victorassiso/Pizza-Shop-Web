@@ -89,11 +89,7 @@ export function Products() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {isLoadingProducts && (
-                <div className="flex justify-center">
-                  <ProductTableSkeleton />
-                </div>
-              )}
+              {isLoadingProducts && <ProductTableSkeleton />}
               {response &&
                 response.products.map((product) => {
                   return (

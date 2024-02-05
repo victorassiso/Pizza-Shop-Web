@@ -38,13 +38,8 @@ export function ProductsCombobox({ index }: ProductComboboxProps) {
   const [openPopover, setOpenPopover] = useState(false)
   const { data: response, isLoading: isLoadingProducts } = useQuery({
     queryKey: ['products'],
-    queryFn: () => handleGetProducts(),
+    queryFn: () => getProducts({}),
   })
-
-  async function handleGetProducts() {
-    await new Promise((resolve) => setTimeout(resolve, 500000))
-    return getProducts({})
-  }
 
   return (
     <Popover open={openPopover} onOpenChange={setOpenPopover} modal={true}>
