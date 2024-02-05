@@ -36,6 +36,7 @@
     "react-dom": "^18.2.0",
     "react-helmet-async": "^2.0.4",
     "react-hook-form": "^7.49.2",
+    "react-media": "^1.10.0",
     "react-router-dom": "^6.21.1",
     "react-spinners": "^0.13.8",
     "recharts": "^2.10.3",

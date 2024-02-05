@@ -13,9 +13,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { Header } from './components/header/header'
-import { ProductTableRow } from './product-table-row'
-import { ProductTableSkeleton } from './product-table-skeleton'
+import { Header } from './components/common/header'
+import { ProductTableRow } from './components/desktop/product-table-row'
+import { ProductTableSkeleton } from './components/desktop/product-table-skeleton'
 
 export function Products() {
   const [searchParams, setSearchParams] = useSearchParams()

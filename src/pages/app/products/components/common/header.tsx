@@ -6,8 +6,8 @@ import { z } from 'zod'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
-import { CreateProductDialog } from './components/create-product-dialog/create-product-dialog'
-import { Filter } from './components/filter'
+import { CreateProductDialog } from './create-product-dialog'
+import { Filter } from './filter'
 
 const CreateProductFormSchema = z.object({
   name: z.string().min(1),
