@@ -50,13 +50,13 @@ export function OrderCard({
             <CardDescription className="mt-[6px]">{orderId}</CardDescription>
           </div>
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button>
                 <MoreHorizontal />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="absolute -top-11 right-9">
-              <DialogTrigger>
+              <DialogTrigger asChild>
                 <Button
                   variant="ghost"
                   className="flex w-full justify-start gap-2"
