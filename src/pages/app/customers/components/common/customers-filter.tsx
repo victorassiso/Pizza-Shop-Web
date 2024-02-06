@@ -1,23 +1,14 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { FilterX, Search, SlidersHorizontal } from 'lucide-react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { useSearchParams } from 'react-router-dom'
 import { z } from 'zod'
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet'
+import { useScreenSize } from '@/hooks/use-screen-size'
 
-const OrderFilterSchema = z.object({
+import { CustomersFilterRow } from '../desktop/customers-filter-row'
+import { CustomersFilterSheet } from '../mobile/customers-filter-sheet'
+
+const CustomersFilterFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
   email: z.string().optional(),
@@ -25,10 +16,11 @@ const OrderFilterSchema = z.object({
   address: z.string().optional(),
 })
 
-type OrderFilterType = z.infer<typeof OrderFilterSchema>
+export type CustomersFilterFormType = z.infer<typeof CustomersFilterFormSchema>
 
 export function CustomersFilter() {
   const [searchParams, setSearchParams] = useSearchParams()
+  const { screenWidth } = useScreenSize()
 
   const id = searchParams.get('id')
   const name = searchParams.get('name')
@@ -36,8 +28,8 @@ export function CustomersFilter() {
   const phone = searchParams.get('phone')
   const address = searchParams.get('address')
 
-  const { register, handleSubmit, reset } = useForm<OrderFilterType>({
-    resolver: zodResolver(OrderFilterSchema),
+  const customersFilterFormMethods = useForm<CustomersFilterFormType>({
+    resolver: zodResolver(CustomersFilterFormSchema),
     defaultValues: {
       id: id ?? '',
       name: name ?? '',
@@ -46,8 +38,15 @@ export function CustomersFilter() {
       address: address ?? '',
     },
   })
+  const { reset } = customersFilterFormMethods
 
-  function handleFilter({ id, name, phone, email, address }: OrderFilterType) {
+  function handleFilter({
+    id,
+    name,
+    phone,
+    email,
+    address,
+  }: CustomersFilterFormType) {
     setSearchParams((state) => {
       if (id) {
         state.set('id', id)
@@ -99,138 +98,18 @@ export function CustomersFilter() {
     })
   }
   return (
-    <>
-      <div className="2xl:hidden">
-        <Sheet>
-          <div className="flex justify-end">
-            <SheetTrigger>
-              <Button variant="outline" className="">
-                <SlidersHorizontal className="h-4 w-4" />
-              </Button>
-            </SheetTrigger>
-          </div>
-          <SheetContent className="overflow-y-auto">
-            <SheetHeader>
-              <SheetTitle>Filtros:</SheetTitle>
-            </SheetHeader>
-            <form
-              className="flex h-[calc(100%-28px)] flex-col justify-between"
-              onSubmit={handleSubmit(handleFilter)}
-            >
-              <div className="mt-4 flex flex-col gap-4">
-                <div>
-                  <Label>ID:</Label>
-                  <Input id="id" className="h-8" {...register('id')} />
-                </div>
-                <div>
-                  <Label id="name" htmlFor="name">
-                    Nome:
-                  </Label>
-                  <Input id="name" className="h-8" {...register('name')} />
-                </div>
-                <div>
-                  <Label id="address" htmlFor="address">
-                    Endereço:
-                  </Label>
-                  <Input
-                    id="address"
-                    className="h-8"
-                    {...register('address')}
-                  />
-                </div>
-                <div>
-                  <Label id="phone" htmlFor="phone">
-                    Telefone:
-                  </Label>
-                  <Input id="phone" className="h-8" {...register('phone')} />
-                </div>
-                <div>
-                  <Label id="email" htmlFor="email">
-                    E-mail:
-                  </Label>
-                  <Input id="email" className="h-8" {...register('phone')} />
-                </div>
-              </div>
-
-              <SheetFooter className="mt-6">
-                <SheetClose className="flex w-full flex-col gap-4">
-                  <Button
-                    type="submit"
-                    variant="secondary"
-                    size="xs"
-                    className="w-full"
-                  >
-                    <Search className="mr-2 h-4 w-4" />
-                    Filtrar resultados
-                  </Button>
-
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="xs"
-                    className="w-full"
-                    onClick={handleClearFilters}
-                  >
-                    <FilterX className="mr-2 h-4 w-4" />
-                    Remover filtros
-                  </Button>
-                </SheetClose>
-              </SheetFooter>
-            </form>
-          </SheetContent>
-        </Sheet>
-      </div>
-      <form
-        className="hidden items-center gap-2 2xl:flex"
-        onSubmit={handleSubmit(handleFilter)}
-      >
-        <span className="text-sm font-semibold ">Filtros:</span>
-        <Input
-          id="id"
-          placeholder="ID"
-          className="h-8 w-auto"
-          {...register('id')}
+    <FormProvider {...customersFilterFormMethods}>
+      {screenWidth <= 1400 ? (
+        <CustomersFilterSheet
+          handleClearFilters={handleClearFilters}
+          handleFilter={handleFilter}
         />
-        <Input
-          id="name"
-          placeholder="Nome"
-          className="h-8 w-[320px]"
-          {...register('name')}
+      ) : (
+        <CustomersFilterRow
+          handleClearFilters={handleClearFilters}
+          handleFilter={handleFilter}
         />
-        <Input
-          id="address"
-          placeholder="Endereço"
-          className="h-8 w-[320px]"
-          {...register('address')}
-        />
-        <Input
-          id="email"
-          placeholder="E-mail"
-          className="h-8 w-[320px]"
-          {...register('email')}
-        />
-        <Input
-          id="phone"
-          placeholder="Telefone"
-          className="h-8 w-[320px]"
-          {...register('phone')}
-        />
-
-        <Button type="submit" variant="secondary" size="xs">
-          <Search className="mr-2 h-4 w-4" />
-          Filtrar resultados
-        </Button>
-
-        <Button
-          type="button"
-          variant="outline"
-          size="xs"
-          onClick={handleClearFilters}
-        >
-          <Search className="mr-2 h-4 w-4" />
-          Remover filtros
-        </Button>
-      </form>
-    </>
+      )}
+    </FormProvider>
   )
 }
