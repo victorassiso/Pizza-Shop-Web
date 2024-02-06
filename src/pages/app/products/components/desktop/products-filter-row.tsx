@@ -4,17 +4,17 @@ import { useFormContext } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 
-import { ProductsFilterType } from '../common/filter'
+import { ProductsFilterFormType } from '../common/products-filter'
 
-interface FilterRowProps {
-  handleFilter: (data: ProductsFilterType) => void
+interface ProductsFilterRowProps {
+  handleFilter: (data: ProductsFilterFormType) => void
   handleClearFilters: () => void
 }
 
-export function FilterRow({
+export function ProductsFilterRow({
   handleFilter,
   handleClearFilters,
-}: FilterRowProps) {
+}: ProductsFilterRowProps) {
   const { handleSubmit, register } = useFormContext()
 
   return (

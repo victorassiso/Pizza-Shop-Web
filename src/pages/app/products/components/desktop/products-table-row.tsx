@@ -6,7 +6,7 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
 // import { OrderDetails } from './product-details'
-export interface ProductTableRowProps {
+export interface ProductsTableRowProps {
   productId: string
   productName: string
   category: string
@@ -14,13 +14,13 @@ export interface ProductTableRowProps {
   description: string | null
 }
 
-export function ProductTableRow({
+export function ProductsTableRow({
   productId,
   productName,
   category,
   price,
   description,
-}: ProductTableRowProps) {
+}: ProductsTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (

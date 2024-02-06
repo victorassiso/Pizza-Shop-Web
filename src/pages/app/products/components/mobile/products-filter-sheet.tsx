@@ -14,18 +14,18 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 
-import { ProductsFilterType } from '../common/filter'
+import { ProductsFilterFormType } from '../common/products-filter'
 
 interface FilterSheetProps {
-  handleFilter: (data: ProductsFilterType) => void
+  handleFilter: (data: ProductsFilterFormType) => void
   handleClearFilters: () => void
 }
 
-export function FilterSheet({
+export function ProductsFilterSheet({
   handleFilter,
   handleClearFilters,
 }: FilterSheetProps) {
-  const { handleSubmit, register } = useFormContext<ProductsFilterType>()
+  const { handleSubmit, register } = useFormContext<ProductsFilterFormType>()
 
   return (
     <Sheet>

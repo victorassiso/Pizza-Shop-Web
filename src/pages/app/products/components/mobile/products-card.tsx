@@ -17,7 +17,7 @@ interface ProductCardProps {
   description: string | null
 }
 
-export function ProductCard({
+export function ProductsCard({
   id,
   name,
   category,

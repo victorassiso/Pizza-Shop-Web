@@ -7,9 +7,9 @@ import { getProducts } from '@/api/products/get-products'
 import { Pagination } from '@/components/pagination'
 import { useScreenSize } from '@/hooks/use-screen-size'
 
-import { Header } from './components/common/header'
-import { ProductTable } from './components/desktop/product-table'
-import { ProductCardList } from './components/mobile/product-card-list'
+import { Header } from './components/common/products-header'
+import { ProductsTable } from './components/desktop/products-table'
+import { ProductsCardList } from './components/mobile/products-card-list'
 
 export function Products() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -71,12 +71,12 @@ export function Products() {
       <Helmet title="Pedidos" />
       <Header />
       {screenWidth >= 768 ? (
-        <ProductTable
+        <ProductsTable
           isLoadingProducts={isLoadingProducts}
           response={response}
         />
       ) : (
-        <ProductCardList
+        <ProductsCardList
           isLoadingProducts={isLoadingProducts}
           response={response}
         />

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
 import { CreateProductDialog } from './create-product-dialog'
-import { Filter } from './filter'
+import { ProductsFilter } from './products-filter'
 
 const CreateProductFormSchema = z.object({
   name: z.string().min(1),
@@ -47,7 +47,7 @@ export function Header() {
           </FormProvider>
         </Dialog>
       </div>
-      <Filter />
+      <ProductsFilter />
     </div>
   )
 }

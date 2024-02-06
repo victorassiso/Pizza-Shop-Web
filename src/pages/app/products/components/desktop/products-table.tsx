@@ -7,15 +7,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { ProductTableRow } from './product-table-row'
-import { ProductTableSkeleton } from './product-table-skeleton'
+import { ProductsTableRow } from './products-table-row'
+import { ProductsTableSkeleton } from './products-table-skeleton'
 
 interface ProductTableProps {
   response?: GetProductsResponseData
   isLoadingProducts: boolean
 }
 
-export function ProductTable({
+export function ProductsTable({
   isLoadingProducts,
   response,
 }: ProductTableProps) {
@@ -35,11 +35,11 @@ export function ProductTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoadingProducts && <ProductTableSkeleton />}
+          {isLoadingProducts && <ProductsTableSkeleton />}
           {response &&
             response.products.map((product) => {
               return (
-                <ProductTableRow
+                <ProductsTableRow
                   key={product.id}
                   productId={product.id}
                   category={product.category}

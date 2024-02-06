@@ -1,24 +1,24 @@
 import { GetProductsResponseData } from '@/api/products/get-products'
 
-import { ProductCard } from './product-card'
-import { ProductCardListSkeleton } from './product-card-list-skeleton'
+import { ProductsCard } from './products-card'
+import { ProductsCardListSkeleton } from './products-card-list-skeleton'
 
-interface ProductTableProps {
+interface ProductsTableProps {
   response?: GetProductsResponseData
   isLoadingProducts: boolean
 }
 
-export function ProductCardList({
+export function ProductsCardList({
   response,
   isLoadingProducts,
-}: ProductTableProps) {
+}: ProductsTableProps) {
   return (
     <>
-      {isLoadingProducts && <ProductCardListSkeleton />}
+      {isLoadingProducts && <ProductsCardListSkeleton />}
       {response &&
         response.products.map((product) => {
           return (
-            <ProductCard
+            <ProductsCard
               key={product.id}
               id={product.id}
               name={product.name}

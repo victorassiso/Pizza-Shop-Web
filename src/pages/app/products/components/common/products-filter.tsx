@@ -5,10 +5,10 @@ import { z } from 'zod'
 
 import { useScreenSize } from '@/hooks/use-screen-size'
 
-import { FilterRow } from '../desktop/filter-row'
-import { FilterSheet } from '../mobile/filter-sheet'
+import { ProductsFilterRow } from '../desktop/products-filter-row'
+import { ProductsFilterSheet } from '../mobile/products-filter-sheet'
 
-const ProductsFilterSchema = z.object({
+const ProductsFilterFormSchema = z.object({
   id: z.string().optional(),
   name: z.string().optional(),
   description: z.string().optional(),
@@ -17,9 +17,9 @@ const ProductsFilterSchema = z.object({
   maxPrice: z.coerce.number().optional(),
 })
 
-export type ProductsFilterType = z.infer<typeof ProductsFilterSchema>
+export type ProductsFilterFormType = z.infer<typeof ProductsFilterFormSchema>
 
-export function Filter() {
+export function ProductsFilter() {
   const [searchParams, setSearchParams] = useSearchParams()
   const { screenWidth } = useScreenSize()
 
@@ -36,8 +36,8 @@ export function Filter() {
     .transform((value) => value || undefined)
     .parse(searchParams.get('maxPrice'))
 
-  const productsFilterMethods = useForm<ProductsFilterType>({
-    resolver: zodResolver(ProductsFilterSchema),
+  const productsFilterMethods = useForm<ProductsFilterFormType>({
+    resolver: zodResolver(ProductsFilterFormSchema),
     defaultValues: {
       id: id ?? undefined,
       name: name ?? undefined,
@@ -57,7 +57,7 @@ export function Filter() {
     category,
     minPrice,
     maxPrice,
-  }: ProductsFilterType) {
+  }: ProductsFilterFormType) {
     setSearchParams((state) => {
       if (id) {
         state.set('id', id)
@@ -119,12 +119,12 @@ export function Filter() {
   return (
     <FormProvider {...productsFilterMethods}>
       {screenWidth <= 1400 ? (
-        <FilterSheet
+        <ProductsFilterSheet
           handleClearFilters={handleClearFilters}
           handleFilter={handleFilter}
         />
       ) : (
-        <FilterRow
+        <ProductsFilterRow
           handleClearFilters={handleClearFilters}
           handleFilter={handleFilter}
         />

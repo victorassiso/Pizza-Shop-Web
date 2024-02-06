@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
-export function ProductCardListSkeleton() {
+export function ProductsCardListSkeleton() {
   return Array.from({ length: 10 }).map((_, i) => {
     return (
       // <h1 key={i}>Test</h1>
