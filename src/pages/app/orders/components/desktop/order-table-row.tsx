@@ -3,14 +3,15 @@ import { ptBR } from 'date-fns/locale'
 import { Search } from 'lucide-react'
 import { useState } from 'react'
 
+import { OrderStatusType } from '@/@types/order'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
 import { OrderDetails } from '../common/details-dialog/order-details'
-import { CancelOrderButton } from '../common/status/cancel-order-button'
-import { ChangeStatusButton } from '../common/status/change-status-button'
-import { OrderStatus, OrderStatusType } from '../common/status/order-status'
+import { OrderStatus } from '../common/status/order-status'
+import { CancelOrderButton } from './cancel-order-button'
+import { ChangeStatusButton } from './change-status-button'
 export interface OrderTableRowProps {
   orderId: string
   createdAt: Date
