@@ -10,7 +10,6 @@ import { updateWorkspace } from '@/api/workspaces/update-workspace'
 import { Button } from './ui/button'
 import {
   DialogClose,
-  DialogContent,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -87,7 +86,7 @@ export function WorkspaceProfileDialog() {
   })
 
   return (
-    <DialogContent>
+    <>
       <DialogHeader>
         <DialogTitle>Perfil da Loja</DialogTitle>
         <DialogDescription>
@@ -121,6 +120,6 @@ export function WorkspaceProfileDialog() {
           </Button>
         </DialogFooter>
       </form>
-    </DialogContent>
+    </>
   )
 }

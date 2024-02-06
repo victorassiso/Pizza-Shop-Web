@@ -1,25 +1,30 @@
 import { useQuery } from '@tanstack/react-query'
-import { Building, ChevronDown, LogOut } from 'lucide-react'
+import { Building, ChevronDown, LogOut, PencilLine } from 'lucide-react'
 
 import { getProfile } from '@/api/users/get-profile'
 import { getWorkspace } from '@/api/workspaces/get-workspace'
 import { useAuth } from '@/hooks/use-auth'
 
 import { Button } from './ui/button'
-import { Dialog, DialogTrigger } from './ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from './ui/dialog'
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from './ui/dropdown-menu'
 import { Skeleton } from './ui/skeleton'
 import { WorkspaceProfileDialog } from './workspace-profile-dialog'
 
 export function AccountMenu() {
-  const { signOut, isSigningOut } = useAuth()
+  const { signOut, isSigningOut, removeWorkspace, isRemovingWorkspace } =
+    useAuth()
+
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
     queryFn: getProfile,
@@ -40,6 +45,16 @@ export function AccountMenu() {
       console.error(error)
     }
   }
+
+  async function handleWorkspaceRemoval() {
+    try {
+      await removeWorkspace()
+      window.location.replace('/')
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
   return (
     <Dialog>
       <DropdownMenu>
@@ -73,28 +88,56 @@ export function AccountMenu() {
                 </span>
               </>
             )}
-
-            <DropdownMenuSeparator />
-            <DialogTrigger asChild>
-              <DropdownMenuItem>
-                <Building className="mr-2 h-4 w-4" />
-                <span>Perfil da Loja</span>
+          </DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuSub>
+            <DropdownMenuSubTrigger>
+              <Building className="mr-2 h-4 w-4" />
+              <span>Perfil da Loja</span>
+            </DropdownMenuSubTrigger>
+            <DropdownMenuSubContent>
+              <DialogTrigger asChild>
+                <DropdownMenuItem>
+                  <PencilLine className="mr-2 h-4 w-4" />
+                  <span>Editar</span>
+                </DropdownMenuItem>
+              </DialogTrigger>
+              <DropdownMenuItem
+                asChild
+                className="text-rose-500 dark:text-rose-400"
+                disabled={isRemovingWorkspace}
+              >
+                <button
+                  onClick={() => handleWorkspaceRemoval()}
+                  className="w-full"
+                  disabled={isRemovingWorkspace}
+                >
+                  <LogOut className="mr-2 h-4 w-4" />
+                  <span>Sair da Loja</span>
+                </button>
               </DropdownMenuItem>
-            </DialogTrigger>
-            <DropdownMenuItem
-              asChild
-              className="text-rose-500 dark:text-rose-400"
+            </DropdownMenuSubContent>
+          </DropdownMenuSub>
+
+          <DropdownMenuItem
+            asChild
+            className="text-rose-500 dark:text-rose-400"
+            disabled={isSigningOut}
+          >
+            <button
+              onClick={() => handleSignOut()}
+              className="w-full"
               disabled={isSigningOut}
             >
-              <button onClick={() => handleSignOut()} className="w-full">
-                <LogOut className="mr-2 h-4 w-4" />
-                <span>Sair</span>
-              </button>
-            </DropdownMenuItem>
-          </DropdownMenuLabel>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Sair</span>
+            </button>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-      <WorkspaceProfileDialog />
+      <DialogContent>
+        <WorkspaceProfileDialog />
+      </DialogContent>
     </Dialog>
   )
 }

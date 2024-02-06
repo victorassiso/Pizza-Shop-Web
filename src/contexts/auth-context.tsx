@@ -5,6 +5,7 @@ import {
   refreshToken as refreshTokenApi,
   RefreshTokenResponseData,
 } from '@/api/auth/refresh-token'
+import { removeWorkspace as removeWorkspaceApi } from '@/api/auth/remove-workspace'
 import { signIn as signInApi, SignInBody } from '@/api/auth/sign-in'
 import { signOut as signOutApi } from '@/api/auth/sign-out'
 import { signUp as signUpApi, SignUpBody } from '@/api/auth/sign-up'
@@ -20,7 +21,7 @@ import { queryClient } from '@/lib/react-query'
 
 interface UserDTO {
   id: string
-  workspaceId: string
+  workspaceId: string | null
 }
 interface AuthContextProps {
   user: UserDTO
@@ -28,10 +29,12 @@ interface AuthContextProps {
   signIn: (data: SignInBody) => Promise<UserDTO>
   signUp: (data: SignUpBody) => Promise<UserDTO>
   signOut: () => Promise<void>
+  isSigningOut: boolean
   joinInWorkspace: (data: JoinInWorkspaceBody) => Promise<UserDTO>
   createWorkspace: (data: CreateWorkspaceBody) => Promise<UserDTO>
+  removeWorkspace: () => Promise<UserDTO>
+  isRemovingWorkspace: boolean
   refreshToken: () => Promise<RefreshTokenResponseData>
-  isSigningOut: boolean
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -128,6 +131,24 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return user
   }
 
+  const { mutateAsync: removeWorkspaceApiFn, isPending: isRemovingWorkspace } =
+    useMutation({
+      mutationFn: removeWorkspaceApi,
+    })
+
+  async function removeWorkspace() {
+    const { data: removeWorkspaceResponse } = await removeWorkspaceApiFn()
+
+    const { data: refreshData } = await refreshTokenApiFn()
+    setUser({
+      ...user,
+      workspaceId: removeWorkspaceResponse.user.workspaceId,
+    })
+    setAccessToken(refreshData.accessToken)
+
+    return user
+  }
+
   async function refreshToken() {
     try {
       const { data } = await refreshTokenApiFn()
@@ -166,9 +187,11 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         signUp,
         signOut,
         joinInWorkspace,
-        isSigningOut,
         createWorkspace,
+        removeWorkspace,
+        isRemovingWorkspace,
         refreshToken,
+        isSigningOut,
       }}
     >
       {children}
