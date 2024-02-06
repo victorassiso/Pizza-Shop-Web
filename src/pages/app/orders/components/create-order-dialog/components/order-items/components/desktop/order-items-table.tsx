@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/table'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { ItemTableRow } from './components/item-table-row'
+import { ItemTableRow } from './order-items-table-row'
 
 export function ItemTable() {
   const {

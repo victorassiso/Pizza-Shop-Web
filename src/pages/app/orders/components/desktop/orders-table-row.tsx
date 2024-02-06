@@ -8,11 +8,11 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { OrderDetails } from '../common/details-dialog/order-details'
-import { OrderStatus } from '../common/status/order-status'
+import { OrderDetails } from '../common/order-details'
+import { OrderStatus } from '../common/order-status'
 import { CancelOrderButton } from './cancel-order-button'
 import { ChangeStatusButton } from './change-status-button'
-export interface OrderTableRowProps {
+export interface OrdersTableRowProps {
   orderId: string
   createdAt: Date
   status: OrderStatusType
@@ -20,13 +20,13 @@ export interface OrderTableRowProps {
   total: number
 }
 
-export function OrderTableRow({
+export function OrdersTableRow({
   orderId,
   createdAt,
   status,
   customerName,
   total,
-}: OrderTableRowProps) {
+}: OrdersTableRowProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (

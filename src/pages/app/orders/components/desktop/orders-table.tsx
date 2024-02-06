@@ -7,15 +7,15 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { OrderTableRow } from './order-table-row'
-import { OrderTableSkeleton } from './order-table-skeleton'
+import { OrdersTableRow } from './orders-table-row'
+import { OrdersTableSkeleton } from './orders-table-skeleton'
 
 interface OrderTableProps {
   orders?: GetOrdersResponseOrder[]
   isLoadingOrders: boolean
 }
 
-export function OrderTable({ orders, isLoadingOrders }: OrderTableProps) {
+export function OrdersTable({ orders, isLoadingOrders }: OrderTableProps) {
   return (
     <div className="w-full rounded-md">
       <Table>
@@ -32,10 +32,10 @@ export function OrderTable({ orders, isLoadingOrders }: OrderTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {isLoadingOrders && <OrderTableSkeleton />}
+          {isLoadingOrders && <OrdersTableSkeleton />}
           {orders &&
             orders.map((order) => {
-              return <OrderTableRow key={order.orderId} {...order} />
+              return <OrdersTableRow key={order.orderId} {...order} />
             })}
         </TableBody>
       </Table>

@@ -17,7 +17,7 @@ import { CreateOrderType } from '@/contexts/create-order-form-context'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { CustomersCombobox } from './components/customers-combobox/customers-combobox'
-import { Items } from './components/items/items'
+import { Items } from './components/order-items/order-items'
 
 export function CreateOrderDialog() {
   const {

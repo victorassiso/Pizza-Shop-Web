@@ -19,12 +19,12 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 
-import { OrderDetails } from '../common/details-dialog/order-details'
-import { OrderStatus } from '../common/status/order-status'
+import { OrderDetails } from '../common/order-details'
+import { OrderStatus } from '../common/order-status'
 import { CancelOrderButton } from './cancel-order-button'
 import { ChangeStatusButton } from './change-status-button'
 
-export interface OrderCardProps {
+export interface OrdersCardProps {
   orderId: string
   createdAt: Date
   status: OrderStatusType
@@ -32,13 +32,13 @@ export interface OrderCardProps {
   total: number
 }
 
-export function OrderCard({
+export function OrdersCard({
   orderId,
   createdAt,
   status,
   customerName,
   total,
-}: OrderCardProps) {
+}: OrdersCardProps) {
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (

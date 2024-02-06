@@ -5,8 +5,8 @@ import { Card } from '@/components/ui/card'
 import { CreateOrderType } from '@/contexts/create-order-form-context'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { ProductsCombobox } from '../../../../../products-combobox/products-combobox'
-import { Quantity } from '../../../quantity/quantity'
+import { ProductsCombobox } from '../../../products-combobox/products-combobox'
+import { Quantity } from '../common/quantity'
 
 interface ItemTableRowProps {
   index: number

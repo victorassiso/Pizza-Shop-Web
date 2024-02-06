@@ -2,8 +2,8 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { ItemCardList } from './components/card-list/item-card-list'
-import { ItemTable } from './components/table/item-table'
+import { ItemTable } from './components/desktop/order-items-table'
+import { ItemCardList } from './components/mobile/order-items-card-list'
 
 export function Items() {
   const {

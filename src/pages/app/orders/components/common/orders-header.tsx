@@ -4,8 +4,8 @@ import { useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { CreateOrderDialog } from './components/create-order-dialog/create-order-dialog'
-import { Filter } from './components/filter/filter'
+import { CreateOrderDialog } from '../create-order-dialog/create-order-dialog'
+import { Filter } from './orders-filter'
 
 export function Header() {
   const {

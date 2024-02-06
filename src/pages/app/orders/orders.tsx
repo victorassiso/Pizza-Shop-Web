@@ -8,9 +8,9 @@ import { Pagination } from '@/components/pagination'
 import { CreateOrderFormProvider } from '@/contexts/create-order-form-context'
 import { OrdersProvider } from '@/contexts/orders-context'
 
-import { OrderTable } from './components/desktop/order-table'
-import { Header } from './components/header/header'
-import { OrderCardList } from './components/mobile/order-card-list'
+import { Header } from './components/common/orders-header'
+import { OrdersTable } from './components/desktop/orders-table'
+import { OrdersCardList } from './components/mobile/orders-card-list'
 
 export function Orders() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -51,14 +51,14 @@ export function Orders() {
       </CreateOrderFormProvider>
       {/* Small Screen: Card View */}
       <div className="lg:hidden">
-        <OrderCardList
+        <OrdersCardList
           orders={response?.orders}
           isLoadingOrders={isLoadingOrders}
         />
       </div>
       {/* Large Screen: Table View */}
       <div className="hidden lg:block">
-        <OrderTable
+        <OrdersTable
           orders={response?.orders}
           isLoadingOrders={isLoadingOrders}
         />

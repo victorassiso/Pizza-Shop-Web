@@ -1,6 +1,6 @@
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
-import { ItemCard } from './components/item-card/item-card'
+import { ItemCard } from './order-items-card'
 
 export function ItemCardList() {
   const {
