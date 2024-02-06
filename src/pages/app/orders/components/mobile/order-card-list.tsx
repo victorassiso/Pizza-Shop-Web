@@ -1,6 +1,6 @@
 import { GetOrdersResponseOrder } from '@/api/orders/get-orders'
 
-import { OrderCard } from './components/order-card'
+import { OrderCard } from './new-card'
 import { OrderCardListSkeleton } from './order-card-list-skeleton'
 
 interface OrderCardListProps {

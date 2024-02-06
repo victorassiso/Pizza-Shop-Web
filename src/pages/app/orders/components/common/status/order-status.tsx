@@ -1,9 +1,4 @@
-export type OrderStatusType =
-  | 'pending'
-  | 'canceled'
-  | 'processing'
-  | 'delivering'
-  | 'delivered'
+import { OrderStatusType } from '@/@types/order'
 
 interface OrderStatusProps {
   status: OrderStatusType

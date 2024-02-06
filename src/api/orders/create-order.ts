@@ -1,19 +1,12 @@
+import { OrderStatusType } from '@/@types/order'
 import { api } from '@/lib/axios'
-
-export enum OrderStatus {
-  pending = 'pending',
-  canceled = 'canceled',
-  processing = 'processing',
-  delivering = 'delivering',
-  delivered = 'delivered',
-}
 
 export interface Order {
   workspaceId: string
   id: string
   customerId: string
   total: number
-  status: OrderStatus
+  status: OrderStatusType
   createdAt: Date
   updatedAt: Date
 }

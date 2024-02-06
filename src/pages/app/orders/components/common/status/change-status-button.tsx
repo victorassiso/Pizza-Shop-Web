@@ -2,13 +2,12 @@ import { useMutation } from '@tanstack/react-query'
 import { ArrowRight } from 'lucide-react'
 import { toast } from 'sonner'
 
+import { OrderStatusType } from '@/@types/order'
 import { approveOrder } from '@/api/orders/approve-order'
 import { deliverOrder } from '@/api/orders/deliver-order'
 import { dispatchOrder } from '@/api/orders/dispatch-order'
 import { Button } from '@/components/ui/button'
 import { useOrders } from '@/hooks/use-orders'
-
-import { OrderStatusType } from './order-status'
 
 interface ChangeStatusButtonProps {
   orderId: string

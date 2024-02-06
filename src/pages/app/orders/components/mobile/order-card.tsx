@@ -3,6 +3,7 @@ import { ptBR } from 'date-fns/locale'
 import { MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 
+import { OrderStatusType } from '@/@types/order'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -14,15 +15,15 @@ import {
 } from '@/components/ui/card'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 
-import { OrderDetails } from '../../details-dialog/order-details'
-import { CancelOrderButton } from '../../status/cancel-order-button'
-import { ChangeStatusButton } from '../../status/change-status-button'
-import { OrderStatus } from '../../status/order-status'
+import { OrderDetails } from '../common/details-dialog/order-details'
+import { CancelOrderButton } from '../common/status/cancel-order-button'
+import { ChangeStatusButton } from '../common/status/change-status-button'
+import { OrderStatus } from '../common/status/order-status'
 
 export interface OrderCardProps {
   orderId: string
   createdAt: Date
-  status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+  status: OrderStatusType
   customerName: string
   total: number
 }
