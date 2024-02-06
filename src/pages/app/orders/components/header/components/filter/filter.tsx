@@ -94,7 +94,7 @@ export function Filter() {
       <div className="lg:hidden">
         <Sheet>
           <div className="flex justify-end">
-            <SheetTrigger>
+            <SheetTrigger asChild>
               <Button variant="outline" className="">
                 <SlidersHorizontal className="h-4 w-4" />
               </Button>
@@ -166,28 +166,32 @@ export function Filter() {
               </div>
 
               <SheetFooter className="mt-6">
-                <SheetClose className="flex w-full flex-col gap-4">
-                  <Button
-                    type="submit"
-                    variant="secondary"
-                    size="xs"
-                    className="w-full"
-                  >
-                    <Search className="mr-2 h-4 w-4" />
-                    Filtrar resultados
-                  </Button>
+                <div className="flex w-full flex-col gap-4">
+                  <SheetClose asChild>
+                    <Button
+                      type="submit"
+                      variant="secondary"
+                      size="xs"
+                      className="w-full"
+                    >
+                      <Search className="mr-2 h-4 w-4" />
+                      Filtrar resultados
+                    </Button>
+                  </SheetClose>
 
-                  <Button
-                    type="button"
-                    variant="outline"
-                    size="xs"
-                    className="w-full"
-                    onClick={handleClearFilters}
-                  >
-                    <FilterX className="mr-2 h-4 w-4" />
-                    Remover filtros
-                  </Button>
-                </SheetClose>
+                  <SheetClose asChild>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="xs"
+                      className="w-full"
+                      onClick={handleClearFilters}
+                    >
+                      <FilterX className="mr-2 h-4 w-4" />
+                      Remover filtros
+                    </Button>
+                  </SheetClose>
+                </div>
               </SheetFooter>
             </form>
           </SheetContent>
