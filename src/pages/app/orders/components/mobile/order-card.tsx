@@ -1,6 +1,6 @@
 import { formatDistanceToNow } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
-import { MoreHorizontal } from 'lucide-react'
+import { Eye, MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 
 import { OrderStatusType } from '@/@types/order'
@@ -9,16 +9,20 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
 import { OrderDetails } from '../common/details-dialog/order-details'
-import { CancelOrderButton } from '../common/status/cancel-order-button'
-import { ChangeStatusButton } from '../common/status/change-status-button'
 import { OrderStatus } from '../common/status/order-status'
+import { CancelOrderButton } from './cancel-order-button'
+import { ChangeStatusButton } from './change-status-button'
 
 export interface OrderCardProps {
   orderId: string
@@ -38,47 +42,56 @@ export function OrderCard({
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
 
   return (
-    <Card style={{ position: 'relative' }}>
-      <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogTrigger asChild className="absolute right-2 top-2">
-          <Button variant="ghost" size="xs" className="">
-            <MoreHorizontal className="h-3 w-3" />
-            <span className="sr-only">Detalhes do pedido</span>
-          </Button>
-        </DialogTrigger>
-        <OrderDetails orderId={orderId} open={isDetailsOpen} />
-      </Dialog>
-      <CardHeader>
-        <CardTitle>{customerName}</CardTitle>
-        <CardDescription className="flex justify-between gap-2">
-          <span className="">{orderId}</span>
-          <span className="min-w-14 text-right">
+    <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+      <Card>
+        <CardHeader className="flex flex-row items-start justify-between">
+          <div>
+            <CardTitle className="text-primary">{customerName}</CardTitle>
+            <CardDescription className="mt-[6px]">{orderId}</CardDescription>
+          </div>
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Button>
+                <MoreHorizontal />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="absolute -top-11 right-9">
+              <DialogTrigger>
+                <Button
+                  variant="ghost"
+                  className="flex w-full justify-start gap-2"
+                >
+                  <Eye />
+                  <span>Ver detalhes</span>
+                </Button>
+              </DialogTrigger>
+              <OrderDetails orderId={orderId} open={isDetailsOpen} />
+              <ChangeStatusButton orderId={orderId} status={status} />
+              <CancelOrderButton orderId={orderId} status={status} />
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </CardHeader>
+        <CardContent className="flex flex-col gap-1">
+          <span className="flex items-center gap-2">
+            <strong>Status: </strong>
+            <OrderStatus status={status} />
+          </span>
+          <span>
+            <strong>Iniciado: </strong>
             {formatDistanceToNow(createdAt, {
               locale: ptBR,
               addSuffix: true,
             })}
           </span>
-        </CardDescription>
-        {/* <OrderCardStatus status={status} /> */}
-      </CardHeader>
-      <CardContent className="flex justify-between">
-        <div className="flex gap-4">
-          <OrderStatus status={status} />
-        </div>
-        <div className="text-muted-foreground">
-          <span>Total: </span>
           <span>
+            <strong>Total: </strong>
             {total.toLocaleString('pt-BR', {
               style: 'currency',
               currency: 'BRL',
             })}
           </span>
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between">
-        <CancelOrderButton orderId={orderId} status={status} />
-        <ChangeStatusButton orderId={orderId} status={status} />
-      </CardFooter>
-    </Card>
+        </CardContent>
+      </Card>
+    </Dialog>
   )
 }

@@ -24,21 +24,20 @@ export function CancelOrderButton({ orderId, status }: CancelOrderButtonProps) {
       },
     })
 
+  console.log()
+
   return (
-    <div>
+    !['delivered', 'canceled'].includes(status) && (
       <Button
-        disabled={
-          !['pending', 'processing', 'delivering'].includes(status) ||
-          isCancelingOrder
-        }
+        disabled={isCancelingOrder}
         variant="ghost"
-        size="xs"
         type="button"
+        className="flex w-full flex-row justify-start gap-2 text-destructive"
         onClick={() => cancelOrderFn({ orderId })}
       >
-        <X className="mr-2 h-3 w-3" />
+        <X />
         Cancelar
       </Button>
-    </div>
+    )
   )
 }
