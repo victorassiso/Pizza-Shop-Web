@@ -16,10 +16,10 @@ import {
   TableRow,
 } from '@/components/ui/table'
 
-import { CustomerTableRow } from './components/customers/customer-table-row'
-import { CustomerTableSkeleton } from './components/customers/customer-table-skeleton'
-import { Filter } from './components/header/components/filter/filter'
-import { CreateCustomerDialog } from './components/header/create-customer-dialog'
+import { CreateCustomerDialog } from './components/common/create-customer-dialog'
+import { Filter } from './components/common/filter'
+import { CustomerTableRow } from './components/desktop/customer-table-row'
+import { CustomerTableSkeleton } from './components/desktop/customer-table-skeleton'
 
 export function Customers() {
   const [searchParams, setSearchParams] = useSearchParams()
