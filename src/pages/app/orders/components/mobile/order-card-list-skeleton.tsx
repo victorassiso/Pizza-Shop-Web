@@ -1,26 +1,16 @@
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 
 export function OrderCardListSkeleton() {
   return Array.from({ length: 10 }).map((_, i) => {
     return (
       <Card key={i}>
-        <CardHeader>
-          <CardTitle>
+        <CardHeader className="flex justify-between">
+          <div>
             <Skeleton className="h-7 w-[200px]" />
-          </CardTitle>
-          <CardDescription className="flex justify-between">
             <Skeleton className="h-3 w-[250px]" />
-            <Skeleton className="h-3 w-[80px]" />
-          </CardDescription>
-          {/* <OrderCardStatus status={status} /> */}
+          </div>
+          <Skeleton className="h-3 w-[80px]" />
         </CardHeader>
         <CardContent className="flex justify-between">
           <div className="flex gap-4">
