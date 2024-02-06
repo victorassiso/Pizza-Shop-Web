@@ -26,13 +26,13 @@ export interface GetCustomersRequest {
   phone?: string | null
 }
 
-export interface GetCustomersResponse {
+export interface GetCustomersResponseData {
   customers: Customer[]
   meta: PaginationMeta
 }
 
 export async function getCustomers(data: GetCustomersRequest) {
-  const response = await api.get<GetCustomersResponse>('/customers', {
+  const response = await api.get<GetCustomersResponseData>('/customers', {
     params: { ...data },
   })
 

@@ -19,7 +19,7 @@ export function CustomersFilterRow({
 
   return (
     <form
-      className="hidden items-center gap-2 2xl:flex"
+      className="flex items-center gap-2"
       onSubmit={handleSubmit(handleFilter)}
     >
       <span className="text-sm font-semibold ">Filtros:</span>
