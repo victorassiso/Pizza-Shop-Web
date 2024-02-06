@@ -27,7 +27,7 @@ const OrderFilterSchema = z.object({
 
 type OrderFilterType = z.infer<typeof OrderFilterSchema>
 
-export function Filter() {
+export function CustomersFilter() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const id = searchParams.get('id')

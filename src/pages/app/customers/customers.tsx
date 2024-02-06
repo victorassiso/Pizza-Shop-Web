@@ -17,9 +17,9 @@ import {
 } from '@/components/ui/table'
 
 import { CreateCustomerDialog } from './components/common/create-customer-dialog'
-import { Filter } from './components/common/filter'
-import { CustomerTableRow } from './components/desktop/customer-table-row'
-import { CustomerTableSkeleton } from './components/desktop/customer-table-skeleton'
+import { CustomersFilter } from './components/common/customers-filter'
+import { CustomerTableRow } from './components/desktop/customers-table-row'
+import { CustomerTableSkeleton } from './components/desktop/customers-table-skeleton'
 
 export function Customers() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -81,7 +81,7 @@ export function Customers() {
             <CreateCustomerDialog setOpenDialog={setOpenDialog} />
           </Dialog>
         </div>
-        <Filter />
+        <CustomersFilter />
         <div className="space-y-2.5">
           <div className="rounded-md border">
             <Table>
