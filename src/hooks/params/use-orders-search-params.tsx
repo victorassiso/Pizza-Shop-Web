@@ -14,7 +14,7 @@ type OrdersQueryKey = [
 interface UseOrdersSearchParamsReturn {
   searchParams: URLSearchParams
   setSearchParams: SetURLSearchParams
-  formatedSearchParams: GetOrdersRequest
+  formattedSearchParams: GetOrdersRequest
   queryKey: OrdersQueryKey
 }
 
@@ -36,7 +36,7 @@ export function useOrdersSearchParams(): UseOrdersSearchParamsReturn {
   return {
     searchParams,
     setSearchParams,
-    formatedSearchParams: {
+    formattedSearchParams: {
       pageIndex,
       orderId,
       customerName,

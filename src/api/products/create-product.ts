@@ -1,4 +1,4 @@
-import { ProductDTO } from '@/@types/api-dtos'
+import { Product } from '@/@types/bd-entities'
 import { api } from '@/lib/axios'
 
 export interface CreateProductRequest {
@@ -9,7 +9,7 @@ export interface CreateProductRequest {
 }
 
 export interface CreateProductResponse {
-  product: ProductDTO
+  product: Product
 }
 
 export async function createProduct({

@@ -35,7 +35,7 @@ export interface Workspace {
 export interface Product {
   id: string
   name: string
-  description?: string | null
+  description?: string
   category: string
   price: number
 

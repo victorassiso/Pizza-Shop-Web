@@ -20,7 +20,7 @@ import { Textarea } from '@/components/ui/textarea'
 const updateProductFormSchema = z.object({
   name: z.string().min(1),
   category: z.string().min(1),
-  description: z.string().optional().nullable(),
+  description: z.string().optional(),
   price: z.coerce.number().min(0),
 })
 
@@ -29,7 +29,7 @@ type updateProductFormType = z.infer<typeof updateProductFormSchema>
 interface UpdateProductDialog {
   id: string
   name: string
-  description?: string | null
+  description?: string
   category: string
   price: number
 }

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-import { UpdateProductDialog } from '../update-product-dialog/update-product-dialog'
+import { UpdateProductDialog } from '../common/update-product-dialog'
 
 export interface ProductsTableRowProps {
   productId: string

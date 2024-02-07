@@ -32,7 +32,7 @@ export function CreateOrderDialog() {
   } = useCreateOrderFormContext()
 
   const {
-    formatedSearchParams: { customerName: customerNameParam, status },
+    formattedSearchParams: { customerName: customerNameParam, status },
   } = useOrdersSearchParams()
 
   const queryClient = useQueryClient()
