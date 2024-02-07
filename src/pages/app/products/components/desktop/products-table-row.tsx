@@ -2,10 +2,11 @@ import { Pencil } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { Dialog, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 
-// import { OrderDetails } from './product-details'
+import { UpdateProductDialog } from '../update-product-dialog/update-product-dialog'
+
 export interface ProductsTableRowProps {
   productId: string
   productName: string
@@ -40,12 +41,20 @@ export function ProductsTableRow({
       <TableCell>
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="xs" disabled>
+            <Button variant="outline" size="xs">
               <Pencil className="h-3 w-3" />
               <span className="sr-only">Detalhes do produto</span>
             </Button>
           </DialogTrigger>
-          {/* <OrderDetails orderId={productId} open={isDetailsOpen} /> */}
+          <DialogContent>
+            <UpdateProductDialog
+              id={productId}
+              name={productName}
+              description={description}
+              category={category}
+              price={price}
+            />
+          </DialogContent>
         </Dialog>
       </TableCell>
     </TableRow>
