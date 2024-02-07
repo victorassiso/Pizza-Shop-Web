@@ -45,9 +45,13 @@ export function SignUp() {
         isApiError(error) &&
         error.response?.data.message === 'E-mail already exists'
       ) {
-        toast.error('E-mail já em uso!')
+        toast.error('E-mail já em uso!', {
+          closeButton: true,
+        })
       } else {
-        toast.error('Erro ao cadastrar usuário.')
+        toast.error('Erro ao cadastrar usuário.', {
+          closeButton: true,
+        })
       }
     }
   }

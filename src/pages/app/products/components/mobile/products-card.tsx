@@ -1,4 +1,5 @@
 import { Pencil } from 'lucide-react'
+import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -8,6 +9,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+
+import { UpdateProductDialog } from '../common/update-product-dialog'
 
 interface ProductCardProps {
   id: string
@@ -24,6 +28,8 @@ export function ProductsCard({
   description,
   price,
 }: ProductCardProps) {
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false)
+
   return (
     <Card>
       <CardHeader>
@@ -32,9 +38,23 @@ export function ProductsCard({
             <CardTitle className="text-primary">{name}</CardTitle>
             <CardDescription>{description}</CardDescription>
           </div>
-          <Button>
-            <Pencil />
-          </Button>
+          <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
+            <DialogTrigger asChild>
+              <Button>
+                <Pencil />
+                <span className="sr-only">Editar produto</span>
+              </Button>
+            </DialogTrigger>
+            <DialogContent>
+              <UpdateProductDialog
+                id={id}
+                name={name}
+                description={description}
+                category={category}
+                price={price}
+              />
+            </DialogContent>
+          </Dialog>
         </div>
       </CardHeader>
       <CardContent className="flex flex-col">

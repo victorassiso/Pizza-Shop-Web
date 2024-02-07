@@ -28,7 +28,9 @@ export function CancelOrderButton({ id, status }: CancelOrderButtonProps) {
       mutationFn: cancelOrder,
       async onSuccess(_, { id }) {
         updateOrderStatusOnCache(id, 'canceled')
-        toast.success('Pedido cancelado com sucesso!')
+        toast.success('Pedido cancelado com sucesso!', {
+          closeButton: true,
+        })
       },
     })
 

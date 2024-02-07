@@ -42,7 +42,9 @@ export function CreateWorkspace() {
       })
       window.location.replace('/')
     } catch (error) {
-      toast.error('Erro ao cadastrar organização.')
+      toast.error('Erro ao cadastrar organização.', {
+        closeButton: true,
+      })
     }
   }
 

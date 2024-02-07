@@ -123,9 +123,13 @@ export function CreateOrderDialog() {
       })
       updateOrdersCache(newOrder, data.customerName)
       handleOpenDialog(false)
-      toast.success('Pedido cadastrado com sucesso')
+      toast.success('Pedido cadastrado com sucesso', {
+        closeButton: true,
+      })
     } catch {
-      toast.error('Erro ao cadastrar pedido')
+      toast.error('Erro ao cadastrar pedido', {
+        closeButton: true,
+      })
     }
   }
 

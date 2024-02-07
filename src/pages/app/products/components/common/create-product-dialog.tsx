@@ -129,9 +129,13 @@ export function CreateProductDialog({
       })
       updateProductsCache(newProduct)
       handleOpenDialog(false)
-      toast.success('Produto cadastrado com sucesso')
+      toast.success('Produto cadastrado com sucesso', {
+        closeButton: true,
+      })
     } catch {
-      toast.error('Erro ao cadastrar produto')
+      toast.error('Erro ao cadastrar produto', {
+        closeButton: true,
+      })
     }
   }
 

@@ -72,10 +72,14 @@ export function CreateCustomerDialog({
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         if (error.response?.data.message === 'Phone already exists') {
-          toast.error(`Erro ao cadastrar cliente! Telefone já em uso.`)
+          toast.error(`Erro ao cadastrar cliente! Telefone já em uso.`, {
+            closeButton: true,
+          })
         }
         if (error.response?.data.message === 'Email already exists') {
-          toast.error(`Erro ao cadastrar cliente! E-mail já em uso.`)
+          toast.error(`Erro ao cadastrar cliente! E-mail já em uso.`, {
+            closeButton: true,
+          })
         }
       }
     }

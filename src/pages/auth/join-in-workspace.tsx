@@ -40,7 +40,9 @@ export function JoinInWorkspace() {
       })
       window.location.replace('/')
     } catch (error) {
-      toast.error('Essa organização não existe.')
+      toast.error('Essa organização não existe.', {
+        closeButton: true,
+      })
     }
   }
 

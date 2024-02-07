@@ -67,10 +67,14 @@ export function UpdateProductDialog({
           category: data.product.category,
           price: data.product.price,
         })
-        toast.success('O produto foi atualizado com sucesso!')
+        toast.success('O produto foi atualizado com sucesso!', {
+          closeButton: true,
+        })
       },
       onError: () => {
-        toast.error('Não foi possível atualizar o produto!')
+        toast.error('Não foi possível atualizar o produto!', {
+          closeButton: true,
+        })
       },
     })
 

@@ -68,9 +68,13 @@ export function WorkspaceProfileDialog() {
         code: data.code,
       })
 
-      toast.success('Perfil atualizado com sucesso!')
+      toast.success('Perfil atualizado com sucesso!', {
+        closeButton: true,
+      })
     } catch {
-      toast.error('Falha ao atualizar perfil, tente novamente.')
+      toast.error('Falha ao atualizar perfil, tente novamente.', {
+        closeButton: true,
+      })
     }
   }
 

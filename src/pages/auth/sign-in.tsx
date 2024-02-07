@@ -43,10 +43,15 @@ export function SignIn() {
         isApiError(error) &&
         error.response?.data.message === 'Invalid credentials'
       ) {
-        toast.error('Credenciais inválidas.')
+        toast.error('Credenciais inválidas.', {
+          closeButton: true,
+        })
       } else {
         toast.error(
           'Ops... Um erro interno ocorreu! Aguarde alguns instantes e tente novamente.',
+          {
+            closeButton: true,
+          },
         )
       }
     }

@@ -21,7 +21,9 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
       mutationFn: approveOrder,
       async onSuccess(_, { id }) {
         updateOrderStatusOnCache(id, 'processing')
-        toast.success('Status do pedido atualizado com sucesso!')
+        toast.success('Status do pedido atualizado com sucesso!', {
+          closeButton: true,
+        })
       },
     })
 
@@ -30,7 +32,9 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
       mutationFn: dispatchOrder,
       async onSuccess(_, { id }) {
         updateOrderStatusOnCache(id, 'delivering')
-        toast.success('Status do pedido atualizado com sucesso!')
+        toast.success('Status do pedido atualizado com sucesso!', {
+          closeButton: true,
+        })
       },
     })
 
@@ -39,7 +43,9 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
       mutationFn: deliverOrder,
       async onSuccess(_, { id }) {
         updateOrderStatusOnCache(id, 'delivered')
-        toast.success('Status do pedido atualizado com sucesso!')
+        toast.success('Status do pedido atualizado com sucesso!', {
+          closeButton: true,
+        })
       },
     })
 
