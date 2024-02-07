@@ -1,4 +1,4 @@
-import { OrderDTO } from '@/@types/api-dtos'
+import { Order } from '@/@types/bd-entities'
 import { api } from '@/lib/axios'
 
 export interface CreateOrderRequest {
@@ -10,7 +10,7 @@ export interface CreateOrderRequest {
 }
 
 export interface CreateOrderResponse {
-  order: OrderDTO
+  order: Order
 }
 
 export async function createOrder({ customerId, items }: CreateOrderRequest) {

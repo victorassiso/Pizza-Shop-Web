@@ -1,15 +1,15 @@
 import { PaginationMeta, ProductDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
 
-export interface GetOrdersRequest {
-  pageIndex?: number | null
-  perPage?: number | null
-  id?: string | null
-  name?: string | null
-  description?: string | null
-  category?: string | null
-  minPrice?: number | null
-  maxPrice?: number | null
+export interface GetProductsRequest {
+  pageIndex?: number
+  perPage?: number
+  id?: string
+  name?: string
+  description?: string
+  category?: string
+  minPrice?: number
+  maxPrice?: number
 }
 
 export interface GetProductsResponse {
@@ -26,7 +26,7 @@ export async function getProducts({
   description,
   minPrice,
   maxPrice,
-}: GetOrdersRequest) {
+}: GetProductsRequest) {
   const response = await api.get<GetProductsResponse>('/products', {
     params: {
       pageIndex,

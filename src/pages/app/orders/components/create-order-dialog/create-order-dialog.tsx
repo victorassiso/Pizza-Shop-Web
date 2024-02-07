@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { OrderDTO } from '@/@types/api-dtos'
+import { Order } from '@/@types/bd-entities'
 import { createOrder } from '@/api/orders/create-order'
 import { GetOrdersResponse } from '@/api/orders/get-orders'
 import { Button } from '@/components/ui/button'
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/dialog'
 import { Label } from '@/components/ui/label'
 import { CreateOrderType } from '@/contexts/create-order-form-context'
+import { useOrdersSearchParams } from '@/hooks/params/use-orders-search-params'
 import { useCreateOrderFormContext } from '@/hooks/use-order-items'
 
 import { CustomersCombobox } from './components/customers-combobox/customers-combobox'
@@ -29,42 +30,80 @@ export function CreateOrderDialog() {
     },
     handleOpenDialog,
   } = useCreateOrderFormContext()
+
+  const {
+    formatedSearchParams: { customerName: customerNameParam, status },
+  } = useOrdersSearchParams()
+
   const queryClient = useQueryClient()
 
-  function updateOrdersCache(order: OrderDTO) {
-    const cached = queryClient.getQueryData<GetOrdersResponse>([
+  function updateOrdersCache(order: Order, customerName: string) {
+    const doesNewOrderCustomerNameMatchesCurrentFilter = customerNameParam
+      ? customerName.includes(customerNameParam)
+      : true
+
+    const doesNewOrderStatusMatchesCurrentFilter = !!(
+      !status ||
+      status === 'all' ||
+      status === order.status
+    )
+
+    const filteredQueryKey = [
       'orders',
-      0, // pageIndex
-      null, // orderId
-      null, // customerName
-      null, // status
-    ])
+      undefined, // pageIndex
+      undefined, // orderId
+      doesNewOrderCustomerNameMatchesCurrentFilter
+        ? customerNameParam
+        : undefined,
+      doesNewOrderStatusMatchesCurrentFilter ? status : undefined,
+    ]
+
+    const emptyFilterQueryKey = [
+      'orders',
+      undefined, // pageIndex
+      undefined, // orderId
+      undefined, // customerName
+      undefined, // status
+    ]
+
+    const newOrder = {
+      id: order.id,
+      createdAt: order.createdAt,
+      status: order.status,
+      customerName,
+      total: order.total,
+    }
+
+    // Update Filtered Cache
+    if (
+      doesNewOrderCustomerNameMatchesCurrentFilter ||
+      doesNewOrderStatusMatchesCurrentFilter
+    ) {
+      const cached =
+        queryClient.getQueryData<GetOrdersResponse>(filteredQueryKey)
+
+      if (!cached) {
+        return
+      }
+
+      queryClient.setQueryData<GetOrdersResponse>(filteredQueryKey, {
+        ...cached,
+        orders: [newOrder, ...cached.orders],
+      })
+    }
+
+    // Update Empty Filter Cache
+    const cached =
+      queryClient.getQueryData<GetOrdersResponse>(emptyFilterQueryKey)
+
     if (!cached) {
       return
     }
 
-    queryClient.setQueryData<GetOrdersResponse>(
-      [
-        'orders',
-        0, // pageIndex
-        null, // orderId
-        null, // customerName
-        null, // status
-      ],
-      {
-        ...cached,
-        orders: [
-          {
-            id: order.id,
-            createdAt: order.createdAt,
-            status: order.status,
-            customerName: order.customerName,
-            total: order.total,
-          },
-          ...cached.orders,
-        ],
-      },
-    )
+    queryClient.setQueryData<GetOrdersResponse>(emptyFilterQueryKey, {
+      ...cached,
+      orders: [newOrder, ...cached.orders],
+    })
   }
 
   const { mutateAsync: createOrderFn } = useMutation({
@@ -73,7 +112,7 @@ export function CreateOrderDialog() {
 
   async function handleCreateOrder(data: CreateOrderType) {
     try {
-      const mewOrder = await createOrderFn({
+      const newOrder = await createOrderFn({
         customerId: data.customerId,
         items: data.items.map((item) => {
           return {
@@ -82,8 +121,7 @@ export function CreateOrderDialog() {
           }
         }),
       })
-
-      updateOrdersCache(mewOrder)
+      updateOrdersCache(newOrder, data.customerName)
       handleOpenDialog(false)
       toast.success('Pedido cadastrado com sucesso')
     } catch {
