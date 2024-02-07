@@ -1,6 +1,6 @@
 import { api } from '@/lib/axios'
 
-export interface RefreshTokenResponseData {
+export interface RefreshTokenResponse {
   user: {
     id: string
     workspaceId: string
@@ -9,7 +9,7 @@ export interface RefreshTokenResponseData {
 }
 
 export async function refreshToken() {
-  const response = await api.patch<RefreshTokenResponseData>('/token/refresh')
+  const response = await api.patch<RefreshTokenResponse>('/token/refresh')
 
   return response
 }

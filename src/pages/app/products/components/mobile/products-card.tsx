@@ -14,7 +14,7 @@ interface ProductCardProps {
   name: string
   category: string
   price: number
-  description: string | null
+  description?: string
 }
 
 export function ProductsCard({

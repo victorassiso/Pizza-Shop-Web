@@ -22,14 +22,14 @@ import {
 import { OrderDetailsSkeleton } from './order-details-skeleton'
 
 interface OrderDetailsProps {
-  orderId: string
+  id: string
   open: boolean
 }
 
-export function OrderDetails({ orderId, open }: OrderDetailsProps) {
+export function OrderDetails({ id, open }: OrderDetailsProps) {
   const { data: order, isLoading: isOrderDetailsLoading } = useQuery({
-    queryKey: ['order', orderId],
-    queryFn: () => getOrderDetails({ orderId }),
+    queryKey: ['order', id],
+    queryFn: () => getOrderDetails({ id }),
     enabled: open,
   })
 

@@ -1,7 +1,8 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
-import { createOrder, Order } from '@/api/orders/create-order'
+import { OrderDTO } from '@/@types/api-dtos'
+import { createOrder } from '@/api/orders/create-order'
 import { GetOrdersResponse } from '@/api/orders/get-orders'
 import { Button } from '@/components/ui/button'
 import {
@@ -30,7 +31,7 @@ export function CreateOrderDialog() {
   } = useCreateOrderFormContext()
   const queryClient = useQueryClient()
 
-  function updateOrdersCache(order: Order, customerName: string) {
+  function updateOrdersCache(order: OrderDTO) {
     const cached = queryClient.getQueryData<GetOrdersResponse>([
       'orders',
       0, // pageIndex
@@ -54,10 +55,10 @@ export function CreateOrderDialog() {
         ...cached,
         orders: [
           {
-            orderId: order.id,
+            id: order.id,
             createdAt: order.createdAt,
             status: order.status,
-            customerName,
+            customerName: order.customerName,
             total: order.total,
           },
           ...cached.orders,
@@ -72,7 +73,7 @@ export function CreateOrderDialog() {
 
   async function handleCreateOrder(data: CreateOrderType) {
     try {
-      const response = await createOrderFn({
+      const mewOrder = await createOrderFn({
         customerId: data.customerId,
         items: data.items.map((item) => {
           return {
@@ -82,7 +83,7 @@ export function CreateOrderDialog() {
         }),
       })
 
-      updateOrdersCache(response, data.customerName)
+      updateOrdersCache(mewOrder)
       handleOpenDialog(false)
       toast.success('Pedido cadastrado com sucesso')
     } catch {

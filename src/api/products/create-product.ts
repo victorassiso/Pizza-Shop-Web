@@ -1,6 +1,5 @@
+import { ProductDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
-
-import { Product } from './get-products'
 
 export interface CreateProductRequest {
   name: string
@@ -10,7 +9,7 @@ export interface CreateProductRequest {
 }
 
 export interface CreateProductResponse {
-  product: Product
+  product: ProductDTO
 }
 
 export async function createProduct({

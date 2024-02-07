@@ -5,8 +5,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { CustomerDTO } from '@/@types/api-dtos'
 import { createCustomer } from '@/api/customers/create-customer'
-import { Customer } from '@/api/customers/get-customers'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,
@@ -46,14 +46,17 @@ export function CreateCustomerDialog({
 
   const queryClient = useQueryClient()
 
-  function updateCustomersCache(customer: Customer) {
-    const cached = queryClient.getQueryData<Customer[]>(['customers'])
+  function updateCustomersCache(customer: CustomerDTO) {
+    const cached = queryClient.getQueryData<CustomerDTO[]>(['customers'])
 
     if (!cached) {
       return
     }
 
-    queryClient.setQueryData<Customer[]>(['customers'], [customer, ...cached])
+    queryClient.setQueryData<CustomerDTO[]>(
+      ['customers'],
+      [customer, ...cached],
+    )
   }
 
   const { mutateAsync: createCustomerFn } = useMutation({
@@ -62,8 +65,8 @@ export function CreateCustomerDialog({
 
   async function handleCreateProdct(data: CreateCustomerSchema) {
     try {
-      const response = await createCustomerFn({ ...data })
-      updateCustomersCache(response.data.customer)
+      const customer = await createCustomerFn({ ...data })
+      updateCustomersCache(customer)
       setOpenDialog(false)
       toast.success('Cliente cadastrado com sucesso')
     } catch (error) {

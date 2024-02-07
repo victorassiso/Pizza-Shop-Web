@@ -1,4 +1,4 @@
-import { GetCustomersResponseData } from '@/api/customers/get-customers'
+import { GetCustomersResponse } from '@/api/customers/get-customers'
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import { CustomerTableRow } from './customers-table-row'
 import { CustomerTableSkeleton } from './customers-table-skeleton'
 
 interface CustomerTableProps {
-  response?: GetCustomersResponseData
+  response?: GetCustomersResponse
   isLoadingCustomers: boolean
 }
 

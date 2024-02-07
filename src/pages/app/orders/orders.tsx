@@ -29,9 +29,12 @@ export function Orders() {
     queryFn: () =>
       getOrders({
         pageIndex,
-        orderId,
-        customerName,
-        status: status === 'all' ? null : status,
+        // orderId,
+        // customerName,
+        // status: status === 'all' ? null : status,
+        orderId: orderId || undefined,
+        customerName: customerName || undefined,
+        status: status ? (status === 'all' ? undefined : status) : undefined,
       }),
   })
 

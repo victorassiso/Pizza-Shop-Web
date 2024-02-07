@@ -1,6 +1,5 @@
+import { CustomerDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
-
-import { Customer } from './get-customers'
 
 export interface CreateCustomerRequest {
   name: string
@@ -10,7 +9,7 @@ export interface CreateCustomerRequest {
 }
 
 export interface CreateCustomerResponse {
-  customer: Customer
+  customer: CustomerDTO
 }
 
 export async function createCustomer({
@@ -19,12 +18,14 @@ export async function createCustomer({
   address,
   phone,
 }: CreateCustomerRequest) {
-  const response = await api.post('/customers', {
+  const response = await api.post<CreateCustomerResponse>('/customers', {
     name,
     email,
     address,
     phone,
   })
 
-  return response
+  const customer = response.data.customer
+
+  return customer
 }

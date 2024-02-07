@@ -1,11 +1,11 @@
 import { api } from '@/lib/axios'
 
-export interface SignInBody {
+export interface SignInRequest {
   email: string
   password: string
 }
 
-export interface SignInResponseData {
+export interface SignInResponse {
   user: {
     id: string
     workspaceId: string
@@ -13,8 +13,8 @@ export interface SignInResponseData {
   accessToken: string
 }
 
-export async function signIn({ email, password }: SignInBody) {
-  const response = await api.post<SignInResponseData>('/sessions', {
+export async function signIn({ email, password }: SignInRequest) {
+  const response = await api.post<SignInResponse>('/sessions', {
     email,
     password,
   })

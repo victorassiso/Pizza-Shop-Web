@@ -1,10 +1,10 @@
-import { GetOrdersResponseOrder } from '@/api/orders/get-orders'
+import { OrderDTO } from '@/@types/api-dtos'
 
 import { OrdersCard } from './orders-card'
 import { OrdersCardListSkeleton } from './orders-card-list-skeleton'
 
 interface OrderCardListProps {
-  orders?: GetOrdersResponseOrder[]
+  orders?: OrderDTO[]
   isLoadingOrders: boolean
 }
 
@@ -17,7 +17,7 @@ export function OrdersCardList({
       {isLoadingOrders && <OrdersCardListSkeleton />}
       {orders &&
         orders.map((order) => {
-          return <OrdersCard key={order.orderId} {...order} />
+          return <OrdersCard key={order.id} {...order} />
         })}
     </div>
   )

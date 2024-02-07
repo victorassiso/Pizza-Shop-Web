@@ -1,4 +1,4 @@
-import { GetProductsResponseData } from '@/api/products/get-products'
+import { GetProductsResponse } from '@/api/products/get-products'
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import { ProductsTableRow } from './products-table-row'
 import { ProductsTableSkeleton } from './products-table-skeleton'
 
 interface ProductTableProps {
-  response?: GetProductsResponseData
+  response?: GetProductsResponse
   isLoadingProducts: boolean
 }
 

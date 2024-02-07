@@ -1,13 +1,20 @@
+import { WorkspaceDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
 
-interface UpdateWorkspaceBody {
+interface UpdateWorkspaceRequest {
   name: string
   code: string
 }
 
-export async function updateWorkspace({ name, code }: UpdateWorkspaceBody) {
-  await api.put('/workspaces', {
+interface UpdateWorkspaceResponse {
+  workspace: WorkspaceDTO
+}
+
+export async function updateWorkspace({ name, code }: UpdateWorkspaceRequest) {
+  const response = await api.put<UpdateWorkspaceResponse>('/workspaces', {
     name,
     code,
   })
+
+  return response
 }

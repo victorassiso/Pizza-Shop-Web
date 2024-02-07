@@ -1,13 +1,15 @@
-import { User } from '@/@types/user'
+import { UserDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
 
 interface RemoveWorkspaceResponseData {
-  user: User
+  user: UserDTO
 }
 export async function removeWorkspace() {
   const response = await api.patch<RemoveWorkspaceResponseData>(
     '/users/remove-workspace',
   )
 
-  return response
+  const user = response.data.user
+
+  return user
 }

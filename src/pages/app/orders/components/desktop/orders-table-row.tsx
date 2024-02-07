@@ -3,7 +3,7 @@ import { ptBR } from 'date-fns/locale'
 import { Search } from 'lucide-react'
 import { useState } from 'react'
 
-import { OrderStatusType } from '@/@types/order'
+import { OrderStatus as OrderStatusType } from '@/@types/bd-entities'
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
@@ -13,7 +13,7 @@ import { OrderStatus } from '../common/order-status'
 import { CancelOrderButton } from './cancel-order-button'
 import { ChangeStatusButton } from './change-status-button'
 export interface OrdersTableRowProps {
-  orderId: string
+  id: string
   createdAt: Date
   status: OrderStatusType
   customerName: string
@@ -21,7 +21,7 @@ export interface OrdersTableRowProps {
 }
 
 export function OrdersTableRow({
-  orderId,
+  id,
   createdAt,
   status,
   customerName,
@@ -39,10 +39,10 @@ export function OrdersTableRow({
               <span className="sr-only">Detalhes do pedido</span>
             </Button>
           </DialogTrigger>
-          <OrderDetails orderId={orderId} open={isDetailsOpen} />
+          <OrderDetails id={id} open={isDetailsOpen} />
         </Dialog>
       </TableCell>
-      <TableCell className="font-mono text-xs font-medium">{orderId}</TableCell>
+      <TableCell className="font-mono text-xs font-medium">{id}</TableCell>
       <TableCell className="text-muted-foreground">
         {formatDistanceToNow(createdAt, {
           locale: ptBR,
@@ -60,10 +60,10 @@ export function OrdersTableRow({
         })}
       </TableCell>
       <TableCell>
-        <ChangeStatusButton orderId={orderId} status={status} />
+        <ChangeStatusButton id={id} status={status} />
       </TableCell>
       <TableCell>
-        <CancelOrderButton orderId={orderId} status={status} />
+        <CancelOrderButton id={id} status={status} />
       </TableCell>
     </TableRow>
   )

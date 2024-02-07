@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query'
 import { PlaneLanding, PlaneTakeoff, ThumbsUp } from 'lucide-react'
 import { toast } from 'sonner'
 
-import { OrderStatusType } from '@/@types/order'
+import { OrderStatus } from '@/@types/bd-entities'
 import { approveOrder } from '@/api/orders/approve-order'
 import { deliverOrder } from '@/api/orders/deliver-order'
 import { dispatchOrder } from '@/api/orders/dispatch-order'
@@ -10,20 +10,17 @@ import { Button } from '@/components/ui/button'
 import { useOrders } from '@/hooks/use-orders'
 
 interface ChangeStatusButtonProps {
-  orderId: string
-  status: OrderStatusType
+  id: string
+  status: OrderStatus
 }
-export function ChangeStatusButton({
-  orderId,
-  status,
-}: ChangeStatusButtonProps) {
+export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
   const { updateOrderStatusOnCache } = useOrders()
 
   const { mutateAsync: approveOrderFn, isPending: isApprovingOrder } =
     useMutation({
       mutationFn: approveOrder,
-      async onSuccess(_, { orderId }) {
-        updateOrderStatusOnCache(orderId, 'processing')
+      async onSuccess(_, { id }) {
+        updateOrderStatusOnCache(id, 'processing')
         toast.success('Status do pedido atualizado com sucesso!')
       },
     })
@@ -31,8 +28,8 @@ export function ChangeStatusButton({
   const { mutateAsync: dispatchOrderFn, isPending: isDispatchingOrder } =
     useMutation({
       mutationFn: dispatchOrder,
-      async onSuccess(_, { orderId }) {
-        updateOrderStatusOnCache(orderId, 'delivering')
+      async onSuccess(_, { id }) {
+        updateOrderStatusOnCache(id, 'delivering')
         toast.success('Status do pedido atualizado com sucesso!')
       },
     })
@@ -40,8 +37,8 @@ export function ChangeStatusButton({
   const { mutateAsync: deliverOrderFn, isPending: isDeliveringOrder } =
     useMutation({
       mutationFn: deliverOrder,
-      async onSuccess(_, { orderId }) {
-        updateOrderStatusOnCache(orderId, 'delivered')
+      async onSuccess(_, { id }) {
+        updateOrderStatusOnCache(id, 'delivered')
         toast.success('Status do pedido atualizado com sucesso!')
       },
     })
@@ -52,7 +49,7 @@ export function ChangeStatusButton({
         <Button
           variant="ghost"
           disabled={isApprovingOrder}
-          onClick={() => approveOrderFn({ orderId })}
+          onClick={() => approveOrderFn({ id })}
           className="flex w-full flex-row justify-start gap-2"
         >
           <ThumbsUp />
@@ -64,7 +61,7 @@ export function ChangeStatusButton({
         <Button
           variant="ghost"
           disabled={isDispatchingOrder}
-          onClick={() => dispatchOrderFn({ orderId })}
+          onClick={() => dispatchOrderFn({ id })}
           className="flex w-full flex-row justify-start gap-2"
         >
           <PlaneTakeoff />
@@ -76,7 +73,7 @@ export function ChangeStatusButton({
         <Button
           variant="ghost"
           disabled={isDeliveringOrder}
-          onClick={() => deliverOrderFn({ orderId })}
+          onClick={() => deliverOrderFn({ id })}
           className="flex w-full flex-row justify-start gap-2"
         >
           <PlaneLanding />

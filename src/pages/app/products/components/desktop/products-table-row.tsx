@@ -12,7 +12,7 @@ export interface ProductsTableRowProps {
   productName: string
   category: string
   price: number
-  description: string | null
+  description?: string
 }
 
 export function ProductsTableRow({

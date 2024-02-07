@@ -3,7 +3,7 @@ import { ptBR } from 'date-fns/locale'
 import { Eye, MoreHorizontal } from 'lucide-react'
 import { useState } from 'react'
 
-import { OrderStatusType } from '@/@types/order'
+import { OrderStatus as OrderStatusType } from '@/@types/bd-entities'
 import { Button } from '@/components/ui/button'
 import {
   Card,
@@ -25,7 +25,7 @@ import { CancelOrderButton } from './cancel-order-button'
 import { ChangeStatusButton } from './change-status-button'
 
 export interface OrdersCardProps {
-  orderId: string
+  id: string
   createdAt: Date
   status: OrderStatusType
   customerName: string
@@ -33,7 +33,7 @@ export interface OrdersCardProps {
 }
 
 export function OrdersCard({
-  orderId,
+  id,
   createdAt,
   status,
   customerName,
@@ -47,7 +47,7 @@ export function OrdersCard({
         <CardHeader className="flex flex-row items-start justify-between">
           <div>
             <CardTitle className="text-primary">{customerName}</CardTitle>
-            <CardDescription className="mt-[6px]">{orderId}</CardDescription>
+            <CardDescription className="mt-[6px]">{id}</CardDescription>
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -65,9 +65,9 @@ export function OrdersCard({
                   <span>Ver detalhes</span>
                 </Button>
               </DialogTrigger>
-              <OrderDetails orderId={orderId} open={isDetailsOpen} />
-              <ChangeStatusButton orderId={orderId} status={status} />
-              <CancelOrderButton orderId={orderId} status={status} />
+              <OrderDetails id={id} open={isDetailsOpen} />
+              <ChangeStatusButton id={id} status={status} />
+              <CancelOrderButton id={id} status={status} />
             </DropdownMenuContent>
           </DropdownMenu>
         </CardHeader>

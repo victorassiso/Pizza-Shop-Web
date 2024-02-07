@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Building, ChevronDown, LogOut, PencilLine } from 'lucide-react'
 
-import { getProfile } from '@/api/users/get-profile'
+import { getUser } from '@/api/users/get-user'
 import { getWorkspace } from '@/api/workspaces/get-workspace'
 import { useAuth } from '@/hooks/use-auth'
 
@@ -25,9 +25,9 @@ export function AccountMenu() {
   const { signOut, isSigningOut, removeWorkspace, isRemovingWorkspace } =
     useAuth()
 
-  const { data: profile, isLoading: isLoadingProfile } = useQuery({
-    queryKey: ['profile'],
-    queryFn: getProfile,
+  const { data: user, isLoading: isLoadingUser } = useQuery({
+    queryKey: ['user'],
+    queryFn: getUser,
     staleTime: Infinity,
   })
 
@@ -63,11 +63,10 @@ export function AccountMenu() {
             variant="outline"
             className="flex select-none items-center gap-2"
           >
-            {isLoadingWorkspace ? (
-              <Skeleton className="h-4 w-40" />
-            ) : (
+            {isLoadingWorkspace && <Skeleton className="h-4 w-40" />}
+            {workspace && (
               <span className="max-w-[100px] overflow-hidden text-ellipsis whitespace-nowrap lg:max-w-none">
-                {workspace?.name}
+                {workspace.name}
               </span>
             )}
             <ChevronDown />
@@ -75,16 +74,17 @@ export function AccountMenu() {
         </DropdownMenuTrigger>
         <DropdownMenuContent align="end" className="w-56">
           <DropdownMenuLabel className="flex flex-col">
-            {isLoadingProfile ? (
+            {isLoadingUser && (
               <div className="space-y-1.5">
                 <Skeleton className="h-4 w-32" />
                 <Skeleton className="h-3 w-24" />
               </div>
-            ) : (
+            )}{' '}
+            {user && (
               <>
-                <span>{profile?.name}</span>
+                <span>{user.name}</span>
                 <span className="text-xs font-normal text-muted-foreground">
-                  {profile?.email}
+                  {user.email}
                 </span>
               </>
             )}

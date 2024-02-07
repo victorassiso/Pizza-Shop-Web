@@ -1,27 +1,16 @@
-import { OrderStatusType } from '@/@types/order'
+import { OrderDTO } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
-
-export interface Order {
-  workspaceId: string
-  id: string
-  customerId: string
-  total: number
-  status: OrderStatusType
-  createdAt: Date
-  updatedAt: Date
-}
-export interface CreateOrderItem {
-  productId: string
-  quantity: number
-}
 
 export interface CreateOrderRequest {
   customerId: string
-  items: CreateOrderItem[]
+  items: {
+    productId: string
+    quantity: number
+  }[]
 }
 
 export interface CreateOrderResponse {
-  order: Order
+  order: OrderDTO
 }
 
 export async function createOrder({ customerId, items }: CreateOrderRequest) {

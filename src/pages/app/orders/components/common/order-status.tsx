@@ -1,4 +1,4 @@
-import { OrderStatusType } from '@/@types/order'
+import { OrderStatus as OrderStatusType } from '@/@types/bd-entities'
 
 interface OrderStatusProps {
   status: OrderStatusType

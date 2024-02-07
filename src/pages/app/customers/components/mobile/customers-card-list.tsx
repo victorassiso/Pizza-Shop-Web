@@ -1,10 +1,10 @@
-import { GetCustomersResponseData } from '@/api/customers/get-customers'
+import { GetCustomersResponse } from '@/api/customers/get-customers'
 
 import { CustomersCard } from './customers-card'
 import { CustomersCardListSkeleton } from './customers-card-list-skeleton'
 
 interface CustomerCardListProps {
-  response?: GetCustomersResponseData
+  response?: GetCustomersResponse
   isLoadingCustomers: boolean
 }
 

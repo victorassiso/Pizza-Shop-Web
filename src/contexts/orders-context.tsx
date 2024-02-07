@@ -1,11 +1,11 @@
 import { useQueryClient } from '@tanstack/react-query'
 import { createContext, ReactNode } from 'react'
 
+import { OrderStatus } from '@/@types/bd-entities'
 import { GetOrdersResponse } from '@/api/orders/get-orders'
-import { OrderStatusType } from '@/pages/app/orders/components/common/order-status'
 
 interface OrdersContextProps {
-  updateOrderStatusOnCache: (orderId: string, status: OrderStatusType) => void
+  updateOrderStatusOnCache: (orderId: string, status: OrderStatus) => void
 }
 
 export const OrdersContext = createContext({} as OrdersContextProps)
@@ -17,7 +17,7 @@ interface OrdersProviderProps {
 export function OrdersProvider({ children }: OrdersProviderProps) {
   const queryClient = useQueryClient()
 
-  function updateOrderStatusOnCache(orderId: string, status: OrderStatusType) {
+  function updateOrderStatusOnCache(orderId: string, status: OrderStatus) {
     const ordersListCache = queryClient.getQueriesData<GetOrdersResponse>({
       queryKey: ['orders'],
     })
@@ -31,7 +31,7 @@ export function OrdersProvider({ children }: OrdersProviderProps) {
       queryClient.setQueryData<GetOrdersResponse>(cacheKey, {
         ...cacheData,
         orders: cacheData.orders.map((order) => {
-          if (order.orderId === orderId) {
+          if (order.id === orderId) {
             return { ...order, status }
           }
           return order

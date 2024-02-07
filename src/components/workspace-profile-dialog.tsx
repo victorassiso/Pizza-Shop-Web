@@ -4,7 +4,8 @@ import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { getWorkspace, Workspace } from '@/api/workspaces/get-workspace'
+import { WorkspaceDTO } from '@/@types/api-dtos'
+import { getWorkspace } from '@/api/workspaces/get-workspace'
 import { updateWorkspace } from '@/api/workspaces/update-workspace'
 
 import { Button } from './ui/button'
@@ -35,10 +36,10 @@ export function WorkspaceProfileDialog() {
   type WorkspaceType = z.infer<typeof WorkspaceSchema>
 
   function updateWorkspaceCache({ name, code }: WorkspaceType) {
-    const cached = queryClient.getQueryData<Workspace>(['workspace'])
+    const cached = queryClient.getQueryData<WorkspaceDTO>(['workspace'])
 
     if (cached) {
-      queryClient.setQueryData<Workspace>(['workspace'], {
+      queryClient.setQueryData<WorkspaceDTO>(['workspace'], {
         ...cached,
         name,
         code,

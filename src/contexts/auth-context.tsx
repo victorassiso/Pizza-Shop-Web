@@ -3,19 +3,19 @@ import { createContext, ReactNode, useState } from 'react'
 
 import {
   refreshToken as refreshTokenApi,
-  RefreshTokenResponseData,
+  RefreshTokenResponse,
 } from '@/api/auth/refresh-token'
 import { removeWorkspace as removeWorkspaceApi } from '@/api/auth/remove-workspace'
-import { signIn as signInApi, SignInBody } from '@/api/auth/sign-in'
+import { signIn as signInApi, SignInRequest } from '@/api/auth/sign-in'
 import { signOut as signOutApi } from '@/api/auth/sign-out'
-import { signUp as signUpApi, SignUpBody } from '@/api/auth/sign-up'
+import { signUp as signUpApi, SignUpRequest } from '@/api/auth/sign-up'
 import {
   createWorkspace as createWorkspaceApi,
-  CreateWorkspaceBody,
+  CreateWorkspaceRequest,
 } from '@/api/workspaces/create-workspace'
 import {
   joinInWorkspace as joinInWorkspaceApi,
-  JoinInWorkspaceBody,
+  JoinInWorkspaceRequest,
 } from '@/api/workspaces/join-in-workspace'
 import { queryClient } from '@/lib/react-query'
 
@@ -26,15 +26,15 @@ interface UserDTO {
 interface AuthContextProps {
   user: UserDTO
   accessToken: string
-  signIn: (data: SignInBody) => Promise<UserDTO>
-  signUp: (data: SignUpBody) => Promise<UserDTO>
+  signIn: (data: SignInRequest) => Promise<UserDTO>
+  signUp: (data: SignUpRequest) => Promise<UserDTO>
   signOut: () => Promise<void>
   isSigningOut: boolean
-  joinInWorkspace: (data: JoinInWorkspaceBody) => Promise<UserDTO>
-  createWorkspace: (data: CreateWorkspaceBody) => Promise<UserDTO>
+  joinInWorkspace: (data: JoinInWorkspaceRequest) => Promise<UserDTO>
+  createWorkspace: (data: CreateWorkspaceRequest) => Promise<UserDTO>
   removeWorkspace: () => Promise<UserDTO>
   isRemovingWorkspace: boolean
-  refreshToken: () => Promise<RefreshTokenResponseData>
+  refreshToken: () => Promise<RefreshTokenResponse>
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     mutationFn: signInApi,
   })
 
-  async function signIn({ email, password }: SignInBody) {
+  async function signIn({ email, password }: SignInRequest) {
     const { data } = await signInApiFn({ email, password })
 
     setUser({
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     mutationFn: signUpApi,
   })
 
-  async function signUp({ name, email, password }: SignUpBody) {
+  async function signUp({ name, email, password }: SignUpRequest) {
     const { data } = await signUpApiFn({ name, email, password })
 
     setUser({
@@ -97,7 +97,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     mutationFn: refreshTokenApi,
   })
 
-  async function joinInWorkspace({ code }: JoinInWorkspaceBody) {
+  async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
     const { data: joinInWorkspaceData } = await joinInWorkspaceApiFn({ code })
 
     const { data: refreshData } = await refreshTokenApiFn()
@@ -114,7 +114,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     mutationFn: createWorkspaceApi,
   })
 
-  async function createWorkspace({ name, code }: CreateWorkspaceBody) {
+  async function createWorkspace({ name, code }: CreateWorkspaceRequest) {
     const { data: createWorkspaceData } = await createWorkspaceApiFn({
       name,
       code,
@@ -137,12 +137,12 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     })
 
   async function removeWorkspace() {
-    const { data: removeWorkspaceResponse } = await removeWorkspaceApiFn()
+    const { workspaceId } = await removeWorkspaceApiFn()
 
     const { data: refreshData } = await refreshTokenApiFn()
     setUser({
       ...user,
-      workspaceId: removeWorkspaceResponse.user.workspaceId,
+      workspaceId,
     })
     setAccessToken(refreshData.accessToken)
 

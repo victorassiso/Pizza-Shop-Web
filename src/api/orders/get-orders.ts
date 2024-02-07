@@ -1,29 +1,16 @@
-import { OrderStatusType } from '@/@types/order'
+import { OrderDTO, PaginationMeta } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
 
-export interface GetOrdersQuery {
-  pageIndex?: number | null
-  orderId?: string | null
-  customerName?: string | null
-  status?: string | null
+export interface GetOrdersRequest {
+  pageIndex?: number
+  orderId?: string
+  customerName?: string
+  status?: string
 }
 
-export interface GetOrdersResponseOrder {
-  orderId: string
-  createdAt: Date
-  status: OrderStatusType
-  customerName: string
-  total: number
-}
-
-export interface GetOrdersResponseMetaData {
-  pageIndex: number
-  perPage: number
-  totalCount: number
-}
 export interface GetOrdersResponse {
-  orders: GetOrdersResponseOrder[]
-  meta: GetOrdersResponseMetaData
+  orders: OrderDTO[]
+  meta: PaginationMeta
 }
 
 export async function getOrders({
@@ -31,7 +18,7 @@ export async function getOrders({
   orderId,
   customerName,
   status,
-}: GetOrdersQuery) {
+}: GetOrdersRequest) {
   const response = await api.get<GetOrdersResponse>('/orders', {
     params: {
       pageIndex,

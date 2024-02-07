@@ -1,10 +1,10 @@
-import { GetProductsResponseData } from '@/api/products/get-products'
+import { GetProductsResponse } from '@/api/products/get-products'
 
 import { ProductsCard } from './products-card'
 import { ProductsCardListSkeleton } from './products-card-list-skeleton'
 
 interface ProductsTableProps {
-  response?: GetProductsResponseData
+  response?: GetProductsResponse
   isLoadingProducts: boolean
 }
 

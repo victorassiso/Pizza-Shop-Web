@@ -1,20 +1,5 @@
+import { CustomerDTO, PaginationMeta } from '@/@types/api-dtos'
 import { api } from '@/lib/axios'
-
-export interface Customer {
-  id: string
-  name: string
-  email: string
-  phone: string
-  address: string
-  createdAt: Date
-  updatedAt: Date
-}
-
-export interface PaginationMeta {
-  pageIndex: number
-  perPage: number
-  totalCount: number
-}
 
 export interface GetCustomersRequest {
   pageIndex?: number | null
@@ -26,13 +11,13 @@ export interface GetCustomersRequest {
   phone?: string | null
 }
 
-export interface GetCustomersResponseData {
-  customers: Customer[]
+export interface GetCustomersResponse {
+  customers: CustomerDTO[]
   meta: PaginationMeta
 }
 
 export async function getCustomers(data: GetCustomersRequest) {
-  const response = await api.get<GetCustomersResponseData>('/customers', {
+  const response = await api.get<GetCustomersResponse>('/customers', {
     params: { ...data },
   })
 

@@ -1,4 +1,4 @@
-import { GetOrdersResponseOrder } from '@/api/orders/get-orders'
+import { OrderDTO } from '@/@types/api-dtos'
 import {
   Table,
   TableBody,
@@ -11,7 +11,7 @@ import { OrdersTableRow } from './orders-table-row'
 import { OrdersTableSkeleton } from './orders-table-skeleton'
 
 interface OrderTableProps {
-  orders?: GetOrdersResponseOrder[]
+  orders?: OrderDTO[]
   isLoadingOrders: boolean
 }
 
@@ -35,7 +35,7 @@ export function OrdersTable({ orders, isLoadingOrders }: OrderTableProps) {
           {isLoadingOrders && <OrdersTableSkeleton />}
           {orders &&
             orders.map((order) => {
-              return <OrdersTableRow key={order.orderId} {...order} />
+              return <OrdersTableRow key={order.id} {...order} />
             })}
         </TableBody>
       </Table>

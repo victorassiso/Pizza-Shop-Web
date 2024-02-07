@@ -1,12 +1,12 @@
 import { api } from '@/lib/axios'
 
-export interface SignUpBody {
+export interface SignUpRequest {
   name: string
   email: string
   password: string
 }
 
-export interface SignUpResponseData {
+export interface SignUpResponse {
   user: {
     id: string
     workspaceId: string
@@ -14,8 +14,8 @@ export interface SignUpResponseData {
   accessToken: string
 }
 
-export async function signUp({ name, email, password }: SignUpBody) {
-  const response = await api.post<SignUpResponseData>('/users', {
+export async function signUp({ name, email, password }: SignUpRequest) {
+  const response = await api.post<SignUpResponse>('/users', {
     name,
     email,
     password,

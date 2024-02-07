@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
+import { ProductDTO } from '@/@types/api-dtos'
 import { createProduct } from '@/api/products/create-product'
-import { ProductDTO } from '@/api/products/get-products'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,

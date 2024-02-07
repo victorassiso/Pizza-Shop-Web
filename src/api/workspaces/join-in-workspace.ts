@@ -1,15 +1,15 @@
 import { api } from '@/lib/axios'
 
-export interface JoinInWorkspaceBody {
+export interface JoinInWorkspaceRequest {
   code: string
 }
 
-export interface JoinInWorkspaceResponseData {
+export interface JoinInWorkspaceResponse {
   workspaceId: string
 }
 
-export async function joinInWorkspace({ code }: JoinInWorkspaceBody) {
-  const response = await api.post<JoinInWorkspaceResponseData>('/workspace', {
+export async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
+  const response = await api.post<JoinInWorkspaceResponse>('/workspace', {
     code,
   })
 
