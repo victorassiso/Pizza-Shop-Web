@@ -75,8 +75,10 @@ export function UpdateProductDialog({
   return (
     <>
       <DialogHeader>
-        <DialogTitle>Edição</DialogTitle>
-        <DialogDescription>Edite um produto</DialogDescription>
+        <DialogTitle>
+          Edite <span className="text-primary">{name}</span>
+        </DialogTitle>
+        <DialogDescription>ID: {id}</DialogDescription>
         <form onSubmit={handleSubmit(handleUpdateProduct)}>
           <div className="space-y-4 py-4">
             <div className="grid grid-cols-4 items-center gap-4">
