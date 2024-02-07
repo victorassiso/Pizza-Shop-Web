@@ -22,7 +22,6 @@ export interface ProductDTO {
   description?: string
   category: string
   price: number
-  createdAt: Date
 }
 
 export interface OrderDTO {
