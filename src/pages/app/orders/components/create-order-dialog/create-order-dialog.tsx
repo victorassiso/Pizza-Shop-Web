@@ -108,6 +108,7 @@ export function CreateOrderDialog() {
 
   const { mutateAsync: createOrderFn } = useMutation({
     mutationFn: createOrder,
+    retry: 3,
   })
 
   async function handleCreateOrder(data: CreateOrderType) {

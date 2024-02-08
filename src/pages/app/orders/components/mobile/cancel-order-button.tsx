@@ -32,6 +32,7 @@ export function CancelOrderButton({ id, status }: CancelOrderButtonProps) {
           closeButton: true,
         })
       },
+      retry: 3,
     })
 
   console.log()

@@ -10,10 +10,13 @@ interface CreateWorkspaceResponse {
 }
 
 export async function createWorkspace({ name, code }: CreateWorkspaceRequest) {
-  const response = await api.post<CreateWorkspaceResponse>('/workspaces', {
-    name,
-    code,
-  })
+  const response = await api.post<CreateWorkspaceResponse>(
+    '/workspaces/create',
+    {
+      name,
+      code,
+    },
+  )
 
   return response
 }

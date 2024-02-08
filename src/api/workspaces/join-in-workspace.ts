@@ -9,9 +9,12 @@ export interface JoinInWorkspaceResponse {
 }
 
 export async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
-  const response = await api.post<JoinInWorkspaceResponse>('/workspace', {
-    code,
-  })
+  const response = await api.post<JoinInWorkspaceResponse>(
+    '/workspaces/join-in',
+    {
+      code,
+    },
+  )
 
   return response
 }

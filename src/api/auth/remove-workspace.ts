@@ -5,9 +5,8 @@ interface RemoveWorkspaceResponseData {
   user: UserDTO
 }
 export async function removeWorkspace() {
-  const response = await api.patch<RemoveWorkspaceResponseData>(
-    '/users/remove-workspace',
-  )
+  const response =
+    await api.patch<RemoveWorkspaceResponseData>('/workspaces/remove')
 
   const user = response.data.user
 

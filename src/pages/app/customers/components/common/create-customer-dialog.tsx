@@ -61,6 +61,7 @@ export function CreateCustomerDialog({
 
   const { mutateAsync: createCustomerFn } = useMutation({
     mutationFn: createCustomer,
+    retry: 3,
   })
 
   async function handleCreateProdct(data: CreateCustomerSchema) {

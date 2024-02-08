@@ -25,6 +25,7 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
           closeButton: true,
         })
       },
+      retry: 3,
     })
 
   const { mutateAsync: dispatchOrderFn, isPending: isDispatchingOrder } =
@@ -36,6 +37,7 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
           closeButton: true,
         })
       },
+      retry: 3,
     })
 
   const { mutateAsync: deliverOrderFn, isPending: isDeliveringOrder } =
@@ -47,6 +49,7 @@ export function ChangeStatusButton({ id, status }: ChangeStatusButtonProps) {
           closeButton: true,
         })
       },
+      retry: 3,
     })
 
   return (

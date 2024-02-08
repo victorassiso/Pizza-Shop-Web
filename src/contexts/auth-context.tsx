@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [accessToken, setAccessToken] = useState('')
   const { mutateAsync: signInApiFn } = useMutation({
     mutationFn: signInApi,
+    retry: 3,
   })
 
   async function signIn({ email, password }: SignInRequest) {
@@ -64,6 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: signUpApiFn } = useMutation({
     mutationFn: signUpApi,
+    retry: 3,
   })
 
   async function signUp({ name, email, password }: SignUpRequest) {
@@ -80,6 +82,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: signOutApiFn, isPending: isSigningOut } = useMutation({
     mutationFn: signOutApi,
+    retry: 3,
   })
 
   async function signOut() {
@@ -91,16 +94,25 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: joinInWorkspaceApiFn } = useMutation({
     mutationFn: joinInWorkspaceApi,
+    retry: 3,
   })
 
   const { mutateAsync: refreshTokenApiFn } = useMutation({
     mutationFn: refreshTokenApi,
+    retry: 3,
   })
 
   async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
-    const { data: joinInWorkspaceData } = await joinInWorkspaceApiFn({ code })
+    console.log({ currentWorkspaceId: user.workspaceId })
+    console.log({ currentAccessToken: accessToken })
 
+    const { data: joinInWorkspaceData } = await joinInWorkspaceApiFn({ code })
     const { data: refreshData } = await refreshTokenApiFn()
+
+    console.log({ joinInWorkspaceData })
+    console.log({ refreshData })
+    console.log({ newUser: refreshData.user })
+    console.log({ newAccessToken: refreshData.accessToken })
     setUser({
       ...user,
       workspaceId: joinInWorkspaceData.workspaceId,
@@ -112,6 +124,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: createWorkspaceApiFn } = useMutation({
     mutationFn: createWorkspaceApi,
+    retry: 3,
   })
 
   async function createWorkspace({ name, code }: CreateWorkspaceRequest) {
@@ -134,6 +147,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { mutateAsync: removeWorkspaceApiFn, isPending: isRemovingWorkspace } =
     useMutation({
       mutationFn: removeWorkspaceApi,
+      retry: 3,
     })
 
   async function removeWorkspace() {

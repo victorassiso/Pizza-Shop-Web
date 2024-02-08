@@ -22,7 +22,8 @@ export function AppLayout() {
         if (isApiError(error)) {
           const status = error.response?.status
           const message = error.response?.data.message
-
+          console.log({ status })
+          console.log({ message })
           if (status === 401 && message === 'Unauthorized') {
             if (!isRefreshing) {
               // Set flag to indicate that a refresh is in progress
@@ -31,8 +32,9 @@ export function AppLayout() {
                 // Attempt to refresh the token
                 const { accessToken: newAccessToken } = await refreshToken()
                 // Retry the original request if error.config is defined
+                console.log({ error })
                 if (error.config) {
-                  error.request.Authorization = `Bearer ${newAccessToken}`
+                  error.config.headers.Authorization = `Bearer ${newAccessToken}`
                   // return api(error.config)
                 }
               } catch (refreshError) {

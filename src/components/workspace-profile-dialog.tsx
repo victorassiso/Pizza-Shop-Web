@@ -59,6 +59,7 @@ export function WorkspaceProfileDialog() {
         updateWorkspaceCache(context.previousProfile)
       }
     },
+    retry: 3,
   })
 
   async function handleUpdateWorkspace(data: WorkspaceType) {
@@ -104,19 +105,29 @@ export function WorkspaceProfileDialog() {
             <Label className="text-right" htmlFor="name">
               Nome
             </Label>
-            <Input className="col-span-3" id="name" {...register('name')} />
+            <Input
+              className="col-span-3 disabled:cursor-default"
+              id="name"
+              {...register('name')}
+              disabled={isSubmitting}
+            />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="code">
               Code
             </Label>
-            <Input className="col-span-3" id="code" {...register('code')} />
+            <Input
+              className="col-span-3 disabled:cursor-default"
+              id="code"
+              {...register('code')}
+              disabled={isSubmitting}
+            />
           </div>
         </div>
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost">
+            <Button type="button" variant="ghost" disabled={isSubmitting}>
               Cancelar
             </Button>
           </DialogClose>

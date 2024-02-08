@@ -117,6 +117,7 @@ export function CreateProductDialog({
 
   const { mutateAsync: createProductFn } = useMutation({
     mutationFn: createProduct,
+    retry: 3,
   })
 
   async function handleCreateProduct(data: CreateProductFormType) {
@@ -152,7 +153,7 @@ export function CreateProductDialog({
               Nome
             </Label>
             <Input
-              className="col-span-3"
+              className="col-span-3 disabled:cursor-default"
               id="name"
               {...register('name')}
               disabled={isSubmitting}
@@ -163,7 +164,7 @@ export function CreateProductDialog({
               Categoria
             </Label>
             <Input
-              className="col-span-3"
+              className="col-span-3 disabled:cursor-default"
               id="category"
               {...register('category')}
               disabled={isSubmitting}
@@ -174,7 +175,7 @@ export function CreateProductDialog({
               Descrição
             </Label>
             <Textarea
-              className="col-span-3"
+              className="col-span-3 disabled:cursor-default"
               id="description"
               {...register('description')}
               disabled={isSubmitting}
@@ -185,7 +186,7 @@ export function CreateProductDialog({
               Preço
             </Label>
             <Input
-              className="col-span-3"
+              className="col-span-3 disabled:cursor-default"
               id="price"
               step="0.01"
               type="number"
@@ -197,7 +198,7 @@ export function CreateProductDialog({
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost">
+            <Button type="button" variant="ghost" disabled={isSubmitting}>
               Cancelar
             </Button>
           </DialogClose>

@@ -76,6 +76,7 @@ export function UpdateProductDialog({
           closeButton: true,
         })
       },
+      retry: 3,
     })
 
   function handleUpdateProduct(data: updateProductFormType) {
@@ -209,7 +210,7 @@ export function UpdateProductDialog({
                 Nome
               </Label>
               <Input
-                className="col-span-3"
+                className="col-span-3 disabled:cursor-default"
                 id="name"
                 {...register('name')}
                 disabled={IsUpdatingProduct}
@@ -220,7 +221,7 @@ export function UpdateProductDialog({
                 Categoria
               </Label>
               <Input
-                className="col-span-3"
+                className="col-span-3 disabled:cursor-default"
                 id="category"
                 {...register('category')}
                 disabled={IsUpdatingProduct}
@@ -231,7 +232,7 @@ export function UpdateProductDialog({
                 Descrição
               </Label>
               <Textarea
-                className="col-span-3"
+                className="col-span-3 disabled:cursor-default"
                 id="description"
                 {...register('description')}
                 disabled={IsUpdatingProduct}
@@ -242,7 +243,7 @@ export function UpdateProductDialog({
                 Preço
               </Label>
               <Input
-                className="col-span-3"
+                className="col-span-3 disabled:cursor-default"
                 id="price"
                 step="0.01"
                 type="number"
