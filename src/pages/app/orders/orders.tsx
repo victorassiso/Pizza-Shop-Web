@@ -13,7 +13,7 @@ import { OrdersCardList } from './components/mobile/orders-card-list'
 
 export function Orders() {
   const {
-    formatedSearchParams: { customerName, orderId, pageIndex, status },
+    formattedSearchParams: { customerName, orderId, pageIndex, status },
     setSearchParams,
   } = useOrdersSearchParams()
   const { data: response, isLoading: isLoadingOrders } = useQuery({
