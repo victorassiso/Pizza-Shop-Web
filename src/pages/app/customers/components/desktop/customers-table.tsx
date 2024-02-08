@@ -22,7 +22,7 @@ export function CustomersTable({
   return (
     <div className="space-y-2.5">
       <div className="rounded-md border">
-        <Table>
+        <Table className="min-w-[930px]">
           <TableHeader>
             <TableRow>
               <TableHead className="w-2/12">Identificador</TableHead>

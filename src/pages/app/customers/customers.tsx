@@ -62,7 +62,7 @@ export function Customers() {
       <Helmet title="Clientes" />
       <div className="flex flex-col gap-4">
         <CustomersHeader />
-        {screenWidth >= 1024 ? (
+        {screenWidth >= 768 ? (
           <CustomersTable
             isLoadingCustomers={isLoadingCustomers}
             response={response}

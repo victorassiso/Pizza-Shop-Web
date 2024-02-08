@@ -17,8 +17,8 @@ interface OrderTableProps {
 
 export function OrdersTable({ orders, isLoadingOrders }: OrderTableProps) {
   return (
-    <div className="w-full rounded-md">
-      <Table>
+    <div className="w-full overflow-scroll rounded-md">
+      <Table className="min-w-[900px]">
         <TableHeader>
           <TableRow>
             <TableHead className="w-[64px]"></TableHead>

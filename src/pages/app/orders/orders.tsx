@@ -42,14 +42,14 @@ export function Orders() {
         <Header />
       </CreateOrderFormProvider>
       {/* Small Screen: Card View */}
-      <div className="lg:hidden">
+      <div className="md:hidden">
         <OrdersCardList
           orders={response?.orders}
           isLoadingOrders={isLoadingOrders}
         />
       </div>
       {/* Large Screen: Table View */}
-      <div className="hidden lg:block">
+      <div className="hidden md:block">
         <OrdersTable
           orders={response?.orders}
           isLoadingOrders={isLoadingOrders}
