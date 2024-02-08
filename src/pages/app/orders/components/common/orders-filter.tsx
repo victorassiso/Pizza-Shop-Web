@@ -137,7 +137,7 @@ export function Filter() {
                       <div>
                         <Label>Status:</Label>
                         <Select
-                          defaultValue=""
+                          defaultValue="all"
                           name={name}
                           onValueChange={onChange}
                           value={value}
@@ -147,7 +147,7 @@ export function Filter() {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent>
-                            <SelectItem value="">Todos</SelectItem>
+                            <SelectItem value="all">Todos</SelectItem>
                             <SelectItem value="pending">Pendente</SelectItem>
                             <SelectItem value="canceled">Cancelado</SelectItem>
                             <SelectItem value="processing">
