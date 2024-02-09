@@ -11,7 +11,9 @@ export const api = axios.create({
 
 if (env.VITE_ENABLE_API_DELAY) {
   api.interceptors.request.use(async (config) => {
-    await new Promise((resolve) => setTimeout(resolve, 2000))
+    const delay = Math.floor(Math.random() * 2000 + 1000)
+    console.log({ delay })
+    await new Promise((resolve) => setTimeout(resolve, delay))
 
     return config
   })

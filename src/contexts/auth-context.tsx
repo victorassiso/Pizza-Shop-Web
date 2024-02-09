@@ -99,7 +99,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: refreshTokenApiFn } = useMutation({
     mutationFn: refreshTokenApi,
-    retry: 3,
   })
 
   async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
