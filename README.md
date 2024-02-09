@@ -3,15 +3,18 @@
 An administration dashboard for managing a pizzeria. This application provides features for handling orders and tracking relevant statistics for pizzeria operations.
 
 ## Available On
-https://victorassiso.github.io/pizza-shop
+
+https://pizza-shop.victorassis.eng.br
 
 ## Features
+
 * Order Management
 * Statistics and Charts
 * Dark and Light Themes
 * Toast Notifications
 
 ## Technologies Used
+
 * Vite
 * React
 * React Router DOM

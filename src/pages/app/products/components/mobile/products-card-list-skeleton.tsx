@@ -16,9 +16,9 @@ export function ProductsCardListSkeleton() {
           </div>
         </CardHeader>
         <CardContent className="flex flex-col gap-1">
-          <Skeleton className="h-5 w-36" />
-          <Skeleton className="h-5 w-36" />
-          <Skeleton className="h-5 w-36" />
+          <Skeleton className="h-5 w-52" />
+          <Skeleton className="h-5 w-48" />
+          <Skeleton className="h-5 w-44" />
         </CardContent>
       </Card>
     )
