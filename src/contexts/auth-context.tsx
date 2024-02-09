@@ -35,6 +35,7 @@ interface AuthContextProps {
   removeWorkspace: () => Promise<UserDTO>
   isRemovingWorkspace: boolean
   refreshToken: () => Promise<RefreshTokenResponse>
+  isRefreshing: boolean
 }
 
 export const AuthContext = createContext({} as AuthContextProps)
@@ -97,9 +98,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     retry: 3,
   })
 
-  const { mutateAsync: refreshTokenApiFn } = useMutation({
-    mutationFn: refreshTokenApi,
-  })
+  const { mutateAsync: refreshTokenApiFn, isPending: isRefreshing } =
+    useMutation({
+      mutationFn: refreshTokenApi,
+    })
 
   async function joinInWorkspace({ code }: JoinInWorkspaceRequest) {
     console.log({ currentWorkspaceId: user.workspaceId })
@@ -204,6 +206,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         removeWorkspace,
         isRemovingWorkspace,
         refreshToken,
+        isRefreshing,
         isSigningOut,
       }}
     >

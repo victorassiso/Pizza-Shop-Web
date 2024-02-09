@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { redirect, RouterProvider } from 'react-router-dom'
 
 import { useAuth } from '@/hooks/use-auth'
+import { Loading } from '@/pages/loading'
 
 import { appRouter } from './app-router'
 import { authRouter } from './auth-router'
@@ -36,5 +37,5 @@ export function Routes() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [accessToken])
 
-  return route && <RouterProvider router={route} />
+  return <>{route ? <RouterProvider router={route} /> : <Loading />}</>
 }
