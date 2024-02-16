@@ -19,6 +19,8 @@ jobs:
         with:
           submodules: true
           lfs: false
+        env: # Add environment variables here
+          VITE_API_URL: 'https://pizza-shop-api-docker.onrender.com'
       - name: Build And Deploy
         id: builddeploy
         uses: Azure/static-web-apps-deploy@v1
