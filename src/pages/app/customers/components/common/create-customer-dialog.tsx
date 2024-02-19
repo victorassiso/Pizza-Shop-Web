@@ -19,6 +19,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { isApiError } from '@/lib/axios'
 
 interface CreateCustomerDialogProps {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
@@ -61,12 +62,26 @@ export function CreateCustomerDialog({
 
   const { mutateAsync: createCustomerFn } = useMutation({
     mutationFn: createCustomer,
-    retry: 3,
+    retry(failureCount, error) {
+      console.log(error)
+      console.log(failureCount)
+      if (isApiError(error) && error.response?.status === 409) {
+        console.log('DEBUG')
+        return false
+      }
+      console.log(failureCount)
+      if (failureCount >= 2) {
+        return false
+      }
+
+      return true
+    },
   })
 
-  async function handleCreateProdct(data: CreateCustomerSchema) {
+  async function handleCreateProduct(data: CreateCustomerSchema) {
     try {
       const customer = await createCustomerFn({ ...data })
+
       updateCustomersCache(customer)
       setOpenDialog(false)
       toast.success('Cliente cadastrado com sucesso')
@@ -76,12 +91,19 @@ export function CreateCustomerDialog({
           toast.error(`Erro ao cadastrar cliente! Telefone já em uso.`, {
             closeButton: true,
           })
-        }
-        if (error.response?.data.message === 'Email already exists') {
+        } else if (error.response?.data.message === 'Email already exists') {
           toast.error(`Erro ao cadastrar cliente! E-mail já em uso.`, {
             closeButton: true,
           })
+        } else {
+          toast.error(`Um erro inesperado ocorreu!`, {
+            closeButton: true,
+          })
         }
+      } else {
+        toast.error(`Um erro inesperado ocorreu!`, {
+          closeButton: true,
+        })
       }
     }
   }
@@ -92,7 +114,7 @@ export function CreateCustomerDialog({
         <DialogTitle>Novo Cliente</DialogTitle>
         <DialogDescription>Crie um novo cliente</DialogDescription>
       </DialogHeader>
-      <form onSubmit={handleSubmit(handleCreateProdct)}>
+      <form onSubmit={handleSubmit(handleCreateProduct)}>
         <div className="space-y-4 py-4">
           <div className="grid grid-cols-4 items-center gap-4">
             <Label className="text-right" htmlFor="name">
@@ -143,7 +165,7 @@ export function CreateCustomerDialog({
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost">
+            <Button type="button" variant="ghost" disabled={isSubmitting}>
               Cancelar
             </Button>
           </DialogClose>
