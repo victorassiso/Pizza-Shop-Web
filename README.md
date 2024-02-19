@@ -6,7 +6,7 @@ Welcome to React Delivery Shop, a web system designed to streamline the manageme
 
 The React Delivery Shop is currently deployed on Render and can be accessed via the following link:
 
-[React Delivery Shop](https://delivery-shop.victorassis.eng.br)
+[🔗 React Delivery Shop](https://delivery-shop.victorassis.eng.br)
 
 ⚠ Please note that as the project is hosted on the free tier plan, there might be a substantial delay in retrieving the initial response for the first request. However, subsequent requests should function normally.
 
