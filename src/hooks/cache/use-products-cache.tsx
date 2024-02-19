@@ -84,7 +84,7 @@ export function useProductsCache() {
         doesNewProductDescriptionMatchesCurrentFilter ||
         doesNewProductMinPriceMatchesCurrentFilter ||
         doesNewProductMaxPriceMatchesCurrentFilter) &&
-      JSON.stringify(filteredQueryKey) === JSON.stringify(emptyFilterQueryKey)
+      JSON.stringify(filteredQueryKey) !== JSON.stringify(emptyFilterQueryKey)
 
     return { emptyFilterQueryKey, filteredQueryKey, shouldUpdateFilteredCache }
   }

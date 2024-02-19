@@ -61,7 +61,7 @@ export function useCustomersCache() {
         doesNewCustomerAddressMatchesCurrentFilter ||
         doesNewCustomerEmailMatchesCurrentFilter ||
         doesNewCustomerPhoneMatchesCurrentFilter) &&
-      JSON.stringify(filteredQueryKey) === JSON.stringify(emptyFilterQueryKey)
+      JSON.stringify(filteredQueryKey) !== JSON.stringify(emptyFilterQueryKey)
 
     return { emptyFilterQueryKey, filteredQueryKey, shouldUpdateFilteredCache }
   }
