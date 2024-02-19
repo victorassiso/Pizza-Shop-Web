@@ -1,8 +1,4 @@
-// import { AuthLayout } from '../pages/_layouts/auth'
-// import { NotFound } from '../pages/404'
-// import { CreateWorkspace } from '../pages/auth/create-workspace'
-// import { JoinInWorkspace } from '../pages/auth/join-in-workspace'
-import { lazy } from 'react'
+import { lazy, Suspense } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 
 const JoinInWorkspace = lazy(() =>
@@ -10,16 +6,15 @@ const JoinInWorkspace = lazy(() =>
     default: JoinInWorkspace,
   })),
 )
+const CreateWorkspace = lazy(() =>
+  import('@/pages/auth/create-workspace').then(({ CreateWorkspace }) => ({
+    default: CreateWorkspace,
+  })),
+)
 
 const NotFound = lazy(() =>
   import('@/pages/404').then(({ NotFound }) => ({
     default: NotFound,
-  })),
-)
-
-const CreateWorkspace = lazy(() =>
-  import('@/pages/auth/create-workspace').then(({ CreateWorkspace }) => ({
-    default: CreateWorkspace,
   })),
 )
 
@@ -32,12 +27,41 @@ const AuthLayout = lazy(() =>
 export const noWorkspaceRouter = createBrowserRouter([
   {
     path: '/',
-    element: <AuthLayout />,
-    errorElement: <NotFound />,
+    element: (
+      <Suspense fallback={<></>}>
+        <AuthLayout />
+      </Suspense>
+    ),
+    errorElement: (
+      <Suspense fallback={<></>}>
+        <NotFound />
+      </Suspense>
+    ),
     children: [
-      { path: '/', element: <JoinInWorkspace /> },
-      { path: '/create-workspace', element: <CreateWorkspace /> },
-      { path: '/join-in-workspace', element: <JoinInWorkspace /> },
+      {
+        path: '/',
+        element: (
+          <Suspense fallback={<></>}>
+            <CreateWorkspace />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/create-workspace',
+        element: (
+          <Suspense fallback={<></>}>
+            <CreateWorkspace />
+          </Suspense>
+        ),
+      },
+      {
+        path: '/join-in-workspace',
+        element: (
+          <Suspense fallback={<></>}>
+            <JoinInWorkspace />
+          </Suspense>
+        ),
+      },
     ],
   },
 ])
