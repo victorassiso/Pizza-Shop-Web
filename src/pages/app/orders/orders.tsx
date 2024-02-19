@@ -6,24 +6,22 @@ import { Pagination } from '@/components/pagination'
 import { CreateOrderFormProvider } from '@/contexts/create-order-form-context'
 import { OrdersProvider } from '@/contexts/orders-context'
 import { useOrdersSearchParams } from '@/hooks/params/use-orders-search-params'
+import { useScreenSize } from '@/hooks/use-screen-size'
 
 import { Header } from './components/common/orders-header'
 import { OrdersTable } from './components/desktop/orders-table'
 import { OrdersCardList } from './components/mobile/orders-card-list'
 
 export function Orders() {
-  const {
-    formattedSearchParams: { customerName, orderId, pageIndex, status },
-    setSearchParams,
-  } = useOrdersSearchParams()
+  const { formattedSearchParams, queryKey, setSearchParams } =
+    useOrdersSearchParams()
+  const { screenWidth } = useScreenSize()
+
   const { data: response, isLoading: isLoadingOrders } = useQuery({
-    queryKey: ['orders', pageIndex, orderId, customerName, status],
+    queryKey,
     queryFn: () =>
       getOrders({
-        pageIndex,
-        orderId,
-        customerName,
-        status,
+        ...formattedSearchParams,
       }),
   })
 
@@ -41,20 +39,17 @@ export function Orders() {
       <CreateOrderFormProvider>
         <Header />
       </CreateOrderFormProvider>
-      {/* Small Screen: Card View */}
-      <div className="md:hidden">
-        <OrdersCardList
-          orders={response?.orders}
-          isLoadingOrders={isLoadingOrders}
-        />
-      </div>
-      {/* Large Screen: Table View */}
-      <div className="hidden md:block">
+      {screenWidth >= 768 ? (
         <OrdersTable
           orders={response?.orders}
           isLoadingOrders={isLoadingOrders}
         />
-      </div>
+      ) : (
+        <OrdersCardList
+          orders={response?.orders}
+          isLoadingOrders={isLoadingOrders}
+        />
+      )}
       {response && (
         <Pagination
           pageIndex={response.meta.pageIndex}

@@ -8,9 +8,7 @@ import { useProductsSearchParams } from '../params/use-products-search-params'
 
 export function useProductsCache() {
   const queryClient = useQueryClient()
-  const {
-    formattedSearchParams: { name, category, description, minPrice, maxPrice },
-  } = useProductsSearchParams(10)
+  const { formattedSearchParams: params } = useProductsSearchParams(10)
 
   function sortProducts(a: ProductDTO, b: ProductDTO) {
     const nameA = a.name.toLowerCase()
@@ -36,55 +34,38 @@ export function useProductsCache() {
     })
   }
 
-  function getFilteredQueryKey(newProduct: Product) {
+  function getQueryKeys(newProduct: Product) {
     const doesNewProductNameMatchesCurrentFilter =
-      !name || name.includes(newProduct.name)
+      !params.name || newProduct.name.includes(params.name)
 
     const doesNewProductCategoryMatchesCurrentFilter =
-      !category || category.includes(newProduct.category)
+      !params.category || newProduct.category.includes(params.category)
 
     const doesNewProductDescriptionMatchesCurrentFilter =
-      !description ||
-      (newProduct.description && newProduct.description.includes(description))
+      !params.description ||
+      (newProduct.description &&
+        newProduct.description.includes(params.description))
 
     const doesNewProductMaxPriceMatchesCurrentFilter =
-      !maxPrice || maxPrice >= newProduct.price
+      !params.maxPrice || params.maxPrice >= newProduct.price
 
     const doesNewProductMinPriceMatchesCurrentFilter =
-      !minPrice || minPrice <= newProduct.price
+      !params.minPrice || params.minPrice <= newProduct.price
 
     const filteredQueryKey = [
       'products',
       undefined, // pageIndex
       10, // perPage
       undefined, // id
-      doesNewProductNameMatchesCurrentFilter ? name : undefined,
-      doesNewProductCategoryMatchesCurrentFilter ? category : undefined,
-      doesNewProductDescriptionMatchesCurrentFilter ? description : undefined,
-      doesNewProductMinPriceMatchesCurrentFilter ? minPrice : undefined,
-      doesNewProductMaxPriceMatchesCurrentFilter ? maxPrice : undefined,
+      doesNewProductNameMatchesCurrentFilter ? params.name : undefined,
+      doesNewProductCategoryMatchesCurrentFilter ? params.category : undefined,
+      doesNewProductDescriptionMatchesCurrentFilter
+        ? params.description
+        : undefined,
+      doesNewProductMinPriceMatchesCurrentFilter ? params.minPrice : undefined,
+      doesNewProductMaxPriceMatchesCurrentFilter ? params.maxPrice : undefined,
     ]
 
-    const shouldUpdateFilteredCache =
-      doesNewProductNameMatchesCurrentFilter ||
-      doesNewProductCategoryMatchesCurrentFilter ||
-      doesNewProductDescriptionMatchesCurrentFilter ||
-      doesNewProductMinPriceMatchesCurrentFilter ||
-      doesNewProductMaxPriceMatchesCurrentFilter
-
-    return { filteredQueryKey, shouldUpdateFilteredCache }
-  }
-
-  function handleUpdateFilteredCache(newProduct: Product) {
-    const { filteredQueryKey, shouldUpdateFilteredCache } =
-      getFilteredQueryKey(newProduct)
-
-    if (shouldUpdateFilteredCache) {
-      updateCache(filteredQueryKey, newProduct)
-    }
-  }
-
-  function updateEmptyFilterCache(newProduct: Product) {
     const emptyFilterQueryKey = [
       'products',
       undefined, // pageIndex
@@ -97,12 +78,26 @@ export function useProductsCache() {
       undefined, // maxPrice
     ]
 
-    updateCache(emptyFilterQueryKey, newProduct)
+    const shouldUpdateFilteredCache =
+      (doesNewProductNameMatchesCurrentFilter ||
+        doesNewProductCategoryMatchesCurrentFilter ||
+        doesNewProductDescriptionMatchesCurrentFilter ||
+        doesNewProductMinPriceMatchesCurrentFilter ||
+        doesNewProductMaxPriceMatchesCurrentFilter) &&
+      JSON.stringify(filteredQueryKey) === JSON.stringify(emptyFilterQueryKey)
+
+    return { emptyFilterQueryKey, filteredQueryKey, shouldUpdateFilteredCache }
   }
 
   function handleUpdateProductsCache(newProduct: Product) {
-    handleUpdateFilteredCache(newProduct)
-    updateEmptyFilterCache(newProduct)
+    const { emptyFilterQueryKey, filteredQueryKey, shouldUpdateFilteredCache } =
+      getQueryKeys(newProduct)
+
+    updateCache(emptyFilterQueryKey, newProduct)
+
+    if (shouldUpdateFilteredCache) {
+      updateCache(filteredQueryKey, newProduct)
+    }
   }
 
   return { handleUpdateProductsCache }

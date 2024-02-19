@@ -1,11 +1,10 @@
 import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { isAxiosError } from 'axios'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
-import { CustomerDTO } from '@/@types/api-dtos'
 import { createCustomer } from '@/api/customers/create-customer'
 import { Button } from '@/components/ui/button'
 import {
@@ -19,8 +18,17 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
+import { useCustomersCache } from '@/hooks/cache/user-customers-cache'
 import { isApiError } from '@/lib/axios'
 
+const createCustomerSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email().min(1),
+  address: z.string().min(1),
+  phone: z.string().min(1),
+})
+
+type CreateCustomerSchema = z.infer<typeof createCustomerSchema>
 interface CreateCustomerDialogProps {
   setOpenDialog: React.Dispatch<React.SetStateAction<boolean>>
 }
@@ -28,15 +36,7 @@ interface CreateCustomerDialogProps {
 export function CreateCustomerDialog({
   setOpenDialog,
 }: CreateCustomerDialogProps) {
-  const createCustomerSchema = z.object({
-    name: z.string().min(1),
-    email: z.string().email().min(1),
-    address: z.string().min(1),
-    phone: z.string().min(1),
-  })
-
-  type CreateCustomerSchema = z.infer<typeof createCustomerSchema>
-
+  const { handleUpdateCustomersCache } = useCustomersCache()
   const {
     register,
     handleSubmit,
@@ -44,21 +44,6 @@ export function CreateCustomerDialog({
   } = useForm<CreateCustomerSchema>({
     resolver: zodResolver(createCustomerSchema),
   })
-
-  const queryClient = useQueryClient()
-
-  function updateCustomersCache(customer: CustomerDTO) {
-    const cached = queryClient.getQueryData<CustomerDTO[]>(['customers'])
-
-    if (!cached) {
-      return
-    }
-
-    queryClient.setQueryData<CustomerDTO[]>(
-      ['customers'],
-      [customer, ...cached],
-    )
-  }
 
   const { mutateAsync: createCustomerFn } = useMutation({
     mutationFn: createCustomer,
@@ -76,9 +61,9 @@ export function CreateCustomerDialog({
 
   async function handleCreateProduct(data: CreateCustomerSchema) {
     try {
-      const customer = await createCustomerFn({ ...data })
-
-      updateCustomersCache(customer)
+      const newCustomer = await createCustomerFn({ ...data })
+      console.log({ newCustomer })
+      handleUpdateCustomersCache(newCustomer)
       setOpenDialog(false)
       toast.success('Cliente cadastrado com sucesso')
     } catch (error) {

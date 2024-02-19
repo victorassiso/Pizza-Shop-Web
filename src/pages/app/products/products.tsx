@@ -12,32 +12,15 @@ import { ProductsCardList } from './components/mobile/products-card-list'
 
 export function Products() {
   const { screenWidth } = useScreenSize()
-  const {
-    queryKey,
-    formattedSearchParams: {
-      pageIndex,
-      id,
-      name,
-      category,
-      description,
-      minPrice,
-      maxPrice,
-    },
-    setSearchParams,
-  } = useProductsSearchParams(10)
+  const { queryKey, formattedSearchParams, setSearchParams } =
+    useProductsSearchParams(10)
 
   const { data: response, isLoading: isLoadingProducts } = useQuery({
     queryKey,
     queryFn: () =>
       getProducts({
-        pageIndex,
+        ...formattedSearchParams,
         perPage: 10,
-        id,
-        name,
-        category,
-        description,
-        minPrice,
-        maxPrice,
       }),
   })
 
