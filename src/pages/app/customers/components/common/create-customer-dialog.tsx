@@ -63,13 +63,9 @@ export function CreateCustomerDialog({
   const { mutateAsync: createCustomerFn } = useMutation({
     mutationFn: createCustomer,
     retry(failureCount, error) {
-      console.log(error)
-      console.log(failureCount)
       if (isApiError(error) && error.response?.status === 409) {
-        console.log('DEBUG')
         return false
       }
-      console.log(failureCount)
       if (failureCount >= 2) {
         return false
       }
