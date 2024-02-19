@@ -8,7 +8,7 @@ The React Delivery Shop is currently deployed on Render and can be accessed via 
 
 [React Delivery Shop](https://delivery-shop.victorassis.eng.br)
 
-Please note that as the project is hosted on the free tier plan, there might be a slight delay in retrieving the initial response for the first request. However, subsequent requests should function normally.
+Please note that as the project is hosted on the free tier plan, there might be a substantial delay in retrieving the initial response for the first request. However, subsequent requests should function normally.
 
 ## Features
 
