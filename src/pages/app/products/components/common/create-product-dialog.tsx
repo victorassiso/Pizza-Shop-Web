@@ -16,6 +16,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { useProductsCache } from '@/hooks/cache/use-products-cache'
+import { isApiError } from '@/lib/axios'
 
 import { CreateProductFormType } from './products-header'
 
@@ -36,7 +37,16 @@ export function CreateProductDialog({
 
   const { mutateAsync: createProductFn } = useMutation({
     mutationFn: createProduct,
-    retry: 3,
+    retry(failureCount, error) {
+      if (isApiError(error) && error.response?.status === 409) {
+        return false
+      }
+      if (failureCount >= 2) {
+        return false
+      }
+
+      return true
+    },
   })
 
   async function handleCreateProduct(data: CreateProductFormType) {
