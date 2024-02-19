@@ -1,10 +1,8 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { useFormContext } from 'react-hook-form'
 import { toast } from 'sonner'
 
-import { Product } from '@/@types/bd-entities'
 import { createProduct } from '@/api/products/create-product'
-import { GetProductsResponse } from '@/api/products/get-products'
 import { Button } from '@/components/ui/button'
 import {
   DialogClose,
@@ -17,7 +15,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
-import { useProductsSearchParams } from '@/hooks/params/use-products-search-params'
+import { useProductsCache } from '@/hooks/cache/use-products-cache'
 
 import { CreateProductFormType } from './products-header'
 
@@ -28,92 +26,13 @@ interface CreateProductDialogProps {
 export function CreateProductDialog({
   handleOpenDialog,
 }: CreateProductDialogProps) {
-  const queryClient = useQueryClient()
   const {
     handleSubmit,
     register,
     formState: { isSubmitting },
   } = useFormContext<CreateProductFormType>()
 
-  const {
-    formattedSearchParams: { name, category, description, minPrice, maxPrice },
-  } = useProductsSearchParams(10)
-
-  function updateProductsCache(newProduct: Product) {
-    const doesNewProductNameMatchesCurrentFilter =
-      !name || name.includes(newProduct.name)
-
-    const doesNewProductCategoryMatchesCurrentFilter =
-      !category || category.includes(newProduct.category)
-
-    const doesNewProductDescriptionMatchesCurrentFilter =
-      !description ||
-      (newProduct.description && newProduct.description.includes(description))
-
-    const doesNewProductMaxPriceMatchesCurrentFilter =
-      !maxPrice || maxPrice >= newProduct.price
-
-    const doesNewProductMinPriceMatchesCurrentFilter =
-      !minPrice || minPrice <= newProduct.price
-
-    const filteredQueryKey = [
-      'products',
-      undefined, // pageIndex
-      10, // perPage
-      undefined, // id
-      doesNewProductNameMatchesCurrentFilter ? name : undefined,
-      doesNewProductCategoryMatchesCurrentFilter ? category : undefined,
-      doesNewProductDescriptionMatchesCurrentFilter ? description : undefined,
-      doesNewProductMinPriceMatchesCurrentFilter ? minPrice : undefined,
-      doesNewProductMaxPriceMatchesCurrentFilter ? maxPrice : undefined,
-    ]
-
-    const emptyFilterQueryKey = [
-      'products',
-      undefined, // pageIndex
-      undefined, // perPage
-      undefined, // id
-      undefined, // name
-      undefined, // category
-      undefined, // description
-      undefined, // minPrice
-      undefined, // maxPrice
-    ]
-
-    // Update Filtered Cache
-    if (
-      doesNewProductNameMatchesCurrentFilter ||
-      doesNewProductCategoryMatchesCurrentFilter ||
-      doesNewProductDescriptionMatchesCurrentFilter ||
-      doesNewProductMinPriceMatchesCurrentFilter ||
-      doesNewProductMaxPriceMatchesCurrentFilter
-    ) {
-      const cached =
-        queryClient.getQueryData<GetProductsResponse>(filteredQueryKey)
-
-      if (!cached) {
-        return
-      }
-
-      queryClient.setQueryData<GetProductsResponse>(filteredQueryKey, {
-        ...cached,
-        products: [newProduct, ...cached.products],
-      })
-    }
-
-    // Update Empty Filter Cache
-    const cached =
-      queryClient.getQueryData<GetProductsResponse>(emptyFilterQueryKey)
-
-    if (!cached) {
-      return
-    }
-
-    queryClient.setQueryData<GetProductsResponse>(emptyFilterQueryKey, {
-      ...cached,
-      products: [newProduct, ...cached.products],
-    })
-  }
+  const { handleUpdateProductsCache } = useProductsCache()
 
   const { mutateAsync: createProductFn } = useMutation({
     mutationFn: createProduct,
@@ -128,7 +47,7 @@ export function CreateProductDialog({
         description: data.description,
         price: data.price,
       })
-      updateProductsCache(newProduct)
+      handleUpdateProductsCache(newProduct)
       handleOpenDialog(false)
       toast.success('Produto cadastrado com sucesso', {
         closeButton: true,
