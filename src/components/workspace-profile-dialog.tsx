@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { WorkspaceDTO } from '@/@types/api-dtos'
 import { getWorkspace } from '@/api/workspaces/get-workspace'
 import { updateWorkspace } from '@/api/workspaces/update-workspace'
+import { isApiError } from '@/lib/axios'
 
 import { Button } from './ui/button'
 import {
@@ -48,7 +49,7 @@ export function WorkspaceProfileDialog() {
 
     return { cached }
   }
-  const { mutateAsync: updateWorkspaceFn } = useMutation({
+  const { mutateAsync: updateWorkspaceFn, isPending } = useMutation({
     mutationFn: updateWorkspace,
     onMutate({ name, code }) {
       const { cached } = updateWorkspaceCache({ name, code })
@@ -59,7 +60,16 @@ export function WorkspaceProfileDialog() {
         updateWorkspaceCache(context.previousProfile)
       }
     },
-    retry: 3,
+    retry(failureCount, error) {
+      if (isApiError(error) && error.response?.status === 409) {
+        return false
+      }
+      if (failureCount >= 2) {
+        return false
+      }
+
+      return true
+    },
   })
 
   async function handleUpdateWorkspace(data: WorkspaceType) {
@@ -72,10 +82,14 @@ export function WorkspaceProfileDialog() {
       toast.success('Perfil atualizado com sucesso!', {
         closeButton: true,
       })
-    } catch {
-      toast.error('Falha ao atualizar perfil, tente novamente.', {
-        closeButton: true,
-      })
+    } catch (error) {
+      if (isApiError(error) && error.response?.status === 409) {
+        toast.error('Esse código já está em uso, tente outro.')
+      } else {
+        toast.error('Falha ao atualizar perfil, tente novamente.', {
+          closeButton: true,
+        })
+      }
     }
   }
 
@@ -109,7 +123,7 @@ export function WorkspaceProfileDialog() {
               className="col-span-3 disabled:cursor-default"
               id="name"
               {...register('name')}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isPending}
             />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
@@ -120,18 +134,26 @@ export function WorkspaceProfileDialog() {
               className="col-span-3 disabled:cursor-default"
               id="code"
               {...register('code')}
-              disabled={isSubmitting}
+              disabled={isSubmitting || isPending}
             />
           </div>
         </div>
 
         <DialogFooter>
           <DialogClose asChild>
-            <Button type="button" variant="ghost" disabled={isSubmitting}>
+            <Button
+              type="button"
+              variant="ghost"
+              disabled={isSubmitting || isPending}
+            >
               Cancelar
             </Button>
           </DialogClose>
-          <Button type="submit" variant="success" disabled={isSubmitting}>
+          <Button
+            type="submit"
+            variant="success"
+            disabled={isSubmitting || isPending}
+          >
             Salvar
           </Button>
         </DialogFooter>
