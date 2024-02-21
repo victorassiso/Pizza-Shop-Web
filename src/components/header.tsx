@@ -1,11 +1,5 @@
-import {
-  Barcode,
-  Home,
-  Menu,
-  Pizza,
-  Users,
-  UtensilsCrossed,
-} from 'lucide-react'
+import { Barcode, Home, Menu, Users, UtensilsCrossed } from 'lucide-react'
+import { MdDeliveryDining } from 'react-icons/md'
 
 import { AccountMenu } from './account-menu'
 import { NavLink } from './nav-link'
@@ -23,7 +17,7 @@ export function Header() {
     <div className="">
       <div className="flex h-16 items-center gap-6 px-6">
         <div className="hidden h-16 items-center gap-6 md:flex">
-          <Pizza className="h-6 w-6" />
+          <MdDeliveryDining className="h-6 w-6" />
           <Separator orientation="vertical" />
         </div>
         {/* Drop Down Menu */}

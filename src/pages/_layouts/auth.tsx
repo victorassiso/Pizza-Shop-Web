@@ -1,4 +1,4 @@
-import { Pizza } from 'lucide-react'
+import { MdDeliveryDining } from 'react-icons/md'
 import { Outlet } from 'react-router-dom'
 
 export function AuthLayout() {
@@ -6,14 +6,14 @@ export function AuthLayout() {
     <div className="flex h-screen flex-col justify-between md:grid md:grid-cols-2">
       <div className="p-[2.25rem] pb-4 md:flex md:flex-col md:justify-between md:border-r md:border-foreground/5 md:bg-muted">
         <div className="flex items-center gap-3 ">
-          <Pizza className="h-5 w-5" />
+          <MdDeliveryDining className="h-7 w-7" />
           <span className="text-lg font-semibold text-foreground">
-            pizza.shop
+            Delivery Shop
           </span>
         </div>
 
         <footer className="hidden text-sm text-muted-foreground md:block">
-          Painel do parceiro &copy; pizza.shop - {new Date().getFullYear()}
+          Painel do parceiro &copy; delivery.shop - {new Date().getFullYear()}
         </footer>
       </div>
 
@@ -22,7 +22,7 @@ export function AuthLayout() {
       </div>
 
       <footer className="p-4 text-center text-sm text-muted-foreground md:hidden">
-        Painel do parceiro &copy; pizza.shop - {new Date().getFullYear()}
+        Painel do parceiro &copy; delivery.shop - {new Date().getFullYear()}
       </footer>
     </div>
   )
