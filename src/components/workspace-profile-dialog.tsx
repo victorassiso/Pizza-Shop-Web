@@ -84,9 +84,11 @@ export function WorkspaceProfileDialog() {
       })
     } catch (error) {
       if (isApiError(error) && error.response?.status === 409) {
-        toast.error('Esse código já está em uso, tente outro.')
+        toast.error('Esse código já está em uso, tente um diferente.', {
+          closeButton: true,
+        })
       } else {
-        toast.error('Falha ao atualizar perfil, tente novamente.', {
+        toast.error('Falha ao atualizar loja, tente novamente.', {
           closeButton: true,
         })
       }

@@ -1,4 +1,5 @@
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useEffect } from 'react'
 import { Helmet } from 'react-helmet-async'
 import { useForm } from 'react-hook-form'
 import { Link } from 'react-router-dom'
@@ -55,6 +56,16 @@ export function SignUp() {
       }
     }
   }
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      toast.info('Na versão demo, seu e-mail não será utilizado.', {
+        closeButton: true,
+      })
+    }, 500)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   return (
     <>

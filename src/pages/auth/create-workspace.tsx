@@ -15,6 +15,7 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { useAuth } from '@/hooks/use-auth'
+import { isApiError } from '@/lib/axios'
 
 const CreateWorkspaceFormSchema = z.object({
   name: z.string().min(1),
@@ -36,15 +37,28 @@ export function CreateWorkspace() {
 
   async function handleCreateWorkspace(data: CreateWorkspaceFormType) {
     try {
+      toast.loading(
+        'Criando loja e dados fictícios... Isso pode demorar alguns segundos.',
+        {
+          id: 'loading',
+        },
+      )
       await createWorkspace({
         name: data.name,
         code: data.code,
       })
       window.location.replace('/')
     } catch (error) {
-      toast.error('Erro ao cadastrar organização.', {
-        closeButton: true,
-      })
+      toast.dismiss('loading')
+      if (isApiError(error) && error.response?.status === 409) {
+        toast.error('Esse código já está em uso, tente um diferente.', {
+          closeButton: true,
+        })
+      } else {
+        toast.error('Erro ao cadastrar loja, tente novamente mais tarde.', {
+          closeButton: true,
+        })
+      }
     }
   }
 

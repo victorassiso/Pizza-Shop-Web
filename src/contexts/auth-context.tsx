@@ -17,6 +17,7 @@ import {
   joinInWorkspace as joinInWorkspaceApi,
   JoinInWorkspaceRequest,
 } from '@/api/workspaces/join-in-workspace'
+import { isApiError } from '@/lib/axios'
 import { queryClient } from '@/lib/react-query'
 
 interface UserDTO {
@@ -66,7 +67,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: signUpApiFn } = useMutation({
     mutationFn: signUpApi,
-    retry: 3,
+    retry(failureCount, error) {
+      if (isApiError(error) && error.response?.status === 409) {
+        return false
+      }
+      if (failureCount >= 2) {
+        return false
+      }
+
+      return true
+    },
   })
 
   async function signUp({ name, email, password }: SignUpRequest) {
@@ -125,7 +135,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const { mutateAsync: createWorkspaceApiFn } = useMutation({
     mutationFn: createWorkspaceApi,
-    retry: 3,
+    retry(failureCount, error) {
+      if (isApiError(error) && error.response?.status === 409) {
+        return false
+      }
+      if (failureCount >= 2) {
+        return false
+      }
+
+      return true
+    },
   })
 
   async function createWorkspace({ name, code }: CreateWorkspaceRequest) {

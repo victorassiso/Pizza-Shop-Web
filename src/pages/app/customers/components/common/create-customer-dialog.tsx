@@ -65,7 +65,9 @@ export function CreateCustomerDialog({
       console.log({ newCustomer })
       handleUpdateCustomersCache(newCustomer)
       setOpenDialog(false)
-      toast.success('Cliente cadastrado com sucesso')
+      toast.success('Cliente cadastrado com sucesso', {
+        closeButton: true,
+      })
     } catch (error) {
       if (isAxiosError(error) && error.response) {
         if (error.response?.data.message === 'Phone already exists') {

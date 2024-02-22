@@ -40,7 +40,7 @@ export function AccountMenu() {
   async function handleSignOut() {
     try {
       await signOut()
-      window.location.replace('/')
+      window.location.replace('/sign-in')
     } catch (error) {
       console.error(error)
     }

@@ -44,7 +44,7 @@ export const authRouter = createBrowserRouter([
         path: '/',
         element: (
           <Suspense fallback={<></>}>
-            <SignIn />
+            <SignUp />
           </Suspense>
         ),
       },
