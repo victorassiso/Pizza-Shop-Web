@@ -33,3 +33,4 @@ The Delivery Shop app is currently deployed on Render and can be accessed via th
 * Tailwind CSS
 * ESlint and Prettier
 * Axios
+* WebSockets
