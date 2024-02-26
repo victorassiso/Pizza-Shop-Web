@@ -2,6 +2,8 @@ import { createContext, ReactNode, useState } from 'react'
 import { toast } from 'sonner'
 import { z } from 'zod'
 
+import { env } from '@/env'
+
 export const CreateWorkspaceFormSchema = z.object({
   name: z.string().min(1),
   code: z.string().min(1),
@@ -30,7 +32,9 @@ export function CreateWorkspaceWithMockDataContextProvider({
   const [isLoading, setIsLoading] = useState(false)
 
   function start(data: CreateWorkspaceFormType) {
-    const socket = new WebSocket('ws://localhost:8080/seedDatabase')
+    const socket = new WebSocket(
+      env.VITE_API_URL.replace('http', 'ws').concat('/seedDatabase'),
+    )
 
     socket.addEventListener('open', () => {
       console.log('opened')
