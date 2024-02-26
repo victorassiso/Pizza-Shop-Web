@@ -16,7 +16,11 @@ export function Loading() {
     <div className="relative flex h-screen w-full flex-col items-center justify-center gap-20 text-foreground opacity-50">
       <div className="relative flex items-center justify-center">
         <MdDeliveryDining size={80} />
-        <ClipLoader size={150} className="absolute" color="hsl(var(--text-" />
+        <ClipLoader
+          size={150}
+          className="absolute"
+          color="hsl(var(--foreground))"
+        />
       </div>
       {showMessage && (
         <div className="mx-10 flex flex-col gap-3">

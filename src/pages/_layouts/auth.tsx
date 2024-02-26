@@ -1,6 +1,8 @@
 import { MdDeliveryDining } from 'react-icons/md'
 import { Outlet } from 'react-router-dom'
 
+import { CreateWorkspaceWithMockDataContextProvider } from '@/contexts/create-workspace-with-mock-data-context'
+
 export function AuthLayout() {
   return (
     <div className="flex h-screen flex-col justify-between md:grid md:grid-cols-2">
@@ -18,7 +20,9 @@ export function AuthLayout() {
       </div>
 
       <div className="md:flex md:items-center md:justify-center ">
-        <Outlet />
+        <CreateWorkspaceWithMockDataContextProvider>
+          <Outlet />
+        </CreateWorkspaceWithMockDataContextProvider>
       </div>
 
       <footer className="p-4 text-center text-sm text-muted-foreground md:hidden">
