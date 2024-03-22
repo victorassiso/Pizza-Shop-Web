@@ -1,5 +1,6 @@
 import { Pencil } from 'lucide-react'
 import { useState } from 'react'
+import { toast } from 'sonner'
 
 import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
@@ -33,7 +34,13 @@ export function CustomerTableRow({
       <TableCell>
         <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
           <DialogTrigger asChild>
-            <Button variant="outline" size="xs">
+            <Button
+              variant="outline"
+              size="xs"
+              onClick={() => {
+                toast.info('🏗 Funcionalidade em construção...')
+              }}
+            >
               <Pencil className="h-3 w-3" />
               <span className="sr-only">Detalhes do produto</span>
             </Button>
