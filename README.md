@@ -34,3 +34,35 @@ The Delivery Shop app is currently deployed on Render and can be accessed via th
 * ESlint and Prettier
 * Axios
 * WebSockets
+
+## Prints
+### Dashboard
+![Dasboard](./public/prints/dashboard.png)
+
+### Update store Dialog
+![Dasboard](./public/prints/update-store-dialog.png)
+
+### Order Table
+![Dasboard](./public/prints/orders-table.png)
+
+### New Order Dialog
+![Dasboard](./public/prints/new-order-dialog.png)
+
+### Login
+![Dasboard](./public/prints/login.png)
+
+### Order Table Filter
+![Dasboard](./public/prints/filter-orders-dialog.png)
+
+### Login
+![Dasboard](./public/prints/login.png)
+
+
+### Dashboard - Light Theme
+![Dasboard](./public/prints/dashboard-light-theme.png)
+
+### Dashboard - Mobile
+![Dasboard](./public/prints/dashboard-mobile.png)
+
+### Order Card List
+![Dasboard](./public/prints/orders-card-list.png)
