@@ -7,8 +7,7 @@ Welcome to Delivery Shop, the frontend portion of a web system designed to strea
 The Delivery Shop application can be accessed via the following link:
 
 🔗 [React Delivery Shop](https://deliveryshop.victorassis.eng.br)
-
-⚠ Please note that as the project is hosted on a free tier plan, there might be a substantial delay in retrieving the initial response for the first request. However, subsequent requests should function normally.
+💡Tip: You can create an account with a made up e-mail and test all the features for your self.
 
 ## Features
 
