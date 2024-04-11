@@ -4,7 +4,7 @@ Welcome to Delivery Shop, the frontend portion of a web system designed to strea
 
 ## Project Availability
 
-The Delivery Shop app is currently deployed on Render and can be accessed via the following link:
+The Delivery Shop application can be accessed via the following link:
 
 🔗 [React Delivery Shop](https://deliveryshop.victorassis.eng.br)
 
@@ -40,29 +40,26 @@ The Delivery Shop app is currently deployed on Render and can be accessed via th
 ![Dasboard](./public/prints/dashboard.png)
 
 ### Update store Dialog
-![Dasboard](./public/prints/update-store-dialog.png)
+![Update Store Dialog](./public/prints/update-store-dialog.png)
 
 ### Order Table
-![Dasboard](./public/prints/orders-table.png)
+![Order Table](./public/prints/orders-table.png)
 
 ### New Order Dialog
-![Dasboard](./public/prints/new-order-dialog.png)
-
-### Login
-![Dasboard](./public/prints/login.png)
+![New Order Dialog](./public/prints/new-order-dialog.png)
 
 ### Order Table Filter
-![Dasboard](./public/prints/filter-orders-dialog.png)
+![Order Table Filter](./public/prints/filter-orders-dialog.png)
 
 ### Login
-![Dasboard](./public/prints/login.png)
+![Login](./public/prints/login.png)
 
 
 ### Dashboard - Light Theme
-![Dasboard](./public/prints/dashboard-light-theme.png)
+![Dashboard - Light Theme](./public/prints/dashboard-light-theme.png)
 
 ### Dashboard - Mobile
-![Dasboard](./public/prints/dashboard-mobile.png)
+![Dashboard - Mobile](./public/prints/dashboard-mobile.png)
 
 ### Order Card List
-![Dasboard](./public/prints/orders-card-list.png)
+![Order Card List](./public/prints/orders-card-list.png)
